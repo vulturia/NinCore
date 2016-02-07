@@ -1,19 +1,20 @@
 package me.Ninjoh.NinCore.Library.Entity;
 
 
-import com.sun.istack.internal.Nullable;
 import me.Ninjoh.NinCore.Library.Interfaces.SubCommandExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand
 {
-    private String Name; // Required
-    private List<String> Aliases; // Optional
-    private String Usage; // Optional
-    private String Description; // Optional
-    private String RequiredPermission; // Optional.
+    private String Name; // Required && Always lowercase.
+    private List<String> Aliases = new ArrayList<>(); // Optional
+    @Nullable private String Usage; // Optional
+    @Nullable private String Description; // Optional
+    @Nullable private String RequiredPermission; // Optional.
     private SubCommandExecutor Executor; // Required
 
 
@@ -30,26 +31,55 @@ public class SubCommand
             , @Nullable String description, @Nullable String permission, SubCommandExecutor executor)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
-        Aliases = aliases;
         Usage = usage;
         Description = description;
         RequiredPermission = permission;
         Executor = executor;
+
+        // Make all alias entries lowercase.
+        if(aliases != null)
+        {
+            for(int i=0; i < aliases.size(); i++) {
+                aliases.set(i, aliases.get(i).toLowerCase());
+            }
+
+            Aliases = aliases;
+        }
     }
 
 
+    /**
+     * Get the name of this sub command.
+     *
+     * @return The name of this sub command.
+     */
+    @NotNull
     public String getName()
     {
         return Name;
     }
 
 
+    /**
+     * Get all aliases of this sub command.
+     *
+     * @return All aliases except the sub command name.
+     */
+    @Nullable
     public List<String> getAliases()
     {
         return new ArrayList<>(Aliases);
     }
 
 
+    /**
+     * Get all aliases of this sub command.
+     * Including the name wich is always the main
+     * alias as well.
+     *
+     * @return All aliases including the sub command name.
+     */
+    @NotNull
     public List<String> getAliasesWithMainSubCmd()
     {
         if(Aliases == null || Aliases.isEmpty())
@@ -69,42 +99,84 @@ public class SubCommand
     }
 
 
+    /**
+     * Does this sub command have any aliases?
+     *
+     * @return True/False, Does this sub command have any aliases?
+     */
     public boolean hasAliases()
     {
         return !Aliases.isEmpty();
     }
 
 
+    /**
+     * Does this sub command require a CommandSender
+     * to have a certain permission?
+     *
+     * @return True/False, Does this sub command require a permission?
+     */
     public boolean requiresPermission()
     {
         return RequiredPermission != null;
     }
 
 
+    /**
+     * Get the required permission for this sub command.
+     *
+     * @return The required permission for this sub command.
+     */
+    @Nullable
     public String getRequiredPermission()
     {
         return RequiredPermission;
     }
 
 
+    /**
+     * Get this sub command's syntax.
+     * ( Only the last part of the syntax, e.g;
+     * "<player=you> <world>" )
+     *
+     * @return The usage string.
+     */
+    @Nullable
     public String getUsage()
     {
         return Usage;
     }
 
 
+    /**
+     * Get this sub command's description.
+     *
+     * @return This sub command's description.
+     */
+    @Nullable
     public String getDescription()
     {
         return Description;
     }
 
 
+    /**
+     * Check if this sub command has a description.
+     *
+     * @return True/False, does this sub command have a description?
+     */
     public boolean hasDescription()
     {
         return Description != null;
     }
 
 
+    /**
+     * Get the executor for this sub command.
+     *
+     * @return The executor for this sub command.
+     */
+    @NotNull
     public SubCommandExecutor getExecutor()
     {
         return Executor;
