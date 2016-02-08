@@ -2,6 +2,7 @@ package me.Ninjoh.NinCore.Library.Util;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 public class ServerUtils
 {
@@ -13,5 +14,11 @@ public class ServerUtils
     public static void dispatchCommand(String command)
     {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+
+    public static OfflinePlayer[] getAllKnownPlayers()
+    {
+        return Bukkit.getOfflinePlayers();
     }
 }
