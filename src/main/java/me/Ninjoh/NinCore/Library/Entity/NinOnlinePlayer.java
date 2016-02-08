@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessage
 {
-    private JavaPlugin plugin = Main.plugin;
+    private final JavaPlugin plugin = Main.plugin;
 
 
     /**

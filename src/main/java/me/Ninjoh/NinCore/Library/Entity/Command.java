@@ -177,7 +177,7 @@ public class Command
     /**
      * Get this command's aliases, including the main command/alias
      *
-     * @return This command's alises, including the main command/alias.
+     * @return This command's aliases, including the main command/alias.
      */
     public List<String> getAliasesWithMainCmd()
     {

@@ -125,17 +125,24 @@ public class MessageUtil
             if(cmd.hasUsage())
             {
                 String cmdUsage = cmd.getUsage();
-                final String finalCmdUsage =  cmdUsage.replaceAll("/<command>", "");
+                if(cmdUsage != null)
+                {
+                    cmdUsage =  cmdUsage.replaceAll("/<command>", "");
+                }
+                else
+                {
+                    cmdUsage = "";
+                }
 
                 if(cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission()))
                 {
                     sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.RED + "/" +
-                            finalCmdAliases + ChatColor.GREEN + "" + finalCmdUsage);
+                            finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
                 }
                 else
                 {
                     sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.YELLOW + "/" +
-                            finalCmdAliases + ChatColor.GREEN + "" + finalCmdUsage);
+                            finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
                 }
             }
             else

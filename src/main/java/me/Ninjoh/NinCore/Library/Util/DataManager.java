@@ -177,8 +177,6 @@ public class DataManager
 
     public void saveLangFile()
     {
-        FileConfiguration langFile = YamlConfiguration.loadConfiguration(langF);
-
         try
         {
             plugin.getLogger().info("Attempting to save language file..");

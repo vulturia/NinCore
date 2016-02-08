@@ -74,7 +74,7 @@ public class SubCommand
 
     /**
      * Get all aliases of this sub command.
-     * Including the name wich is always the main
+     * Including the name which is always the main
      * alias as well.
      *
      * @return All aliases including the sub command name.
