@@ -1,6 +1,8 @@
 package me.Ninjoh.NinCore.Library.Entity;
 
 
+import org.jetbrains.annotations.NotNull;
+
 public class Tick
 {
     private long value;
@@ -12,6 +14,7 @@ public class Tick
     }
 
 
+    @NotNull
     public static Tick valueOf(long value)
     {
         return new Tick(value);
@@ -24,12 +27,14 @@ public class Tick
     }
 
 
+    @NotNull
     public String toString()
     {
         return Long.toString(value);
     }
 
 
+    @NotNull
     public Tick toMilliseconds()
     {
         value = value/20/1000;
@@ -37,6 +42,7 @@ public class Tick
     }
 
 
+    @NotNull
     public Tick toSeconds()
     {
         value = value/20;
@@ -44,6 +50,7 @@ public class Tick
     }
 
 
+    @NotNull
     public Tick toMinutes()
     {
         value = value/20/60;
@@ -51,6 +58,7 @@ public class Tick
     }
 
 
+    @NotNull
     public Tick toHours()
     {
         value = value/20/60/60;
@@ -58,6 +66,7 @@ public class Tick
     }
 
 
+    @NotNull
     public Tick toDays()
     {
         value = value/20/60/60/24;
@@ -65,27 +74,31 @@ public class Tick
     }
 
 
-    public Tick add(Tick value)
+    @NotNull
+    public Tick add(@NotNull Tick value)
     {
         this.value += value.toLong();
         return this;
     }
 
-    public Tick subtract(Tick value)
+    @NotNull
+    public Tick subtract(@NotNull Tick value)
     {
         this.value -= value.toLong();
         return this;
     }
 
 
-    public Tick multiply(Tick value)
+    @NotNull
+    public Tick multiply(@NotNull Tick value)
     {
         this.value *= value.toLong();
         return this;
     }
 
 
-    public Tick divide(Tick value)
+    @NotNull
+    public Tick divide(@NotNull Tick value)
     {
         this.value /= value.toLong();
         return this;

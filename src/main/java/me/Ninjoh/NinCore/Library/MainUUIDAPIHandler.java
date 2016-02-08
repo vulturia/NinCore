@@ -6,6 +6,8 @@ import net.mcapi.uuid.queries.APIQuery;
 import net.mcapi.uuid.queries.HistoryCallable;
 import net.mcapi.uuid.utils.UUIDUtils;
 import net.mcapi.uuid.utils.Username;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class MainUUIDAPIHandler extends UUIDHandler
 {
 
+    @Nullable
     @Override
     public UUID getUUID(String username)
     {
@@ -38,6 +41,7 @@ public class MainUUIDAPIHandler extends UUIDHandler
         }
     }
 
+    @Nullable
     @Override
     public String getUUIDString(String username)
     {
@@ -47,8 +51,9 @@ public class MainUUIDAPIHandler extends UUIDHandler
         return uuid;
     }
 
+    @Nullable
     @Override
-    public String getUsername(UUID uuid)
+    public String getUsername(@NotNull UUID uuid)
     {
         if (name_cache.containsKey(uuid))
         {
@@ -69,8 +74,9 @@ public class MainUUIDAPIHandler extends UUIDHandler
         }
     }
 
+    @Nullable
     @Override
-    public List<Username> getHistory(UUID uuid)
+    public List<Username> getHistory(@NotNull UUID uuid)
     {
         List<Username> list = new LinkedList<Username>();
 
@@ -93,8 +99,9 @@ public class MainUUIDAPIHandler extends UUIDHandler
         }
     }
 
+    @Nullable
     @Override
-    public String getUsername(String uuid)
+    public String getUsername(@NotNull String uuid)
     {
         return getUsername(UUID.fromString(UUIDUtils.convertUUIDToJava(uuid)));
     }

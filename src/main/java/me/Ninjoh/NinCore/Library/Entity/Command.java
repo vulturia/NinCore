@@ -5,6 +5,7 @@ import me.Ninjoh.NinCore.Library.Exceptions.SubCommandAliasAlreadyRegistered;
 import me.Ninjoh.NinCore.Library.Exceptions.SubCommandAlreadyExistsException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Command
      * @param subCommands The sum commands for this command.
      * @param Plugin The JavaPlugin this command belongs to.
      */
-    public Command(String name, List<SubCommand> subCommands, JavaPlugin Plugin)
+    public Command(@NotNull String name, List<SubCommand> subCommands, @NotNull JavaPlugin Plugin)
     {
         Name = name;
         Description = Plugin.getCommand(name).getDescription();
@@ -48,7 +49,7 @@ public class Command
      * @param name The command's name.
      * @param Plugin The JavaPlugin this command belongs to.
      */
-    public Command(String name, JavaPlugin Plugin)
+    public Command(@NotNull String name, @NotNull JavaPlugin Plugin)
     {
         Name = name;
         Description = Plugin.getCommand(name).getDescription();
@@ -168,6 +169,7 @@ public class Command
      *
      * @return This command's aliases. Can be an empty ArrayList.
      */
+    @NotNull
     public List<String> getAliases()
     {
         return new ArrayList<>(Aliases);
@@ -179,6 +181,7 @@ public class Command
      *
      * @return This command's aliases, including the main command/alias.
      */
+    @NotNull
     public List<String> getAliasesWithMainCmd()
     {
         List<String> copyOfAliases = new ArrayList<>(Aliases);
@@ -193,6 +196,7 @@ public class Command
      *
      * @return This command's sub commands. Can be an empty ArrayList.
      */
+    @NotNull
     public List<SubCommand> getSubCommands()
     {
         return new ArrayList<>(SubCommands);
@@ -206,7 +210,7 @@ public class Command
      * @throws SubCommandAlreadyExistsException
      * @throws SubCommandAliasAlreadyRegistered
      */
-    public void addSubCommand(SubCommand subCommand) throws SubCommandAlreadyExistsException, SubCommandAliasAlreadyRegistered
+    public void addSubCommand(@NotNull SubCommand subCommand) throws SubCommandAlreadyExistsException, SubCommandAliasAlreadyRegistered
     {
         if(subCommandExists(subCommand.getName()))
         {
@@ -237,7 +241,7 @@ public class Command
      *
      * @param name The name of the sub command to be deleted from this command.
      */
-    public void deleteSubCommand(String name)
+    public void deleteSubCommand(@NotNull String name)
     {
         // If any sub commands exist for this command
         if (!SubCommands.isEmpty())
@@ -262,7 +266,7 @@ public class Command
      * @return The SubCommand queried for. Can be null.
      */
     @Nullable
-    public SubCommand getSubCommand(String name)
+    public SubCommand getSubCommand(@NotNull String name)
     {
         // If any sub commands exist for this command
         if (!SubCommands.isEmpty())
@@ -290,7 +294,7 @@ public class Command
      * @return The SubCommand queried for. Can be null.
      */
     @Nullable
-    public SubCommand getSubCommandByAlias(String alias)
+    public SubCommand getSubCommandByAlias(@NotNull String alias)
     {
         for (SubCommand subCmd : SubCommands)
         {
@@ -321,7 +325,7 @@ public class Command
      * @param name The name to query for.
      * @return True/False, does this sub command exist?
      */
-    public boolean subCommandExists(String name)
+    public boolean subCommandExists(@NotNull String name)
     {
         // If any sub commands exist for this command
         if (!SubCommands.isEmpty())
@@ -348,7 +352,7 @@ public class Command
      * @param alias The alias to query for.
      * @return True/False, does this sub command exist?
      */
-    public boolean subCommandExistsByAlias(String alias)
+    public boolean subCommandExistsByAlias(@NotNull String alias)
     {
         for (SubCommand subCmd : SubCommands)
         {

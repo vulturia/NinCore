@@ -7,6 +7,7 @@ import me.Ninjoh.NinCore.Main;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class NinConsoleCommandSender implements CanReceiveMessage
 {
@@ -28,7 +29,7 @@ public class NinConsoleCommandSender implements CanReceiveMessage
      * Send plugin info to the player.
      *
      */
-    public void sendPluginInfo(JavaPlugin plugin)
+    public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
         MessageUtil.sendPluginInfo((CommandSender) getConsoleCommandSender(), plugin);
     }
@@ -38,7 +39,7 @@ public class NinConsoleCommandSender implements CanReceiveMessage
      *
      * @param error error string to send.
      */
-    public void sendError(String error)
+    public void sendError(@NotNull String error)
     {
         MessageUtil.sendError((CommandSender) getConsoleCommandSender(), error);
     }
@@ -47,7 +48,7 @@ public class NinConsoleCommandSender implements CanReceiveMessage
      * Send command help to the player.
      *
      */
-    public void sendCommandHelp(Command cmd)
+    public void sendCommandHelp(@NotNull Command cmd)
     {
         MessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd);
     }
@@ -59,7 +60,7 @@ public class NinConsoleCommandSender implements CanReceiveMessage
      * @param cmd The command parent of the sub command.
      * @param subCmd The sub command to send help for.
      */
-    public void sendSubCommandHelp(Command cmd, SubCommand subCmd)
+    public void sendSubCommandHelp(@NotNull Command cmd, @NotNull SubCommand subCmd)
     {
         MessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd, subCmd);
     }

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      *
      * @param error The error string to send.
      */
-    public void sendError(String error)
+    public void sendError(@NotNull String error)
     {
         // Make first character of error string uppercase.
         String finalErrStr = error.substring(0, 1).toUpperCase() + error.substring(1);
@@ -58,7 +59,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      * Send command help to the player.
      *
      */
-    public void sendCommandHelp(Command cmd)
+    public void sendCommandHelp(@NotNull Command cmd)
     {
         MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd);
     }
@@ -70,7 +71,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      * @param cmd The command parent of the sub command.
      * @param subCmd The sub command to send help for.
      */
-    public void sendSubCommandHelp(Command cmd, SubCommand subCmd)
+    public void sendSubCommandHelp(@NotNull Command cmd, @NotNull SubCommand subCmd)
     {
         MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd, subCmd);
     }
@@ -80,7 +81,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      * Send plugin info to the player.
      *
      */
-    public void sendPluginInfo(JavaPlugin plugin)
+    public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
         MessageUtil.sendPluginInfo((CommandSender) getPlayer(), plugin);
     }

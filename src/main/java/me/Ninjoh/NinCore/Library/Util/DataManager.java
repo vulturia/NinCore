@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class DataManager
 
 
 
-    public DataManager(JavaPlugin plugin)
+    public DataManager(@NotNull JavaPlugin plugin)
     {
         this.plugin = plugin;
         dataF = new File(plugin.getDataFolder(), "data.yml");
@@ -112,7 +113,7 @@ public class DataManager
      *
      * @param interval The interval between saving.
      */
-    public void scheduleAutomaticDataFileSave(Tick interval)
+    public void scheduleAutomaticDataFileSave(@NotNull Tick interval)
     {
         // Schedule automatic saving of data file.
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();

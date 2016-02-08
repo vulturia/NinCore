@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class MessageUtil
      * @param sender CommandSender to send the error.
      * @param error The error string to send.
      */
-    public static void sendError(CommandSender sender, String error)
+    public static void sendError(@NotNull CommandSender sender, @NotNull String error)
     {
         // Make first character of error string uppercase.
         String finalErrStr = error.substring(0, 1).toUpperCase() + error.substring(1);
@@ -34,7 +35,7 @@ public class MessageUtil
      * @param sender The CommandSender of the command.
      * @param plugin The plugin instance to use.
      */
-    public static void sendPluginInfo(CommandSender sender, JavaPlugin plugin)
+    public static void sendPluginInfo(@NotNull CommandSender sender, @NotNull JavaPlugin plugin)
     {
         String version = plugin.getDescription().getVersion();
         List authors = plugin.getDescription().getAuthors();
@@ -77,7 +78,7 @@ public class MessageUtil
      * @param sender The commandSender to send the command help to.
      * @param cmd The command to send help about.
      */
-    public static void sendCommandHelp(CommandSender sender, Command cmd)
+    public static void sendCommandHelp(@NotNull CommandSender sender, @NotNull Command cmd)
     {
         sender.sendMessage("");
         sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + "' §8] -= [ §b§l+ §8]=-");
@@ -170,7 +171,7 @@ public class MessageUtil
      * @param cmd The parent command of the sub command.
      * @param subCmd The sub command to send help about.
      */
-    public static void sendCommandHelp(CommandSender sender, Command cmd, SubCommand subCmd)
+    public static void sendCommandHelp(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull SubCommand subCmd)
     {
         sender.sendMessage("");
         sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + " " + subCmd.getName() + "' §8] -= [ §b§l+ §8]=-");

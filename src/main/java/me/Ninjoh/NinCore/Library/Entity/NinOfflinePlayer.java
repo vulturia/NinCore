@@ -3,6 +3,7 @@ package me.Ninjoh.NinCore.Library.Entity;
 import me.Ninjoh.NinCore.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ public class NinOfflinePlayer
     }
 
 
+    @Nullable
     public NinOnlinePlayer getNinOnlinePlayer()
     {
         if(getOfflinePlayer().isOnline())

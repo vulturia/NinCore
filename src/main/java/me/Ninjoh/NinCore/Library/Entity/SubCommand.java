@@ -11,6 +11,7 @@ import java.util.List;
 public class SubCommand
 {
     private String Name; // Required && Always lowercase.
+    @Nullable
     private List<String> Aliases = new ArrayList<>(); // Optional
     @Nullable private String Usage; // Optional
     @Nullable private String Description; // Optional
@@ -27,7 +28,7 @@ public class SubCommand
      * @param description Description of the sub command, Can be null.
      * @param executor The SubCommandExecutor for this sub command.
      */
-    public SubCommand(String name, @Nullable List<String> aliases, @Nullable String usage
+    public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String usage
             , @Nullable String description, @Nullable String permission, SubCommandExecutor executor)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
