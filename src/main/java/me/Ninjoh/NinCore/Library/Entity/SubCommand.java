@@ -11,8 +11,7 @@ import java.util.List;
 public class SubCommand
 {
     private String Name; // Required && Always lowercase.
-    @Nullable
-    private List<String> Aliases = new ArrayList<>(); // Optional
+    @NotNull private List<String> Aliases; // Optional
     @Nullable private String Usage; // Optional
     @Nullable private String Description; // Optional
     @Nullable private String RequiredPermission; // Optional.
@@ -29,7 +28,7 @@ public class SubCommand
      * @param executor The SubCommandExecutor for this sub command.
      */
     public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String usage
-            , @Nullable String description, @Nullable String permission, SubCommandExecutor executor)
+            , @Nullable String description, @Nullable String permission, @NotNull SubCommandExecutor executor)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
         Usage = usage;
@@ -45,6 +44,10 @@ public class SubCommand
             }
 
             Aliases = aliases;
+        }
+        else
+        {
+            Aliases = new ArrayList<>();
         }
     }
 
@@ -83,20 +86,10 @@ public class SubCommand
     @NotNull
     public List<String> getAliasesWithMainSubCmd()
     {
-        if(Aliases == null || Aliases.isEmpty())
-        {
-            List<String> aliases = new ArrayList<>();
-            aliases.add(0, Name);
+        List<String> copyOfAliases = new ArrayList<>(Aliases);
+        copyOfAliases.add(0, Name);
 
-            return aliases;
-        }
-        else
-        {
-            List<String> copyOfAliases = new ArrayList<>(Aliases);
-            copyOfAliases.add(0, Name);
-
-            return copyOfAliases;
-        }
+        return copyOfAliases;
     }
 
 

@@ -17,8 +17,8 @@ public class Command
     @Nullable private String Description; // Automatic
     @Nullable private String Usage; // Automatic
     @Nullable private String Permission; // Automatic
-    private List<String> Aliases = new ArrayList<>(); // Automatic
-    private List<SubCommand> SubCommands = new ArrayList<>(); // Optional
+    private List<String> Aliases; // Automatic
+    private List<SubCommand> SubCommands; // Optional
     private CommandExecutor Executor; // Required
 
     private JavaPlugin Plugin;
@@ -31,13 +31,20 @@ public class Command
      * @param subCommands The sum commands for this command.
      * @param Plugin The JavaPlugin this command belongs to.
      */
-    public Command(@NotNull String name, List<SubCommand> subCommands, @NotNull JavaPlugin Plugin)
+    public Command(@NotNull String name, @NotNull List<SubCommand> subCommands, @NotNull JavaPlugin Plugin)
     {
         Name = name;
         Description = Plugin.getCommand(name).getDescription();
         Permission = Plugin.getCommand(name).getPermission();
         Aliases = Plugin.getCommand(name).getAliases();
         SubCommands = subCommands;
+
+        if(Aliases == null)
+        {
+            Aliases = new ArrayList<>();
+        }
+
+
 
         this.Plugin = Plugin;
     }
@@ -63,7 +70,7 @@ public class Command
      *
      * @param executor The CommandExecutor for this command.
      */
-    public void setExecutor(CommandExecutor executor)
+    public void setExecutor(@NotNull CommandExecutor executor)
     {
         Plugin.getCommand(Name).setExecutor(executor);
         Executor = executor;
@@ -86,6 +93,7 @@ public class Command
      *
      * @return This command's name.
      */
+    @NotNull
     public String getName()
     {
         return Name;
