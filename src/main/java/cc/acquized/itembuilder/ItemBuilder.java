@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.Library.Util;
+package cc.acquized.itembuilder;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
