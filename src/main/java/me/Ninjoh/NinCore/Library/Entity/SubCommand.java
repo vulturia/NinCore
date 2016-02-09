@@ -7,13 +7,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class SubCommand
 {
     private String Name; // Required && Always lowercase.
     @NotNull private List<String> Aliases; // Optional
     @Nullable private String Usage; // Optional
-    @Nullable private String Description; // Optional
+    @Nullable private String[] Description; // Optional
     @Nullable private String RequiredPermission; // Optional.
     private SubCommandExecutor Executor; // Required
 
@@ -28,7 +30,7 @@ public class SubCommand
      * @param executor The SubCommandExecutor for this sub command.
      */
     public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String usage
-            , @Nullable String description, @Nullable String permission, @NotNull SubCommandExecutor executor)
+            , @Nullable String[] description, @Nullable String permission, @NotNull SubCommandExecutor executor)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
         Usage = usage;
@@ -148,9 +150,16 @@ public class SubCommand
      * @return This sub command's description.
      */
     @Nullable
-    public String getDescription()
+    public String getDescription(Locale locale)
     {
-        return Description;
+        if(hasDescription())
+        {
+            ResourceBundle messages = ResourceBundle.getBundle(Description[1], locale);
+
+            return messages.getString(Description[0]);
+        }
+
+        return null;
     }
 
 

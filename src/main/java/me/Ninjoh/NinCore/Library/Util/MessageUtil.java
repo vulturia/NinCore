@@ -2,14 +2,18 @@ package me.Ninjoh.NinCore.Library.Util;
 
 
 import me.Ninjoh.NinCore.Library.Entity.Command;
+import me.Ninjoh.NinCore.Library.Entity.NinOnlinePlayer;
 import me.Ninjoh.NinCore.Library.Entity.SubCommand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MessageUtil
 {
@@ -92,17 +96,38 @@ public class MessageUtil
             {
                 final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
 
+                Locale locale = null;
+
+                if(sender instanceof Player)
+                {
+                    locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+                }
+
+                if(locale == null)
+                {
+                    locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+                }
+
+
+                String description = subCmd.getDescription(locale);
+
+                if(description == null)
+                {
+                    description = "";
+                }
+
+
                 if(subCmd.getUsage() == null)
                 {
                     if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
                     {
                         sender.sendMessage(" §e/" + finalCmdAliases + " " + ChatColor.RED +
-                                finalSubCmdAliases + " §f- §7" + subCmd.getDescription());
+                                finalSubCmdAliases + " §f- §7" + description);
                     }
                     else
                     {
                         sender.sendMessage(" §e/" + finalCmdAliases + " " + finalSubCmdAliases +
-                                " §f- §7" + subCmd.getDescription());
+                                " §f- §7" + description);
                     }
                 }
                 else
@@ -111,12 +136,12 @@ public class MessageUtil
                     {
                         sender.sendMessage(" §e/" + finalCmdAliases + " " + ChatColor.RED +
                                 finalSubCmdAliases + " §a" + subCmd.getUsage() +
-                                " §f- §7" + subCmd.getDescription());
+                                " §f- §7" + description);
                     }
                     else
                     {
                         sender.sendMessage(" §e/" + finalCmdAliases + " " + finalSubCmdAliases + " §a" +
-                                subCmd.getUsage() + " §f- §7" + subCmd.getDescription());
+                                subCmd.getUsage() + " §f- §7" + description);
                     }
                 }
             }
@@ -197,8 +222,25 @@ public class MessageUtil
 
         if(subCmd.hasDescription())
         {
+            Locale locale = null;
+            if(sender instanceof Player)
+            {
+                locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+            }
+
+            if(locale == null)
+            {
+                locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+            }
+
+            String description = subCmd.getDescription(locale);
+            if(description == null)
+            {
+                description = "";
+            }
+
             sender.sendMessage("");
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Description: " + ChatColor.GRAY + subCmd.getDescription());
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Description: " + ChatColor.GRAY + description);
         }
 
         sender.sendMessage("");

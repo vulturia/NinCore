@@ -18,7 +18,7 @@ public class TooManyArgumentsException extends Exception
         if(commandSender instanceof Player)
         {
             Locale locale = NinOnlinePlayer.fromUUID(((Player) commandSender).getUniqueId()).getMinecraftLocale().toLocale();
-            ResourceBundle messages = ResourceBundle.getBundle("locale.messages", locale);
+            ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
             msg = messages.getString("error.PlayerNotFound");
         }
 

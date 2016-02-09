@@ -16,7 +16,7 @@ public class InvalidCommandSenderException extends Exception
     {
         // Sender is never a player.
         Locale locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
-        ResourceBundle messages = ResourceBundle.getBundle("locale.messages", locale);
+        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
         msg = messages.getString("error.InvalidCommandSender");
 
         MessageUtil.sendError(commandSender, msg);

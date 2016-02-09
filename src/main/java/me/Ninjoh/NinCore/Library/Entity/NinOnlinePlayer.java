@@ -51,9 +51,9 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
 
 
     /**
-     * Get a player's client locale.
+     * Get a player's client lang.
      *
-     * @return The player's locale.
+     * @return The player's lang.
      */
     @NotNull
     public MinecraftLocale getMinecraftLocale()
@@ -72,7 +72,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
             {
                 Object ep = getMethod("getHandle", p.getClass()).invoke(p, (Object[]) null);
 
-                Field f = ep.getClass().getDeclaredField("locale");
+                Field f = ep.getClass().getDeclaredField("lang");
                 f.setAccessible(true);
                 String language = (String) f.get(ep);
 
