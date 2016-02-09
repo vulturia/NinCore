@@ -20,7 +20,7 @@ public class AccessDeniedException extends Exception
         {
             Locale locale = NinOnlinePlayer.fromUUID(((Player) commandSender).getUniqueId()).getMinecraftLocale().toLocale();
             ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
-            msg = messages.getString("error.PlayerNotFound");
+            msg = messages.getString("error.AccessDenied");
         }
 
         MessageUtil.sendError(commandSender, msg);

@@ -42,33 +42,81 @@ public class MessageUtil
      */
     public static void sendPluginInfo(@NotNull CommandSender sender, @NotNull JavaPlugin plugin)
     {
-        String version = plugin.getDescription().getVersion();
-        List authors = plugin.getDescription().getAuthors();
+        Locale locale = null;
+        if(sender instanceof Player)
+        {
+            locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+        }
+
+        if(locale == null)
+        {
+            locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+        }
+
+
+        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
+
+        MessageFormat formatter = new MessageFormat("");
+        formatter.setLocale(locale);
+
+        String authors = null;
+        String description = null;
+        String website = null;
+
+
+        // Plugin authors
+        if(plugin.getDescription().getAuthors() != null)
+        {
+            final String authorsString = StringUtils.join(plugin.getDescription().getAuthors(), ", ");
+            Object[] messageArguments1 = {authorsString};
+
+            if(plugin.getDescription().getAuthors().size() > 1)
+            {
+                formatter.applyPattern(messages.getString("pluginInfo.authors.multipleAuthors"));
+            }
+            else
+            {
+                formatter.applyPattern(messages.getString("pluginInfo.authors.oneAuthor"));
+            }
+
+            authors = formatter.format(messageArguments1);
+        }
+
+
+        // Plugin description
+        if(plugin.getDescription().getDescription() != null)
+        {
+            Object[] messageArguments2 = {plugin.getDescription().getDescription()};
+            formatter.applyPattern(messages.getString("pluginInfo.description"));
+            description = formatter.format(messageArguments2);
+        }
+
+        // Plugin website
+        if(plugin.getDescription().getWebsite() != null)
+        {
+            Object[] messageArguments3 = {plugin.getDescription().getWebsite()};
+            formatter.applyPattern(messages.getString("pluginInfo.website"));
+            website = formatter.format(messageArguments3);
+        }
+
+        // Plugin version
+        Object[] messageArguments2 = {plugin.getDescription().getVersion()};
+        formatter.applyPattern(messages.getString("pluginInfo.version"));
+        final String version = formatter.format(messageArguments2);
+
 
         sender.sendMessage("");
         sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + plugin.getDescription().getName() + " §8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
 
 
-        sender.sendMessage(" §eVersion: §7" + version);
+        sender.sendMessage(" " + version); // Plugin version
 
-        if(plugin.getDescription().getAuthors() != null)
-        {
-            sender.sendMessage(" §e" + ((plugin.getDescription().getAuthors().size() > 1) ? "Authors" : "Author") + ": §7" +
-                    StringUtils.join(authors, ", "));
-        }
+        if(plugin.getDescription().getAuthors() != null) {sender.sendMessage(" " + authors);} // Plugin authors
 
+        if(plugin.getDescription().getDescription() != null) {sender.sendMessage(" " + description);} // Plugin description
 
-        if(plugin.getDescription().getDescription() != null)
-        {
-            sender.sendMessage(" §eVersion: §7" + plugin.getDescription().getDescription());
-        }
-
-
-        if(plugin.getDescription().getWebsite() != null)
-        {
-            sender.sendMessage(" §eWebsite: §7" + plugin.getDescription().getWebsite());
-        }
+        if(plugin.getDescription().getWebsite() != null) {sender.sendMessage(" " + website);} // Plugin website
 
 
         sender.sendMessage("");
