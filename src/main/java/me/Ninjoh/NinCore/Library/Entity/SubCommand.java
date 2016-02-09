@@ -144,6 +144,12 @@ public class SubCommand
     }
 
 
+    public boolean hasUsage()
+    {
+        return Usage != null;
+    }
+
+
     /**
      * Get this sub command's description.
      *

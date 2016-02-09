@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -84,8 +85,35 @@ public class MessageUtil
      */
     public static void sendCommandHelp(@NotNull CommandSender sender, @NotNull Command cmd)
     {
+        Locale locale = null;
+        if(sender instanceof Player)
+        {
+            locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+        }
+
+        if(locale == null)
+        {
+            locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+        }
+
+
+        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
+
+
+        Object[] messageArguments = {cmd.getName().toLowerCase()};
+
+        MessageFormat formatter = new MessageFormat("");
+        formatter.setLocale(locale);
+
+        formatter.applyPattern(messages.getString("commandHelp.CommandHelpFor"));
+        final String commandHelpFor = formatter.format(messageArguments);
+
+
+
+
+
         sender.sendMessage("");
-        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + "' §8] -= [ §b§l+ §8]=-");
+        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + commandHelpFor + "§8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
 
         final String finalCmdAliases = StringUtils.join(cmd.getAliasesWithMainCmd(), ",");
@@ -95,18 +123,6 @@ public class MessageUtil
             for (SubCommand subCmd : cmd.getSubCommands())
             {
                 final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
-
-                Locale locale = null;
-
-                if(sender instanceof Player)
-                {
-                    locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
-                }
-
-                if(locale == null)
-                {
-                    locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
-                }
 
 
                 String description = subCmd.getDescription(locale);
@@ -148,6 +164,16 @@ public class MessageUtil
         }
         else
         {
+            Object[] messageArguments1 = {cmd.getName().toLowerCase()};
+            formatter.applyPattern(messages.getString("commandHelp.Syntax"));
+            final String syntax = formatter.format(messageArguments1);
+
+            Object[] messageArguments2 = {cmd.getName().toLowerCase()};
+            formatter.applyPattern(messages.getString("commandHelp.Description"));
+            final String description = formatter.format(messageArguments2);
+
+
+
             if(cmd.hasUsage())
             {
                 String cmdUsage = cmd.getUsage();
@@ -162,29 +188,29 @@ public class MessageUtil
 
                 if(cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission()))
                 {
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.RED + "/" +
+                    sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.RED + "/" +
                             finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
                 }
                 else
                 {
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.YELLOW + "/" +
+                    sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
                             finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
                 }
             }
             else
             {
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.YELLOW + "/" + finalCmdAliases);
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" + finalCmdAliases);
             }
 
             if(cmd.hasDescription())
             {
                 sender.sendMessage("");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "Description: " + ChatColor.GRAY + cmd.getDescription());
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + description + ": " + ChatColor.GRAY + cmd.getDescription());
             }
         }
 
         sender.sendMessage("");
-        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + "' §8] -= [ §b§l+ §8]=-");
+        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + commandHelpFor + "§8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
     }
 
@@ -198,8 +224,37 @@ public class MessageUtil
      */
     public static void sendCommandHelp(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull SubCommand subCmd)
     {
+        Locale locale = null;
+        if(sender instanceof Player)
+        {
+            locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+        }
+
+        if(locale == null)
+        {
+            locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+        }
+
+
+        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
+        MessageFormat formatter = new MessageFormat("");
+        formatter.setLocale(locale);
+
+
+        Object[] messageArguments = {cmd.getName().toLowerCase() + " " + subCmd.getName()};
+        formatter.applyPattern(messages.getString("commandHelp.CommandHelpFor"));
+        final String commandHelpFor = formatter.format(messageArguments);
+
+
+        final String syntax = messages.getString("commandHelp.Syntax");
+        final String description1 = messages.getString("commandHelp.Description");
+
+
+
+
+
         sender.sendMessage("");
-        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + " " + subCmd.getName() + "' §8] -= [ §b§l+ §8]=-");
+        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + commandHelpFor + "§8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
 
         final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
@@ -208,13 +263,13 @@ public class MessageUtil
 
         if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
         {
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.YELLOW + "/" +
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
                     finalCmdAliases + " " + ChatColor.RED + finalSubCmdAliases + " " + ChatColor.GREEN + "" +
                     ((subCmd.getUsage() == null) ? "" : subCmd.getUsage()));
         }
         else
         {
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Syntax: " + ChatColor.YELLOW + "/" +
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
                     finalCmdAliases + " " + finalSubCmdAliases + " " + ChatColor.GREEN + "" +
                     ((subCmd.getUsage() == null) ? "" : subCmd.getUsage()));
         }
@@ -222,17 +277,6 @@ public class MessageUtil
 
         if(subCmd.hasDescription())
         {
-            Locale locale = null;
-            if(sender instanceof Player)
-            {
-                locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
-            }
-
-            if(locale == null)
-            {
-                locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
-            }
-
             String description = subCmd.getDescription(locale);
             if(description == null)
             {
@@ -240,11 +284,11 @@ public class MessageUtil
             }
 
             sender.sendMessage("");
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Description: " + ChatColor.GRAY + description);
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + description1 + ": " + ChatColor.GRAY + description);
         }
 
         sender.sendMessage("");
-        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6Help For Command: '" + cmd.getName().toLowerCase() + " " + subCmd.getName() + "' §8] -= [ §b§l+ §8]=-");
+        sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + commandHelpFor + "§8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
     }
 }
