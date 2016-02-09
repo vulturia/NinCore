@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -147,17 +146,12 @@ public class MessageUtil
 
         ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
 
-
-        Object[] messageArguments = {cmd.getName().toLowerCase()};
-
         MessageFormat formatter = new MessageFormat("");
         formatter.setLocale(locale);
 
+        Object[] messageArguments = {cmd.getName().toLowerCase()};
         formatter.applyPattern(messages.getString("commandHelp.CommandHelpFor"));
         final String commandHelpFor = formatter.format(messageArguments);
-
-
-
 
 
         sender.sendMessage("");
@@ -171,89 +165,44 @@ public class MessageUtil
             for (SubCommand subCmd : cmd.getSubCommands())
             {
                 final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
+                final String description = subCmd.getDescription(locale);
+                final String usage = subCmd.getUsage();
 
 
-                String description = subCmd.getDescription(locale);
-
-                if(description == null)
-                {
-                    description = "";
-                }
-
-
-                if(subCmd.getUsage() == null)
-                {
-                    if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
-                    {
-                        sender.sendMessage(" §e/" + finalCmdAliases + " " + ChatColor.RED +
-                                finalSubCmdAliases + " §f- §7" + description);
-                    }
-                    else
-                    {
-                        sender.sendMessage(" §e/" + finalCmdAliases + " " + finalSubCmdAliases +
-                                " §f- §7" + description);
-                    }
-                }
-                else
-                {
-                    if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
-                    {
-                        sender.sendMessage(" §e/" + finalCmdAliases + " " + ChatColor.RED +
-                                finalSubCmdAliases + " §a" + subCmd.getUsage() +
-                                " §f- §7" + description);
-                    }
-                    else
-                    {
-                        sender.sendMessage(" §e/" + finalCmdAliases + " " + finalSubCmdAliases + " §a" +
-                                subCmd.getUsage() + " §f- §7" + description);
-                    }
-                }
+                sender.sendMessage(" §e/" + finalCmdAliases +
+                        ((subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
+                                ? " " + finalSubCmdAliases : " §c" + finalSubCmdAliases) +
+                        ((usage == null) ? "" : " §a" + usage) +
+                        ((description == null) ? "" : " §f- §7" + description));
             }
         }
         else
         {
-            Object[] messageArguments1 = {cmd.getName().toLowerCase()};
-            formatter.applyPattern(messages.getString("commandHelp.Syntax"));
+            String cmdUsage = cmd.getUsage();
+
+            Object[] messageArguments1 =
+                    {
+                            ((cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission())) ? "§c" : "§d") +
+                                    "/" + finalCmdAliases + ((cmdUsage == null) ? "" : " §a" + cmdUsage)
+                    };
+
+            formatter.applyPattern(messages.getString("commandHelp.syntax"));
             final String syntax = formatter.format(messageArguments1);
 
-            Object[] messageArguments2 = {cmd.getName().toLowerCase()};
-            formatter.applyPattern(messages.getString("commandHelp.Description"));
-            final String description = formatter.format(messageArguments2);
 
+            // Send command syntax.
+            sender.sendMessage(syntax);
 
-
-            if(cmd.hasUsage())
-            {
-                String cmdUsage = cmd.getUsage();
-                if(cmdUsage != null)
-                {
-                    cmdUsage =  cmdUsage.replaceAll("/<command>", "");
-                }
-                else
-                {
-                    cmdUsage = "";
-                }
-
-                if(cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission()))
-                {
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.RED + "/" +
-                            finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
-                }
-                else
-                {
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
-                            finalCmdAliases + ChatColor.GREEN + "" + cmdUsage);
-                }
-            }
-            else
-            {
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" + finalCmdAliases);
-            }
-
+            // Send command description if it has one.
             if(cmd.hasDescription())
             {
+                Object[] messageArguments2 = {cmd.getDescription()};
+                formatter.applyPattern(messages.getString("commandHelp.description"));
+                final String description = formatter.format(messageArguments2);
+
+
                 sender.sendMessage("");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + description + ": " + ChatColor.GRAY + cmd.getDescription());
+                sender.sendMessage(description);
             }
         }
 
@@ -293,11 +242,19 @@ public class MessageUtil
         formatter.applyPattern(messages.getString("commandHelp.CommandHelpFor"));
         final String commandHelpFor = formatter.format(messageArguments);
 
+        final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
+        final String finalCmdAliases = StringUtils.join(cmd.getAliasesWithMainCmd(), ",");
 
-        final String syntax = messages.getString("commandHelp.Syntax");
-        final String description1 = messages.getString("commandHelp.Description");
+        Object[] messageArguments2 =
+                {
+                        "/" + finalCmdAliases + " " + ((subCmd.requiresPermission() &&
+                                !sender.hasPermission(subCmd.getRequiredPermission()))
+                                ? "§c" + finalSubCmdAliases : finalSubCmdAliases) + "§a" +
+                                ((subCmd.getUsage() == null) ? "" : subCmd.getUsage())
+                };
 
-
+        formatter.applyPattern(messages.getString("commandHelp.syntax"));
+        final String syntax = formatter.format(messageArguments2);
 
 
 
@@ -305,34 +262,21 @@ public class MessageUtil
         sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + commandHelpFor + "§8] -= [ §b§l+ §8]=-");
         sender.sendMessage("");
 
-        final String finalSubCmdAliases = StringUtils.join(subCmd.getAliasesWithMainSubCmd(), ",");
-        final String finalCmdAliases = StringUtils.join(cmd.getAliasesWithMainCmd(), ",");
+
+        // Send sub command syntax message.
+        sender.sendMessage(syntax);
 
 
-        if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
-        {
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
-                    finalCmdAliases + " " + ChatColor.RED + finalSubCmdAliases + " " + ChatColor.GREEN + "" +
-                    ((subCmd.getUsage() == null) ? "" : subCmd.getUsage()));
-        }
-        else
-        {
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + syntax + ": " + ChatColor.YELLOW + "/" +
-                    finalCmdAliases + " " + finalSubCmdAliases + " " + ChatColor.GREEN + "" +
-                    ((subCmd.getUsage() == null) ? "" : subCmd.getUsage()));
-        }
-
-
+        // Send description if the sub command has one.
         if(subCmd.hasDescription())
         {
-            String description = subCmd.getDescription(locale);
-            if(description == null)
-            {
-                description = "";
-            }
+            Object[] messageArguments1 = {cmd.getDescription()};
+            formatter.applyPattern(messages.getString("commandHelp.description"));
+            final String description = formatter.format(messageArguments1);
+
 
             sender.sendMessage("");
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + description1 + ": " + ChatColor.GRAY + description);
+            sender.sendMessage(description);
         }
 
         sender.sendMessage("");
