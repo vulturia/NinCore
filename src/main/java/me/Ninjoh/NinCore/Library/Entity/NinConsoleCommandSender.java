@@ -3,7 +3,7 @@ package me.Ninjoh.NinCore.Library.Entity;
 
 import me.Ninjoh.NinCore.Library.Interfaces.CanReceiveMessage;
 import me.Ninjoh.NinCore.Library.Util.MessageUtil;
-import me.Ninjoh.NinCore.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class NinConsoleCommandSender implements CanReceiveMessage
 {
-    JavaPlugin plugin = Main.plugin;
 
 
     /**
@@ -21,7 +20,7 @@ public class NinConsoleCommandSender implements CanReceiveMessage
      */
     public ConsoleCommandSender getConsoleCommandSender()
     {
-        return plugin.getServer().getConsoleSender();
+        return Bukkit.getServer().getConsoleSender();
     }
 
 

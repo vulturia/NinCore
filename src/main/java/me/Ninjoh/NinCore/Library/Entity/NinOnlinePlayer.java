@@ -1,29 +1,41 @@
 package me.Ninjoh.NinCore.Library.Entity;
 
 import me.Ninjoh.NinCore.Library.Interfaces.CanReceiveMessage;
+import me.Ninjoh.NinCore.Library.Util.LocaleUtils;
 import me.Ninjoh.NinCore.Library.Util.MessageUtil;
-import me.Ninjoh.NinCore.Main;
+import me.Ninjoh.NinCore.Library.Util.MinecraftLocale;
+import me.Ninjoh.NinCore.NinCore;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessage
 {
-    private final JavaPlugin plugin = Main.plugin;
-
 
     /**
      * Constructor
      *
-     * @param playerUUID The player's UUID
+     * @param uuid The player's UUID
      */
-    public NinOnlinePlayer(UUID playerUUID)
+    public NinOnlinePlayer(UUID uuid)
     {
-        super(playerUUID);
+        super(uuid);
+    }
+
+
+    @NotNull
+    public static NinOnlinePlayer fromUUID(UUID uuid)
+    {
+        return new NinOnlinePlayer(uuid);
     }
 
 
@@ -34,7 +46,72 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      */
     public Player getPlayer()
     {
-        return plugin.getServer().getPlayer(uuid);
+        return Bukkit.getServer().getPlayer(uuid);
+    }
+
+
+    /**
+     * Get a player's client locale.
+     *
+     * @return The player's locale.
+     */
+    @NotNull
+    public MinecraftLocale getMinecraftLocale()
+    {
+        try
+        {
+            if(!NinCore.useLocalization())
+            {
+                return LocaleUtils.getDefaultMinecraftLocale();
+            }
+
+
+            Player p = getPlayer();
+
+            if(getMethod("getHandle", p.getClass()) != null)
+            {
+                Object ep = getMethod("getHandle", p.getClass()).invoke(p, (Object[]) null);
+
+                Field f = ep.getClass().getDeclaredField("locale");
+                f.setAccessible(true);
+                String language = (String) f.get(ep);
+
+                MinecraftLocale locale = null;
+
+                if(LocaleUtils.getMinecraftLocale(language) != null)
+                {
+                    locale = LocaleUtils.getMinecraftLocale(language);
+                }
+
+                if(locale == null)
+                {
+                    locale = LocaleUtils.getDefaultMinecraftLocale();
+                }
+
+
+                return locale;
+            }
+            else
+            {
+                return LocaleUtils.getDefaultMinecraftLocale();
+            }
+        }
+        catch(@NotNull IllegalAccessException | InvocationTargetException | NoSuchFieldException | NullPointerException e)
+        {
+            return LocaleUtils.getDefaultMinecraftLocale();
+        }
+    }
+
+
+    @Nullable
+    private Method getMethod(String name, @NotNull Class<?> clazz)
+    {
+        for (Method m : clazz.getDeclaredMethods())
+        {
+            if (m.getName().equals(name))
+                return m;
+        }
+        return null;
     }
 
 

@@ -1,8 +1,8 @@
 package me.Ninjoh.NinCore.Library.Entity;
 
-import me.Ninjoh.NinCore.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public class NinOfflinePlayer
 {
-    private JavaPlugin plugin = Main.plugin;
     public UUID uuid;
 
 
@@ -25,15 +24,22 @@ public class NinOfflinePlayer
     }
 
 
-    public NinOfflinePlayer(UUID offlinePlayerUUID)
+    public NinOfflinePlayer(UUID uuid)
     {
-        uuid = offlinePlayerUUID;
+        this.uuid = uuid;
+    }
+
+
+    @NotNull
+    public static NinOfflinePlayer fromUUID(UUID uuid)
+    {
+        return new NinOfflinePlayer(uuid);
     }
 
 
     public OfflinePlayer getOfflinePlayer()
     {
-        return plugin.getServer().getOfflinePlayer(uuid);
+        return Bukkit.getServer().getOfflinePlayer(uuid);
     }
 
 
