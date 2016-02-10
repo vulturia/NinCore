@@ -26,10 +26,31 @@ public class MessageUtil
      */
     public static void sendError(@NotNull CommandSender sender, @NotNull String error)
     {
-        // Make first character of error string uppercase.
-        String finalErrStr = error.substring(0, 1).toUpperCase() + error.substring(1);
+        // Get target's locale.
+        Locale locale = null;
+        if(sender instanceof Player)
+        {
+            locale = NinOnlinePlayer.fromUUID(((Player) sender).getUniqueId()).getMinecraftLocale().toLocale();
+        }
 
-        sender.sendMessage(ChatColor.RED + "Error: " + ChatColor.DARK_RED + finalErrStr + ".");
+        if(locale == null)
+        {
+            locale = LocaleUtils.getDefaultMinecraftLocale().toLocale();
+        }
+
+
+        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
+
+        MessageFormat formatter = new MessageFormat("");
+        formatter.setLocale(locale);
+
+        // Format message.
+        Object[] messageArguments = {error};
+        formatter.applyPattern(messages.getString("sendError"));
+        final String finalErr = formatter.format(messageArguments);
+
+        // Send message.
+        sender.sendMessage(finalErr);
     }
 
 
