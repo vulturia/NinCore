@@ -39,13 +39,13 @@ public class MessageUtil
         }
 
 
-        ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
+        final ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
 
-        MessageFormat formatter = new MessageFormat("");
+        final MessageFormat formatter = new MessageFormat("");
         formatter.setLocale(locale);
 
         // Format message.
-        Object[] messageArguments = {error};
+        final Object[] messageArguments = {error};
         formatter.applyPattern(messages.getString("sendError"));
         final String finalErr = formatter.format(messageArguments);
 
@@ -76,7 +76,7 @@ public class MessageUtil
 
         ResourceBundle messages = ResourceBundle.getBundle("lang.messages", locale);
 
-        MessageFormat formatter = new MessageFormat("");
+        final MessageFormat formatter = new MessageFormat("");
         formatter.setLocale(locale);
 
         String authors = null;
@@ -114,44 +114,39 @@ public class MessageUtil
         // Plugin website
         if (plugin.getDescription().getWebsite() != null)
         {
-            Object[] messageArguments3 = {plugin.getDescription().getWebsite()};
+            final Object[] messageArguments3 = {plugin.getDescription().getWebsite()};
             formatter.applyPattern(messages.getString("pluginInfo.website"));
             website = formatter.format(messageArguments3);
         }
 
         // Plugin version
-        Object[] messageArguments2 = {plugin.getDescription().getVersion()};
+        final Object[] messageArguments2 = {plugin.getDescription().getVersion()};
         formatter.applyPattern(messages.getString("pluginInfo.version"));
         final String version = formatter.format(messageArguments2);
 
-        // Old format;
+        final Object[] messageArguments3 = {plugin.getDescription().getName()};
+        formatter.applyPattern(messages.getString("pluginInfo.pluginInfoFor"));
+        final String pluginInfoFor = formatter.format(messageArguments3);
+
+        // Old format; (Changed because this was too long).
         //sender.sendMessage("§8-=[ §b§l+ §8]=- §8[ §6" + plugin.getDescription().getName() + " §8] -= [ §b§l+ §8]=-");
 
         sender.sendMessage("");
-        sender.sendMessage("§8-§b=§8-§b=§8<[ §6" + plugin.getDescription().getName() + " §8]>§b=§8-§b=§8-");
+        sender.sendMessage("§8-§b=§8-§b=§8<[ §6" + pluginInfoFor + " §8]>§b=§8-§b=§8-");
         sender.sendMessage("");
 
 
         sender.sendMessage(" " + version); // Plugin version
 
-        if (plugin.getDescription().getAuthors() != null)
-        {
-            sender.sendMessage(" " + authors);
-        } // Plugin authors
+        if (plugin.getDescription().getAuthors() != null) {sender.sendMessage("\n " + authors);} // Plugin authors
 
-        if (plugin.getDescription().getDescription() != null)
-        {
-            sender.sendMessage("\n " + description);
-        } // Plugin description
+        if (plugin.getDescription().getDescription() != null) {sender.sendMessage("\n " + description);} // Plugin description
 
-        if (plugin.getDescription().getWebsite() != null)
-        {
-            sender.sendMessage("\n " + website);
-        } // Plugin website
+        if (plugin.getDescription().getWebsite() != null) {sender.sendMessage("\n " + website);} // Plugin website
 
 
         sender.sendMessage("");
-        sender.sendMessage("§8-§b=§8-§b=§8<[ §6" + plugin.getDescription().getName() + " §8]>§b=§8-§b=§8-");
+        sender.sendMessage("§8-§b=§8-§b=§8<[ §6" + pluginInfoFor + " §8]>§b=§8-§b=§8-");
         sender.sendMessage("");
     }
 
@@ -205,9 +200,9 @@ public class MessageUtil
                 {
                     Player p = (Player) sender;
 
-                    final Object[] messageArguments2 = {cmd.getDescription()};
+                    Object[] messageArguments2 = {subCmd.getDescription(locale)};
                     formatter.applyPattern(messages.getString("commandHelp.description"));
-                    final String finalDescription = formatter.format(messageArguments2);
+                    final String finalSubCmdDescription = formatter.format(messageArguments2);
 
 
                     final Object[] messageArguments1 =
@@ -222,12 +217,12 @@ public class MessageUtil
                     final String syntax = formatter.format(messageArguments1);
 
 
-                    TextComponent message = new TextComponent(TextComponent.fromLegacyText("§e" + finalCmdAliases +
+                    TextComponent message = new TextComponent(TextComponent.fromLegacyText(" §e/" + finalCmdAliases +
                             ((subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
                             ? " §c" + finalSubCmdAliases : " " + finalSubCmdAliases) +
                             ((description == null) ? "" : " §f- §7" + description)));
 
-                    BaseComponent[] baseComponents = new ComponentBuilder(syntax + "\n\n" + finalDescription ).create();
+                    BaseComponent[] baseComponents = new ComponentBuilder(syntax + "\n\n" + finalSubCmdDescription ).create();
 
                     message.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, baseComponents) );
                     message.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/" +
@@ -252,27 +247,44 @@ public class MessageUtil
 
             Object[] messageArguments1 =
                     {
-                            ((cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission())) ? "§c" : "§d") +
-                                    "/" + finalCmdAliases + ((cmdUsage == null) ? "" : " §a " + cmdUsage)
+                            ((cmd.requiresPermission() && !sender.hasPermission(cmd.getRequiredPermission())) ? "§c" : "§e") +
+                                    " /" + finalCmdAliases + ((cmdUsage == null) ? "" : " §a " + cmdUsage)
                     };
 
             formatter.applyPattern(messages.getString("commandHelp.syntax"));
             final String syntax = formatter.format(messageArguments1);
 
 
-            // Send command syntax.
-            sender.sendMessage(syntax);
-
-            // Send command description if it has one.
-            if (cmd.hasDescription())
+            String description = null;
+            if(cmd.hasDescription())
             {
                 Object[] messageArguments2 = {cmd.getDescription()};
                 formatter.applyPattern(messages.getString("commandHelp.description"));
-                final String description = formatter.format(messageArguments2);
+                description = formatter.format(messageArguments2);
+            }
 
 
-                sender.sendMessage("");
-                sender.sendMessage(description);
+            if(sender instanceof Player) // Use JSON messages if the sender is a player.
+            {
+                Player p = (Player) sender;
+
+                TextComponent message = new TextComponent(TextComponent.fromLegacyText(syntax));
+                message.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/" + cmd.getName()));
+
+                // Send message.
+                p.spigot().sendMessage(message);
+            }
+            else
+            {
+                // Send command syntax.
+                sender.sendMessage(syntax);
+
+                // Send command description if it has one.
+                if (description != null)
+                {
+                    sender.sendMessage("");
+                    sender.sendMessage(description);
+                }
             }
         }
 
@@ -332,8 +344,23 @@ public class MessageUtil
         sender.sendMessage("");
 
 
-        // Send sub command syntax message.
-        sender.sendMessage(syntax);
+        if(sender instanceof Player)
+        {
+            Player p = (Player) sender;
+
+            TextComponent message = new TextComponent(TextComponent.fromLegacyText(syntax));
+            message.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/" + cmd.getName().toLowerCase() + " " + subCmd.getName()));
+
+            // Send message.
+            p.spigot().sendMessage(message);
+        }
+        else
+        {
+            // Send sub command syntax message.
+            sender.sendMessage(syntax);
+        }
+
+
 
 
         // Send description if the sub command has one.
