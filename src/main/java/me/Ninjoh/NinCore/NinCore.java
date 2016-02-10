@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class NinCore
 {
-    private static MinecraftLocale[] minecraftLocales = MinecraftLocale.values();
+    private static final MinecraftLocale[] minecraftLocales = MinecraftLocale.values();
     @NotNull private static MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
     private static boolean useLocalization = true;
 

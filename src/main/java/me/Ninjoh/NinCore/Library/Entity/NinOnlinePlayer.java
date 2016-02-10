@@ -58,48 +58,49 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
     @NotNull
     public MinecraftLocale getMinecraftLocale()
     {
-        try
-        {
-            if(!NinCore.useLocalization())
-            {
-                return LocaleUtils.getDefaultMinecraftLocale();
-            }
+//        try
+//        {
+//            if (!NinCore.useLocalization())
+//            {
+//                return LocaleUtils.getDefaultMinecraftLocale();
+//            }
+//
+//
+//            Player p = getPlayer();
+//
+//            Object ep = getMethod("getHandle", p.getClass()).invoke(p, (Object[]) null);
+//
+//            Field f = ep.getClass().getDeclaredField("lang");
+//            f.setAccessible(true);
+//            String language = (String) f.get(ep);
+//
+//            MinecraftLocale locale = null;
+//
+//            if (LocaleUtils.getMinecraftLocale(language) != null)
+//            {
+//                locale = LocaleUtils.getMinecraftLocale(language);
+//            }
+//
+//            if (locale == null)
+//            {
+//                locale = LocaleUtils.getDefaultMinecraftLocale();
+//            }
+//
+//
+//            return locale;
+//
+//        }
+//        catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NullPointerException e)
+//        {
+//            Bukkit.getLogger().warning("A " + e.getClass().getName() + " occurred while trying to get " + getPlayer().getName() + "'s language");
+//            return LocaleUtils.getDefaultMinecraftLocale();
+//        }
 
+        // Get the player's locale.
+        MinecraftLocale locale = LocaleUtils.getMinecraftLocale(getPlayer().spigot().getLocale());
+        if(locale == null) {locale = LocaleUtils.getDefaultMinecraftLocale();}
 
-            Player p = getPlayer();
-
-            if(getMethod("getHandle", p.getClass()) != null)
-            {
-                Object ep = getMethod("getHandle", p.getClass()).invoke(p, (Object[]) null);
-
-                Field f = ep.getClass().getDeclaredField("lang");
-                f.setAccessible(true);
-                String language = (String) f.get(ep);
-
-                MinecraftLocale locale = null;
-
-                if(LocaleUtils.getMinecraftLocale(language) != null)
-                {
-                    locale = LocaleUtils.getMinecraftLocale(language);
-                }
-
-                if(locale == null)
-                {
-                    locale = LocaleUtils.getDefaultMinecraftLocale();
-                }
-
-
-                return locale;
-            }
-            else
-            {
-                return LocaleUtils.getDefaultMinecraftLocale();
-            }
-        }
-        catch(@NotNull IllegalAccessException | InvocationTargetException | NoSuchFieldException | NullPointerException e)
-        {
-            return LocaleUtils.getDefaultMinecraftLocale();
-        }
+        return locale;
     }
 
 
