@@ -5,7 +5,6 @@ import me.Ninjoh.NinCore.Library.Entity.Command;
 import me.Ninjoh.NinCore.Library.Entity.NinOnlinePlayer;
 import me.Ninjoh.NinCore.Library.Entity.SubCommand;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -134,9 +133,9 @@ public class MessageUtil
 
         if(plugin.getDescription().getAuthors() != null) {sender.sendMessage(" " + authors);} // Plugin authors
 
-        if(plugin.getDescription().getDescription() != null) {sender.sendMessage(" " + description);} // Plugin description
+        if(plugin.getDescription().getDescription() != null) {sender.sendMessage("\n " + description);} // Plugin description
 
-        if(plugin.getDescription().getWebsite() != null) {sender.sendMessage(" " + website);} // Plugin website
+        if(plugin.getDescription().getWebsite() != null) {sender.sendMessage("\n " + website);} // Plugin website
 
 
         sender.sendMessage("");

@@ -156,7 +156,7 @@ public class SubCommand
      * @return This sub command's description.
      */
     @Nullable
-    public String getDescription(Locale locale)
+    public String getDescription(@NotNull Locale locale)
     {
         if(hasDescription())
         {
