@@ -2,6 +2,7 @@ package me.Ninjoh.NinCore.Library.Entity;
 
 
 import me.Ninjoh.NinCore.Library.Interfaces.SubCommandExecutor;
+import me.Ninjoh.NinCore.Library.Util.LocaleUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -153,6 +154,7 @@ public class SubCommand
     /**
      * Get this sub command's description.
      *
+     * @param locale The locale to return the description in.
      * @return This sub command's description.
      */
     @Nullable
@@ -161,6 +163,25 @@ public class SubCommand
         if(hasDescription())
         {
             ResourceBundle messages = ResourceBundle.getBundle(Description[1], locale);
+
+            return messages.getString(Description[0]);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Get this sub command's description.
+     *
+     * @return This sub command's description.
+     */
+    @Nullable
+    public String getDescription()
+    {
+        if(hasDescription())
+        {
+            ResourceBundle messages = ResourceBundle.getBundle(Description[1], LocaleUtils.getDefaultMinecraftLocale().toLocale());
 
             return messages.getString(Description[0]);
         }

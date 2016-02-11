@@ -48,7 +48,7 @@ public class DataManager
         }
         catch (IOException e)
         {
-            plugin.getLogger().severe("An unknown exception generated while creating data file:");
+            plugin.getLogger().severe("A" + e.getClass().getName() + "occurred while creating data file;");
             e.printStackTrace();
         }
     }
@@ -80,7 +80,7 @@ public class DataManager
         }
         catch(IOException e)
         {
-            plugin.getLogger().severe("An unknown exception generated while saving data file:");
+            plugin.getLogger().severe("A" + e.getClass().getName() + "occurred while saving data file;");
             e.printStackTrace();
         }
     }
@@ -161,7 +161,7 @@ public class DataManager
         }
         catch(IOException e)
         {
-            plugin.getLogger().severe("An unknown exception generated while creating language file:");
+            plugin.getLogger().severe("A" + e.getClass().getName() + "occurred while creating language file;");
             e.printStackTrace();
         }
     }
@@ -176,6 +176,10 @@ public class DataManager
         return langF.exists();
     }
 
+
+    /**
+     * Save the language file.
+     */
     public void saveLangFile()
     {
         try
@@ -188,7 +192,7 @@ public class DataManager
         }
         catch(IOException e)
         {
-            plugin.getLogger().severe("An unknown exception generated while creating language file:");
+            plugin.getLogger().severe("A" + e.getClass().getName() + "occurred while saving language file;");
             e.printStackTrace();
         }
     }
