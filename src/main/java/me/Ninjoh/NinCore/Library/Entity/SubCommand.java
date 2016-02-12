@@ -145,6 +145,11 @@ public class SubCommand
     }
 
 
+    /**
+     * Check if this sub command has usage.
+     *
+     * @return True/False, does this sub command have usage?
+     */
     public boolean hasUsage()
     {
         return Usage != null;
