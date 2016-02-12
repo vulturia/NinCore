@@ -138,11 +138,14 @@ public class MessageUtil
 
         sender.sendMessage(" " + version); // Plugin version
 
-        if (plugin.getDescription().getAuthors() != null) {sender.sendMessage("\n " + authors);} // Plugin authors
+        if (plugin.getDescription().getAuthors() != null)
+        {sender.sendMessage(""); sender.sendMessage(" " + authors);} // Plugin authors
 
-        if (plugin.getDescription().getDescription() != null) {sender.sendMessage("\n " + description);} // Plugin description
+        if (plugin.getDescription().getDescription() != null)
+        {sender.sendMessage(""); sender.sendMessage(" " + description);} // Plugin description
 
-        if (plugin.getDescription().getWebsite() != null) {sender.sendMessage("\n " + website);} // Plugin website
+        if (plugin.getDescription().getWebsite() != null)
+        {sender.sendMessage(""); sender.sendMessage(" " + website);} // Plugin website
 
 
         sender.sendMessage("");
