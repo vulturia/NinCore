@@ -126,10 +126,7 @@ public class NinOnlinePlayer extends NinOfflinePlayer implements CanReceiveMessa
      */
     public void sendError(@NotNull String error)
     {
-        // Make first character of error string uppercase.
-        String finalErrStr = error.substring(0, 1).toUpperCase() + error.substring(1);
-
-        getPlayer().sendMessage(ChatColor.RED + "Error: " + ChatColor.DARK_RED + finalErrStr + ".");
+        MessageUtil.sendError(this.getPlayer(), error);
     }
 
 
