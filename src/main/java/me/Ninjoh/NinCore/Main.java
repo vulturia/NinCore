@@ -1,8 +1,6 @@
 package me.Ninjoh.NinCore;
 
-import me.Ninjoh.NinCore.Library.MainUUIDAPIHandler;
-import me.Ninjoh.NinCore.Library.Util.MinecraftLocale;
-import me.Ninjoh.NinCore.Library.Util.UUIDUtils;
+import me.Ninjoh.NinCore.util.UUIDUtils;
 import net.mcapi.uuid.UUIDAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 

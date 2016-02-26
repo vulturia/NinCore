@@ -1,7 +1,6 @@
 package me.Ninjoh.NinCore;
 
 
-import me.Ninjoh.NinCore.Library.Util.MinecraftLocale;
 import org.jetbrains.annotations.NotNull;
 
 public class NinCore
@@ -12,9 +11,9 @@ public class NinCore
 
 
     /**
-     * Get all {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}'s.
+     * Get all {@link MinecraftLocale}'s.
      *
-     * @return All {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}'s
+     * @return All {@link MinecraftLocale}'s
      */
     public static MinecraftLocale[] getMinecraftLocales()
     {
@@ -23,9 +22,9 @@ public class NinCore
 
 
     /**
-     * Get the default {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}.
+     * Get the default {@link MinecraftLocale}.
      *
-     * @return the default {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}.
+     * @return the default {@link MinecraftLocale}.
      */
     @NotNull
     public static MinecraftLocale getDefaultMinecraftLocale()
@@ -35,9 +34,9 @@ public class NinCore
 
 
     /**
-     * Set the default {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}.
+     * Set the default {@link MinecraftLocale}.
      *
-     * @param minecraftLocale The default {@link me.Ninjoh.NinCore.Library.Util.MinecraftLocale}.
+     * @param minecraftLocale The default {@link MinecraftLocale}.
      */
     public static void setDefaultMinecraftLocale(@NotNull MinecraftLocale minecraftLocale)
     {
