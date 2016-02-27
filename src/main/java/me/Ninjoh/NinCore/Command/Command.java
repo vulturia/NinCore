@@ -1,10 +1,12 @@
 package me.Ninjoh.NinCore.command;
 
 
+import me.Ninjoh.NinCore.NinCore;
+import me.Ninjoh.NinCore.command.handlers.NinCommandHandler;
 import me.Ninjoh.NinCore.exceptions.SubCommandAliasAlreadyRegistered;
 import me.Ninjoh.NinCore.exceptions.SubCommandAlreadyExistsException;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
+import me.Ninjoh.NinCore.interfaces.NinCommandExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,13 +17,13 @@ public class Command
 {
     private String Name; // Required
     @Nullable private String Description; // Automatic
-    @Nullable private String Usage; // Automatic
     @Nullable private String Permission; // Automatic
     private List<String> Aliases; // Automatic
+    @Nullable
     private List<SubCommand> SubCommands; // Optional
-    private CommandExecutor Executor; // Required
-
-    private JavaPlugin Plugin;
+    private NinCommandExecutor Executor; // Required
+    @Nullable
+    private List<Argument> arguments;
 
 
     /**
@@ -29,39 +31,33 @@ public class Command
      *
      * @param name The command's name.
      * @param subCommands The sum commands for this command.
-     * @param Plugin The JavaPlugin this command belongs to.
      */
-    public Command(@NotNull String name, @NotNull List<SubCommand> subCommands, @NotNull JavaPlugin Plugin)
+    public Command(@NotNull String name, @Nullable  List<SubCommand> subCommands, @Nullable List<Argument> arguments, @NotNull NinCommandExecutor executor)
     {
         Name = name;
-        Description = Plugin.getCommand(name).getDescription();
-        Permission = Plugin.getCommand(name).getPermission();
-        Aliases = Plugin.getCommand(name).getAliases();
-        SubCommands = subCommands;
+        Description = NinCore.getPlugin().getCommand(name).getDescription();
+        Permission = NinCore.getPlugin().getCommand(name).getPermission();
+        Aliases = NinCore.getPlugin().getCommand(name).getAliases();
+        this.Executor = executor.init(this);
+
+
+        if(subCommands != null)
+        {
+            SubCommands = subCommands;
+        }
+
+        if(arguments != null)
+        {
+            this.arguments = arguments;
+        }
+
 
         if(Aliases == null)
         {
             Aliases = new ArrayList<>();
         }
 
-
-
-        this.Plugin = Plugin;
-    }
-
-
-    /**
-     * Constructor
-     *
-     * @param name The command's name.
-     * @param Plugin The JavaPlugin this command belongs to.
-     */
-    public Command(@NotNull String name, @NotNull JavaPlugin Plugin)
-    {
-        Name = name;
-        Description = Plugin.getCommand(name).getDescription();
-        Aliases = Plugin.getCommand(name).getAliases();
-        Usage = Plugin.getCommand(name).getUsage();
+        NinCore.getPlugin().getCommand(name).setExecutor(new NinCommandHandler(this));
     }
 
 
@@ -70,21 +66,15 @@ public class Command
      *
      * @param executor The CommandExecutor for this command.
      */
-    public void setExecutor(@NotNull CommandExecutor executor)
+    public void setExecutor(@NotNull NinCommandExecutor executor)
     {
-        Plugin.getCommand(Name).setExecutor(executor);
-        Executor = executor;
+        Executor = executor.init(this);
     }
 
 
-    /**
-     * Get this command's CommandExecutor.
-     *
-     * @return this command's CommandExecutor.
-     */
-    public CommandExecutor getCommandExecutor()
+    public NinCommandExecutor getExecutor()
     {
-        return Executor;
+        return this.Executor;
     }
 
 
@@ -126,14 +116,28 @@ public class Command
     /**
      * Get this command's usage syntax.
      * NOTE: This excludes the command itself
-     * e.g; "<player=you> <world>"
+     * e.g; "<\player=you> <\world>"
      *
      * @return This command's usage syntax. Can be null.
      */
     @Nullable
     public String getUsage()
     {
-        return Usage;
+        List<String> list = new ArrayList<>();
+
+        for (Argument arg : this.arguments)
+        {
+            if(arg.getArgumentType() == ArgumentType.OPTIONAL)
+            {
+                list.add(ArgumentColor.OPTIONAL + "[" + arg.getArgumentDataType().getHumanFriendlyName() + "]");
+            }
+            else if (arg.getArgumentType() == ArgumentType.REQUIRED)
+            {
+                list.add(ArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
+            }
+        }
+
+        return StringUtils.join(list, " ");
     }
 
 
@@ -144,7 +148,7 @@ public class Command
      */
     public boolean hasUsage()
     {
-        return Usage != null;
+        return (this.arguments != null && !this.arguments.isEmpty());
     }
 
 
@@ -230,8 +234,10 @@ public class Command
         {
             if(subCommand.hasAliases() && subCmd.hasAliases()) // NPE checks.
             {
+                //noinspection ConstantConditions
                 for (String alias : subCommand.getAliases())
                 {
+                    //noinspection ConstantConditions
                     if(subCmd.getAliases().contains(alias))
                     {
                         throw new SubCommandAliasAlreadyRegistered(alias);
@@ -241,6 +247,12 @@ public class Command
         }
 
         SubCommands.add(subCommand);
+    }
+
+
+    public void setSubCommands(List<SubCommand> subCommands)
+    {
+        this.SubCommands = subCommands;
     }
 
 

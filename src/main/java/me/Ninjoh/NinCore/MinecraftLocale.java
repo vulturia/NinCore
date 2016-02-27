@@ -1,6 +1,8 @@
 package me.Ninjoh.NinCore;
 
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Locale;
 
 public enum MinecraftLocale
@@ -93,8 +95,44 @@ public enum MinecraftLocale
         this.locale = locale;
     }
 
-    public String getName() { return name; }
-    public String getCode() { return code; }
-    public Locale toLocale() { return locale; }
 
+    public String getName()
+    {
+        return name;
+    }
+
+
+    public String getCode()
+    {
+        return code;
+    }
+
+
+    public Locale toLocale()
+    {
+        return locale;
+    }
+
+    /**
+     * Get a {@link MinecraftLocale} from i's language tag.
+     * Returns null if no {@link MinecraftLocale} with the provided language tag could be found.
+     *
+     * @param tag The language tag to query for.
+     * @return The {@link MinecraftLocale} if a {@link MinecraftLocale} was found, else it returns null.
+     */
+    @Nullable
+    public static MinecraftLocale fromLanguageTag(String tag)
+    {
+        MinecraftLocale locale = null;
+
+        for (MinecraftLocale minecraftLocale : NinCore.getMinecraftLocales())
+        {
+            if(minecraftLocale.getCode().equals(tag))
+            {
+                locale = minecraftLocale;
+            }
+        }
+
+        return locale;
+    }
 }

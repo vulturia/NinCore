@@ -1,6 +1,9 @@
-package me.Ninjoh.NinCore.command;
+package me.Ninjoh.NinCore.command.builders;
 
 
+import me.Ninjoh.NinCore.command.Command;
+import me.Ninjoh.NinCore.command.SubCommand;
+import me.Ninjoh.NinCore.interfaces.NinCommandExecutor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -15,13 +18,8 @@ public class CommandBuilder
     private String Permission; // Automatic
     private List<String> Aliases; // Automatic
     private List<SubCommand> SubCommands; // Optional
-    private CommandExecutor Executor; // Required
-    private JavaPlugin Plugin; // Required
+    private NinCommandExecutor Executor; // Required
 
-    public CommandBuilder(JavaPlugin plugin)
-    {
-        this.Plugin = plugin;
-    }
 
     // Case sensitive
 
@@ -58,7 +56,7 @@ public class CommandBuilder
      * @return {@link SubCommandBuilder}, for method chaining
      */
     @NotNull
-    public CommandBuilder setExecutor(CommandExecutor executor)
+    public CommandBuilder setExecutor(NinCommandExecutor executor)
     {
         this.Executor = executor;
         return this;
@@ -72,7 +70,7 @@ public class CommandBuilder
     @NotNull
     public Command construct()
     {
-        Command constructedCommand = new Command(this.Name, this.SubCommands, this.Plugin);
+        Command constructedCommand = new Command(this.Name, this.SubCommands, null, this.Executor);
         constructedCommand.setExecutor(this.Executor);
         return constructedCommand;
     }

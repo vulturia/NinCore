@@ -1,6 +1,9 @@
-package me.Ninjoh.NinCore.command;
+package me.Ninjoh.NinCore.command.builders;
 
 
+import me.Ninjoh.NinCore.command.Argument;
+import me.Ninjoh.NinCore.command.Command;
+import me.Ninjoh.NinCore.command.SubCommand;
 import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,8 +15,10 @@ public class SubCommandBuilder
     private List<String> Aliases; // Optional && All entries always lowercase.
     private String Usage; // Optional
     private String[] Description; // Optional
+    private List<Argument> arguments;
     private String RequiredPermission; // Optional.
     private SubCommandExecutor Executor; // Required
+    private Command parentCommand;
 
 
     public SubCommandBuilder()
@@ -100,6 +105,22 @@ public class SubCommandBuilder
         return this;
     }
 
+    @NotNull
+    public SubCommandBuilder addArgument(Argument arg)
+    {
+        this.arguments.add(arg);
+        return this;
+    }
+
+
+    @NotNull
+    public SubCommandBuilder setParentCommand(Command cmd)
+    {
+        this.parentCommand = cmd;
+        return this;
+    }
+
+
     /**
      * Construct the {@link SubCommand}.
      *
@@ -109,6 +130,6 @@ public class SubCommandBuilder
     public SubCommand construct()
     {
         return new SubCommand(this.Name, this.Aliases, this.Usage,
-                this.Description, this.RequiredPermission, this.Executor);
+                this.Description, this.RequiredPermission,this.arguments, this.Executor, this.parentCommand);
     }
 }

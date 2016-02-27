@@ -28,12 +28,16 @@ public class LocaleUtils
 
 
     /**
+     * Get a {@link MinecraftLocale} by language tag.
+     *
+     * @deprecated Use {@link MinecraftLocale#fromLanguageTag(String)} ()} instead
      *
      * @param languageTag The language tag to query for. Warning:
      *                    It's in this format, e.g; en_US so not en-US
      * @return The {@link MinecraftLocale} for this language tag.
      */
     @Nullable
+    @Deprecated
     public static MinecraftLocale getMinecraftLocale(String languageTag)
     {
         MinecraftLocale locale = null;

@@ -1,6 +1,7 @@
 package me.Ninjoh.NinCore.command;
 
 
+import me.Ninjoh.NinCore.command.handlers.NinSubCommandHandler;
 import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
 import me.Ninjoh.NinCore.util.LocaleUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,11 @@ public class SubCommand
     @Nullable private String Usage; // Optional
     @Nullable private String[] Description; // Optional
     @Nullable private String RequiredPermission; // Optional.
+    @Nullable
+    private List<Argument> arguments;
     private SubCommandExecutor Executor; // Required
+    private NinSubCommandHandler handler;
+    private Command parentCommand;
 
 
     /**
@@ -31,13 +36,17 @@ public class SubCommand
      * @param executor The SubCommandExecutor for this sub command.
      */
     public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String usage
-            , @Nullable String[] description, @Nullable String permission, @NotNull SubCommandExecutor executor)
+            , @Nullable String[] description, @Nullable String permission, @Nullable List<Argument> arguments, @NotNull SubCommandExecutor executor,
+                      @NotNull Command parentCommand)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
         Usage = usage;
         Description = description;
         RequiredPermission = permission;
-        Executor = executor;
+        this.arguments = arguments;
+        Executor = executor.init(this);
+        this.parentCommand = parentCommand;
+        this.handler = new NinSubCommandHandler(this);
 
         // Make all alias entries lowercase.
         if(aliases != null)
@@ -206,6 +215,33 @@ public class SubCommand
     }
 
 
+    public boolean hasArguments()
+    {
+        return this.arguments != null;
+    }
+
+
+    @Nullable
+    public List<Argument> getArguments()
+    {
+        return this.arguments;
+    }
+
+
+    @Nullable
+    public Argument getArgumentByIndex(int i)
+    {
+        if(this.arguments.size() >= i)
+        {
+            return this.arguments.get(i);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
     /**
      * Get the executor for this sub command.
      *
@@ -215,5 +251,11 @@ public class SubCommand
     public SubCommandExecutor getExecutor()
     {
         return Executor;
+    }
+
+
+    public Command getParentCommand()
+    {
+        return this.parentCommand;
     }
 }
