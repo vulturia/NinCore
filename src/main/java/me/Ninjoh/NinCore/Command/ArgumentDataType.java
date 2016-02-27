@@ -94,52 +94,52 @@ public enum ArgumentDataType implements IArgumentDataType
 
     public void throwException(@NotNull CommandSender target)
     {
-        try
-        {
-            switch(this.name())
-            {
-                // Check if value is a boolean.
-                case("BOOLEAN"):
-                    return Boolean.parseBoolean(value);
-
-
-                // Check if value is an integer
-                case("INTEGER"):
-                    // Bad practices, I know, it works solid tho.
-                    try
-                    {
-                        Integer.parseInt(value);
-                    }
-                    catch(NumberFormatException e)
-                    {
-                        return;
-                    }
-
-                    // Only got here if we didn't return false
-                    return;
-
-
-                // Check if value is a string, it always is, so return true.
-                case("STRING"):
-                    return;
-
-
-                case("PLAYER"):
-                    throw new PlayerNotFoundException(target);
-
-
-                case("OFFLINE_PLAYER"):
-                    throw new PlayerNotFoundException(target);
-
-
-                case("ONLINE_PLAYER"):
-                    throw new PlayerNotFoundException(target);
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
+//        try
+//        {
+//            switch(this.name())
+//            {
+//                // Check if value is a boolean.
+//                case("BOOLEAN"):
+//                    return Boolean.parseBoolean(value);
+//
+//
+//                // Check if value is an integer
+//                case("INTEGER"):
+//                    // Bad practices, I know, it works solid tho.
+//                    try
+//                    {
+//                        Integer.parseInt(value);
+//                    }
+//                    catch(NumberFormatException e)
+//                    {
+//                        return;
+//                    }
+//
+//                    // Only got here if we didn't return false
+//                    return;
+//
+//
+//                // Check if value is a string, it always is, so return true.
+//                case("STRING"):
+//                    return;
+//
+//
+//                case("PLAYER"):
+//                    throw new PlayerNotFoundException(target);
+//
+//
+//                case("OFFLINE_PLAYER"):
+//                    throw new PlayerNotFoundException(target);
+//
+//
+//                case("ONLINE_PLAYER"):
+//                    throw new PlayerNotFoundException(target);
+//            }
+//        }
+//        catch(Exception e)
+//        {
+//
+//        }
     }
 
 

@@ -1,7 +1,11 @@
 cc.acquized.itembuilder
 me.Ninjoh.NinCore
 me.Ninjoh.NinCore.command
+me.Ninjoh.NinCore.command.builders
+me.Ninjoh.NinCore.command.handlers
 me.Ninjoh.NinCore.exceptions
 me.Ninjoh.NinCore.interfaces
+me.Ninjoh.NinCore.listeners
 me.Ninjoh.NinCore.player
+me.Ninjoh.NinCore.security
 me.Ninjoh.NinCore.util
