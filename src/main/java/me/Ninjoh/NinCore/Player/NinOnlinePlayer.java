@@ -1,11 +1,11 @@
-package me.Ninjoh.NinCore.player;
+package me.ninjoh.nincore.player;
 
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.interfaces.CanReceiveMessage;
-import me.Ninjoh.NinCore.util.LocaleUtils;
-import me.Ninjoh.NinCore.util.MessageUtil;
-import me.Ninjoh.NinCore.MinecraftLocale;
+import me.ninjoh.nincore.MinecraftLocale;
+import me.ninjoh.nincore.command.Command;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.interfaces.CanReceiveMessage;
+import me.ninjoh.nincore.util.LocaleUtils;
+import me.ninjoh.nincore.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

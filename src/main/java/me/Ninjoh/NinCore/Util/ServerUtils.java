@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.util;
+package me.ninjoh.nincore.util;
 
 
 import org.bukkit.Bukkit;

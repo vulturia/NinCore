@@ -1,9 +1,11 @@
-package me.Ninjoh.NinCore;
+package me.ninjoh.nincore;
 
 
-import me.Ninjoh.NinCore.listeners.SecurityListener;
+import me.ninjoh.nincore.listeners.SecurityListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
 import org.jetbrains.annotations.NotNull;
 
 public class NinCore
@@ -16,6 +18,8 @@ public class NinCore
 
     public static void init(JavaPlugin plugin)
     {
+        AnsiConsole.systemInstall();
+        Bukkit.getLogger().info(Ansi.ansi().fg(Ansi.Color.RED).a("nincore init called!").reset().toString());
         NinCore.plugin = plugin;
         Bukkit.getServer().getPluginManager().registerEvents(new SecurityListener(), plugin);
     }

@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.interfaces;
+package me.ninjoh.nincore.interfaces;
 
 
 import org.bukkit.command.CommandSender;

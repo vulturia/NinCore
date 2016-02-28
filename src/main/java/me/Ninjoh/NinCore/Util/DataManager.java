@@ -1,8 +1,8 @@
-package me.Ninjoh.NinCore.util;
+package me.ninjoh.nincore.util;
 
 
-import me.Ninjoh.NinCore.NinCore;
-import me.Ninjoh.NinCore.Tick;
+import me.ninjoh.nincore.NinCore;
+import me.ninjoh.nincore.Tick;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

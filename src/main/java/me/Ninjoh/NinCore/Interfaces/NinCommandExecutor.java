@@ -1,13 +1,13 @@
-package me.Ninjoh.NinCore.interfaces;
+package me.ninjoh.nincore.interfaces;
 
 
-import org.bukkit.command.Command;
+import me.ninjoh.nincore.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public interface NinCommandExecutor
 {
     @NotNull
-    NinCommandExecutor init(me.Ninjoh.NinCore.command.Command command);
-    void execute(CommandSender sender, Command cmd, String label, String[] args);
+    NinCommandExecutor init(Command command);
+    void execute(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args);
 }

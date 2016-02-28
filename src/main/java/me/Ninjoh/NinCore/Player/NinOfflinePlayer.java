@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.player;
+package me.ninjoh.nincore.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

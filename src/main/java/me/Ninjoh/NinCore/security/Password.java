@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.security;
+package me.ninjoh.nincore.security;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

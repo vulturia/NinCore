@@ -1,10 +1,10 @@
-package me.Ninjoh.NinCore.command.handlers;
+package me.ninjoh.nincore.command.handlers;
 
 
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.exceptions.AccessDeniedException;
-import me.Ninjoh.NinCore.util.MessageUtil;
+import me.ninjoh.nincore.command.Command;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.exceptions.AccessDeniedException;
+import me.ninjoh.nincore.util.MessageUtil;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -88,7 +88,7 @@ public class NinCommandHandler implements CommandExecutor
 
 
                     // Handle sub command.
-                    new NinSubCommandHandler(subCmd).handle(sender, newArgs, command, subCmd);
+                    new NinSubCommandHandler(subCmd).handle(sender, newArgs, cmd, subCmd);
                     //subCmd.getExecutor().Handle(sender, newArgs, this, subCmd);
                 }
                 else

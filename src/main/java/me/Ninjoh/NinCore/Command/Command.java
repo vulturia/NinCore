@@ -1,15 +1,14 @@
-package me.Ninjoh.NinCore.command;
+package me.ninjoh.nincore.command;
 
 
-import me.Ninjoh.NinCore.NinCore;
-import me.Ninjoh.NinCore.command.builders.SubCommandBuilder;
-import me.Ninjoh.NinCore.command.handlers.NinCommandHandler;
-import me.Ninjoh.NinCore.command.handlers.NinCommandHelpHandler;
-import me.Ninjoh.NinCore.exceptions.SubCommandAliasAlreadyRegistered;
-import me.Ninjoh.NinCore.exceptions.SubCommandAlreadyExistsException;
-import me.Ninjoh.NinCore.interfaces.NinCommandExecutor;
+import me.ninjoh.nincore.NinCore;
+import me.ninjoh.nincore.command.builders.SubCommandBuilder;
+import me.ninjoh.nincore.command.handlers.NinCommandHandler;
+import me.ninjoh.nincore.command.handlers.NinCommandHelpHandler;
+import me.ninjoh.nincore.exceptions.SubCommandAliasAlreadyRegistered;
+import me.ninjoh.nincore.exceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.interfaces.NinCommandExecutor;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

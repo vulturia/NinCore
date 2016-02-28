@@ -1,9 +1,9 @@
-package me.Ninjoh.NinCore.command;
+package me.ninjoh.nincore.command;
 
 
-import me.Ninjoh.NinCore.exceptions.IllegalArgumentDataTypeException;
-import me.Ninjoh.NinCore.exceptions.PlayerNotFoundException;
-import me.Ninjoh.NinCore.interfaces.IArgumentDataType;
+import me.ninjoh.nincore.exceptions.IllegalArgumentDataTypeException;
+import me.ninjoh.nincore.exceptions.PlayerNotFoundException;
+import me.ninjoh.nincore.interfaces.IArgumentDataType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

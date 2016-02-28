@@ -1,7 +1,7 @@
-package me.Ninjoh.NinCore.interfaces;
+package me.ninjoh.nincore.interfaces;
 
 
-import me.Ninjoh.NinCore.command.SubCommand;
+import me.ninjoh.nincore.command.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

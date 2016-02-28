@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.command;
+package me.ninjoh.nincore.command;
 
 
 import org.bukkit.ChatColor;

@@ -14,4 +14,4 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-/src/main/java/me/Ninjoh/NinCore/listeners/SecurityListener.java
+/me/Ninjoh/NinCore/listeners/SecurityListener.java

@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.exceptions;
+package me.ninjoh.nincore.exceptions;
 
 
 public class SubCommandAlreadyExistsException extends Exception

@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore;
+package me.ninjoh.nincore;
 
 
 import net.mcapi.uuid.UUIDHandler;

@@ -1,9 +1,9 @@
-package me.Ninjoh.NinCore.command.handlers;
+package me.ninjoh.nincore.command.handlers;
 
 
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
-import me.Ninjoh.NinCore.util.MessageUtil;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.interfaces.SubCommandExecutor;
+import me.ninjoh.nincore.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

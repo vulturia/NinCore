@@ -1,8 +1,8 @@
-package me.Ninjoh.NinCore.util;
+package me.ninjoh.nincore.util;
 
 
-import me.Ninjoh.NinCore.MinecraftLocale;
-import me.Ninjoh.NinCore.NinCore;
+import me.ninjoh.nincore.MinecraftLocale;
+import me.ninjoh.nincore.NinCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

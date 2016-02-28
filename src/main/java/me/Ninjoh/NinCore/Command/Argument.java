@@ -1,8 +1,8 @@
-package me.Ninjoh.NinCore.command;
+package me.ninjoh.nincore.command;
 
 
-import me.Ninjoh.NinCore.interfaces.IArgumentDataType;
-import me.Ninjoh.NinCore.util.TranslationUtils;
+import me.ninjoh.nincore.interfaces.IArgumentDataType;
+import me.ninjoh.nincore.util.TranslationUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ResourceBundle;

@@ -1,11 +1,10 @@
-package me.Ninjoh.NinCore.command.builders;
+package me.ninjoh.nincore.command.builders;
 
 
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.interfaces.NinCommandExecutor;
+import me.ninjoh.nincore.command.Command;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.interfaces.NinCommandExecutor;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

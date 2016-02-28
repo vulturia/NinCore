@@ -1,10 +1,10 @@
-package me.Ninjoh.NinCore.command.builders;
+package me.ninjoh.nincore.command.builders;
 
 
-import me.Ninjoh.NinCore.command.Argument;
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
+import me.ninjoh.nincore.command.Argument;
+import me.ninjoh.nincore.command.Command;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.interfaces.SubCommandExecutor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

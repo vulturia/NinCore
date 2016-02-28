@@ -1,9 +1,9 @@
-package me.Ninjoh.NinCore.command;
+package me.ninjoh.nincore.command;
 
 
-import me.Ninjoh.NinCore.command.handlers.NinSubCommandHandler;
-import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
-import me.Ninjoh.NinCore.util.LocaleUtils;
+import me.ninjoh.nincore.command.handlers.NinSubCommandHandler;
+import me.ninjoh.nincore.interfaces.SubCommandExecutor;
+import me.ninjoh.nincore.util.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

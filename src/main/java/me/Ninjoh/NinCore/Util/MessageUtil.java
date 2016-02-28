@@ -1,9 +1,9 @@
-package me.Ninjoh.NinCore.util;
+package me.ninjoh.nincore.util;
 
 
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.player.NinOnlinePlayer;
-import me.Ninjoh.NinCore.command.SubCommand;
+import me.ninjoh.nincore.command.Command;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.player.NinOnlinePlayer;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;

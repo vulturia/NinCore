@@ -1,10 +1,10 @@
-package me.Ninjoh.NinCore.command.handlers;
+package me.ninjoh.nincore.command.handlers;
 
 
-import me.Ninjoh.NinCore.command.Command;
-import me.Ninjoh.NinCore.command.SubCommand;
-import me.Ninjoh.NinCore.exceptions.NotEnoughArgumentsException;
-import me.Ninjoh.NinCore.exceptions.TooManyArgumentsException;
+import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.exceptions.NotEnoughArgumentsException;
+import me.ninjoh.nincore.exceptions.TooManyArgumentsException;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

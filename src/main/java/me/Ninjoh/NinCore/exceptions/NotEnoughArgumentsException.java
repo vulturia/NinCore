@@ -1,8 +1,8 @@
-package me.Ninjoh.NinCore.exceptions;
+package me.ninjoh.nincore.exceptions;
 
 
-import me.Ninjoh.NinCore.player.NinOnlinePlayer;
-import me.Ninjoh.NinCore.util.MessageUtil;
+import me.ninjoh.nincore.player.NinOnlinePlayer;
+import me.ninjoh.nincore.util.MessageUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

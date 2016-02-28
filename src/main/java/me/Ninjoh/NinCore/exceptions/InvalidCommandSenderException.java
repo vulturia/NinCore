@@ -1,7 +1,7 @@
-package me.Ninjoh.NinCore.exceptions;
+package me.ninjoh.nincore.exceptions;
 
-import me.Ninjoh.NinCore.util.LocaleUtils;
-import me.Ninjoh.NinCore.util.MessageUtil;
+import me.ninjoh.nincore.util.LocaleUtils;
+import me.ninjoh.nincore.util.MessageUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

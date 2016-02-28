@@ -1,4 +1,4 @@
-package me.Ninjoh.NinCore.util;
+package me.ninjoh.nincore.util;
 
 import net.mcapi.uuid.UUIDAPI;
 import org.bukkit.Bukkit;
