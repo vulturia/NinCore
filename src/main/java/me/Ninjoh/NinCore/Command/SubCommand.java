@@ -59,6 +59,11 @@ public class SubCommand
         {
             Aliases = new ArrayList<>();
         }
+
+        if(this.arguments == null)
+        {
+            this.arguments = new ArrayList<>();
+        }
     }
 
 
@@ -156,11 +161,14 @@ public class SubCommand
             {
                 if(arg.getArgumentType() == ArgumentType.OPTIONAL)
                 {
-                    list.add(ArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
+                    list.add(ArgumentColor.OPTIONAL + "[(" +
+                            StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ") " +
+                            arg.getName() + "]");
                 }
                 else if (arg.getArgumentType() == ArgumentType.REQUIRED)
                 {
-                    list.add(ArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
+                    list.add(ArgumentColor.REQUIRED + "<" +
+                            StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ">");
                 }
             }
 
@@ -170,17 +178,6 @@ public class SubCommand
         {
             return null;
         }
-    }
-
-
-    /**
-     * Check if this sub command has usage.
-     *
-     * @return True/False, does this sub command have usage?
-     */
-    public boolean hasUsage()
-    {
-        return (this.arguments != null && !this.arguments.isEmpty());
     }
 
 
@@ -234,12 +231,22 @@ public class SubCommand
     }
 
 
+    /**
+     * Check if this sub command has any arguments.
+     *
+     * @return True if it has any arguments, else false.
+     */
     public boolean hasArguments()
     {
         return this.arguments != null;
     }
 
 
+    /**
+     * Get this sub command's arguments.
+     *
+     * @return A list of all arguments for this sub command.
+     */
     @Nullable
     public List<Argument> getArguments()
     {
@@ -247,6 +254,12 @@ public class SubCommand
     }
 
 
+    /**
+     * Get an argument by index.
+     *
+     * @param i the index to query.
+     * @return The argument found, can be null.
+     */
     @Nullable
     public Argument getArgumentByIndex(int i)
     {

@@ -88,7 +88,7 @@ public class NinCommandHandler implements CommandExecutor
 
 
                     // Handle sub command.
-                    new NinSubCommandHandler(subCmd);
+                    new NinSubCommandHandler(subCmd).handle(sender, newArgs, command, subCmd);
                     //subCmd.getExecutor().Handle(sender, newArgs, this, subCmd);
                 }
                 else

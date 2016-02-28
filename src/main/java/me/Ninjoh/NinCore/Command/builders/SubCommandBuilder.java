@@ -7,15 +7,18 @@ import me.Ninjoh.NinCore.command.SubCommand;
 import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommandBuilder
 {
     private String Name; // Required && Always lowercase.
-    private List<String> Aliases; // Optional && All entries always lowercase.
+    @NotNull
+    private List<String> Aliases = new ArrayList<>(); // Optional && All entries always lowercase.
     private String Usage; // Optional
     private String[] Description; // Optional
-    private List<Argument> arguments;
+    @NotNull
+    private List<Argument> arguments = new ArrayList<>();
     private String RequiredPermission; // Optional.
     private SubCommandExecutor Executor; // Required
     private Command parentCommand;

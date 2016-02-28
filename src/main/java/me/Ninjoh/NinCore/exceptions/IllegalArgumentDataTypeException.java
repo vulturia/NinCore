@@ -14,7 +14,7 @@ import java.util.Locale;
 public class IllegalArgumentDataTypeException extends Exception
 {
 
-    public IllegalArgumentDataTypeException(@NotNull CommandSender commandSender, String type, String actualValue)
+    public IllegalArgumentDataTypeException(@NotNull CommandSender commandSender, @NotNull String type, String actualValue)
     {
         Locale locale;
         String msg = null;

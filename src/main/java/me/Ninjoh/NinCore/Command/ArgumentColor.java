@@ -5,8 +5,8 @@ import org.bukkit.ChatColor;
 
 public enum ArgumentColor
 {
-    OPTIONAL(ChatColor.GREEN),
-    REQUIRED(ChatColor.YELLOW);
+    OPTIONAL(ChatColor.GRAY),
+    REQUIRED(ChatColor.GREEN);
 
 
     private ChatColor color;
@@ -14,5 +14,11 @@ public enum ArgumentColor
     ArgumentColor(ChatColor color)
     {
         this.color = color;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.color.toString();
     }
 }

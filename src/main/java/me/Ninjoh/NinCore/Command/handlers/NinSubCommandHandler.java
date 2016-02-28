@@ -24,23 +24,36 @@ public class NinSubCommandHandler
     {
         try
         {
-            if(args.length < this.subCommand.getArguments().size()) // Too less arguments
+            if(this.subCommand.hasArguments())
             {
-                throw new NotEnoughArgumentsException(sender);
-            }
-            else if(args.length > this.subCommand.getArguments().size()) // Too many arguments
-            {
-                throw new TooManyArgumentsException(sender);
-            }
-            // If the right amount of arguments is supplied.
-
-            int count = 0;
-            for (String arg : args)
-            {
-                // If argument validation fails.
-                if(!this.subCommand.getArguments().get(count).getArgumentDataType().validate(arg))
+                //noinspection ConstantConditions
+                if(args.length < this.subCommand.getArguments().size()) // Too less arguments
                 {
+                    throw new NotEnoughArgumentsException(sender);
+                }
+                else if(args.length > this.subCommand.getArguments().size()) // Too many arguments
+                {
+                    throw new TooManyArgumentsException(sender);
+                }
+                // If the right amount of arguments is supplied.
 
+                boolean success = true;
+                int count = 0;
+                for (String arg : args)
+                {
+                    // If argument validation fails.
+                    if(!this.subCommand.getArguments().get(count).getArgumentDataType().validate(arg))
+                    {
+                        success = false;
+                        this.subCommand.getArguments().get(count).getArgumentDataType().throwException(sender, arg);
+                    }
+
+                    count++;
+                }
+
+                if(!success)
+                {
+                    return;
                 }
             }
 

@@ -1,13 +1,15 @@
 package me.Ninjoh.NinCore.util;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TranslationUtils
 {
-    public static String transWithArgs(String bundleName, Locale locale, Object[] args, String msg)
+    public static String transWithArgs(@NotNull String bundleName, @NotNull Locale locale, Object[] args, String msg)
     {
         ResourceBundle messages = ResourceBundle.getBundle(bundleName, locale);
         MessageFormat formatter = new MessageFormat("");
@@ -18,7 +20,7 @@ public class TranslationUtils
         return formatter.format(args);
     }
 
-    public static String getStaticMsg(ResourceBundle bundle, String msg)
+    public static String getStaticMsg(@NotNull ResourceBundle bundle, @NotNull String msg)
     {
         return bundle.getString(msg);
     }

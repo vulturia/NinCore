@@ -2,15 +2,19 @@ package me.Ninjoh.NinCore.command;
 
 
 import me.Ninjoh.NinCore.NinCore;
+import me.Ninjoh.NinCore.command.builders.SubCommandBuilder;
 import me.Ninjoh.NinCore.command.handlers.NinCommandHandler;
+import me.Ninjoh.NinCore.command.handlers.NinCommandHelpHandler;
 import me.Ninjoh.NinCore.exceptions.SubCommandAliasAlreadyRegistered;
 import me.Ninjoh.NinCore.exceptions.SubCommandAlreadyExistsException;
 import me.Ninjoh.NinCore.interfaces.NinCommandExecutor;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Command
@@ -142,17 +146,6 @@ public class Command
         }
 
         return StringUtils.join(list, " ");
-    }
-
-
-    /**
-     * Check if this command has a usage syntax set.
-     *
-     * @return True/False, does this command have a usage syntax set?
-     */
-    public boolean hasUsage()
-    {
-        return (this.arguments != null && !this.arguments.isEmpty());
     }
 
 
@@ -387,5 +380,27 @@ public class Command
         }
 
         return false;
+    }
+
+    public void addDefaultHelpSubCmd()
+    {
+        // /command help. sub command.
+        SubCommandBuilder subCmd_list_builder = new SubCommandBuilder();
+        subCmd_list_builder.setName("help");
+        subCmd_list_builder.addAlias("?");
+        String[] desc2 = {"subCmdDesc.help", "lang.messages"};
+        subCmd_list_builder.setDescription(desc2);
+        subCmd_list_builder.addArgument(new Argument(Arrays.asList("argName.subCommand", "lang.messages").toArray(new String[2]), ArgumentType.OPTIONAL, ArgumentDataType.STRING));
+        subCmd_list_builder.setExecutor(new NinCommandHelpHandler());
+        subCmd_list_builder.setParentCommand(this);
+
+        try
+        {
+            this.addSubCommand(subCmd_list_builder.construct());
+        }
+        catch (@NotNull SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegistered ignored)
+        {
+
+        }
     }
 }

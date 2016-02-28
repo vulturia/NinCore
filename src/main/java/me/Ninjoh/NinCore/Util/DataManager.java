@@ -29,6 +29,7 @@ public class DataManager
     }
 
 
+    @NotNull
     public static DataManager get()
     {
         return new DataManager(NinCore.getPlugin());

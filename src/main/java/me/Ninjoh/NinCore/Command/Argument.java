@@ -3,6 +3,7 @@ package me.Ninjoh.NinCore.command;
 
 import me.Ninjoh.NinCore.interfaces.IArgumentDataType;
 import me.Ninjoh.NinCore.util.TranslationUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ResourceBundle;
 
@@ -33,6 +34,7 @@ public class Argument
     }
 
 
+    @NotNull
     public String getName()
     {
         return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(name[1]), name[0]);
