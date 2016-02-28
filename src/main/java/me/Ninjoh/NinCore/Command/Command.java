@@ -129,7 +129,7 @@ public class Command
         {
             if(arg.getArgumentType() == ArgumentType.OPTIONAL)
             {
-                list.add(ArgumentColor.OPTIONAL + "[" + arg.getArgumentDataType().getHumanFriendlyName() + "]");
+                list.add(ArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
             }
             else if (arg.getArgumentType() == ArgumentType.REQUIRED)
             {

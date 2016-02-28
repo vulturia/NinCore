@@ -7,23 +7,32 @@ public class Argument
 {
     private ArgumentType argumentType;
     private IArgumentDataType argumentDataType;
+    private String name;
     private boolean isCustomArgumentDataType;
 
 
     // Custom argument data type.
-    public Argument(ArgumentType argumentType, IArgumentDataType argumentDataType)
+    public Argument(String name, ArgumentType argumentType, IArgumentDataType argumentDataType)
     {
+        this.name = name;
         this.isCustomArgumentDataType = true;
         this.argumentType = argumentType;
         this.argumentDataType = argumentDataType;
     }
 
     // Non custom argument data type.
-    public Argument(ArgumentType argumentType, ArgumentDataType argumentDataType)
+    public Argument(String name, ArgumentType argumentType, ArgumentDataType argumentDataType)
     {
+        this.name = name;
         this.isCustomArgumentDataType = false;
         this.argumentType = argumentType;
         this.argumentDataType = argumentDataType;
+    }
+
+
+    public String getName()
+    {
+        return this.name;
     }
 
 
