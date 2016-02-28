@@ -129,7 +129,7 @@ public class SubCommandBuilder
     @NotNull
     public SubCommand construct()
     {
-        return new SubCommand(this.Name, this.Aliases, this.Usage,
+        return new SubCommand(this.Name, this.Aliases,
                 this.Description, this.RequiredPermission,this.arguments, this.Executor, this.parentCommand);
     }
 }

@@ -9,5 +9,5 @@ public interface NinCommandExecutor
 {
     @NotNull
     NinCommandExecutor init(me.Ninjoh.NinCore.command.Command command);
-    boolean execute(CommandSender sender, Command cmd, String label, String[] args);
+    void execute(CommandSender sender, Command cmd, String label, String[] args);
 }

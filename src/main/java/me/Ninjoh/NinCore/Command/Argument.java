@@ -2,17 +2,20 @@ package me.Ninjoh.NinCore.command;
 
 
 import me.Ninjoh.NinCore.interfaces.IArgumentDataType;
+import me.Ninjoh.NinCore.util.TranslationUtils;
+
+import java.util.ResourceBundle;
 
 public class Argument
 {
     private ArgumentType argumentType;
     private IArgumentDataType argumentDataType;
-    private String name;
+    private String[] name;
     private boolean isCustomArgumentDataType;
 
 
     // Custom argument data type.
-    public Argument(String name, ArgumentType argumentType, IArgumentDataType argumentDataType)
+    public Argument(String[] name, ArgumentType argumentType, IArgumentDataType argumentDataType)
     {
         this.name = name;
         this.isCustomArgumentDataType = true;
@@ -21,7 +24,7 @@ public class Argument
     }
 
     // Non custom argument data type.
-    public Argument(String name, ArgumentType argumentType, ArgumentDataType argumentDataType)
+    public Argument(String[] name, ArgumentType argumentType, ArgumentDataType argumentDataType)
     {
         this.name = name;
         this.isCustomArgumentDataType = false;
@@ -32,7 +35,7 @@ public class Argument
 
     public String getName()
     {
-        return this.name;
+        return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(name[1]), name[0]);
     }
 
 

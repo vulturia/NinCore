@@ -4,6 +4,7 @@ package me.Ninjoh.NinCore.command;
 import me.Ninjoh.NinCore.command.handlers.NinSubCommandHandler;
 import me.Ninjoh.NinCore.interfaces.SubCommandExecutor;
 import me.Ninjoh.NinCore.util.LocaleUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +17,6 @@ public class SubCommand
 {
     private String Name; // Required && Always lowercase.
     @NotNull private List<String> Aliases; // Optional
-    @Nullable private String Usage; // Optional
     @Nullable private String[] Description; // Optional
     @Nullable private String RequiredPermission; // Optional.
     @Nullable
@@ -31,16 +31,14 @@ public class SubCommand
      *
      * @param name Name of the sub command.
      * @param aliases List of aliases, Can be null.
-     * @param usage Usage string, Can be null.
      * @param description Description of the sub command, Can be null.
      * @param executor The SubCommandExecutor for this sub command.
      */
-    public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String usage
-            , @Nullable String[] description, @Nullable String permission, @Nullable List<Argument> arguments, @NotNull SubCommandExecutor executor,
-                      @NotNull Command parentCommand)
+    public SubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String[] description,
+                      @Nullable String permission, @Nullable List<Argument> arguments,
+                      @NotNull SubCommandExecutor executor, @NotNull Command parentCommand)
     {
         Name = name.toLowerCase(); // SubCommand names are always lower case.
-        Usage = usage;
         Description = description;
         RequiredPermission = permission;
         this.arguments = arguments;
@@ -150,7 +148,28 @@ public class SubCommand
     @Nullable
     public String getUsage()
     {
-        return Usage;
+        if(this.hasArguments())
+        {
+            List<String> list = new ArrayList<>();
+
+            for (Argument arg : this.arguments)
+            {
+                if(arg.getArgumentType() == ArgumentType.OPTIONAL)
+                {
+                    list.add(ArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
+                }
+                else if (arg.getArgumentType() == ArgumentType.REQUIRED)
+                {
+                    list.add(ArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
+                }
+            }
+
+            return StringUtils.join(list, " ");
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -161,7 +180,7 @@ public class SubCommand
      */
     public boolean hasUsage()
     {
-        return Usage != null;
+        return (this.arguments != null && !this.arguments.isEmpty());
     }
 
 

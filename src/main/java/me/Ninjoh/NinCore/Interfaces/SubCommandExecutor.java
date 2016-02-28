@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface SubCommandExecutor
 {
+    SubCommand subCommand = null;
     @NotNull
     SubCommandExecutor init(SubCommand subCommand);
     void execute(@NotNull CommandSender sender, @NotNull String[] args);

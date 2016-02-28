@@ -45,6 +45,10 @@ public class Command
         {
             SubCommands = subCommands;
         }
+        else
+        {
+            SubCommands = new ArrayList<>();
+        }
 
         if(arguments != null)
         {
@@ -348,7 +352,7 @@ public class Command
     public boolean subCommandExists(@NotNull String name)
     {
         // If any sub commands exist for this command
-        if (!SubCommands.isEmpty())
+        if (SubCommands != null && !SubCommands.isEmpty())
         {
             // Loop over all sub commands
             for (SubCommand subCommand : SubCommands)

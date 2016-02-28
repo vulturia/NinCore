@@ -1,6 +1,7 @@
 package me.Ninjoh.NinCore.util;
 
 
+import me.Ninjoh.NinCore.NinCore;
 import me.Ninjoh.NinCore.Tick;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,6 +26,12 @@ public class DataManager
     {
         this.plugin = plugin;
         dataF = new File(plugin.getDataFolder(), "data.yml");
+    }
+
+
+    public static DataManager get()
+    {
+        return new DataManager(NinCore.getPlugin());
     }
 
 
