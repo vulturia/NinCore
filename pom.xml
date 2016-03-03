@@ -4,6 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>NinCore</name>
+
 
     <groupId>me.ninjoh</groupId>
     <artifactId>nincore</artifactId>
@@ -25,9 +27,21 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
+        <repository>
+            <id>local-repo</id>
+            <url>${local.maven.repository}</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>me.ninjoh</groupId>
+            <artifactId>nincore-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>net.mcapi.uuid</groupId>
             <artifactId>uuid-java</artifactId>
@@ -38,7 +52,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.9-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -46,9 +60,17 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.9-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- CraftBukkit & NMS -->
+        <!--<dependency>-->
+            <!--<groupId>org.spigotmc</groupId>-->
+            <!--<artifactId>spigot</artifactId>-->
+            <!--<version>1.9-R0.1-SNAPSHOT</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <!-- Joda Time-->
         <dependency>
@@ -64,7 +86,7 @@
             <version>0.3m</version>
         </dependency>
 
-        <!-- Jansi (for color in console) -->
+         <!--Jansi (for color in console)-->
         <dependency>
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
@@ -104,7 +126,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <minimizeJar>true</minimizeJar>
+                    <!--<minimizeJar>true</minimizeJar>-->
                     <artifactSet>
                         <includes>
                             <include>org.jetbrains:annotations-java5</include>
@@ -118,27 +140,27 @@
 
                         <relocation>
                             <pattern>org.jetbrains</pattern>
-                            <shadedPattern>me.ninjoh.common.jetbrains</shadedPattern>
+                            <shadedPattern>me.ninjoh.nincore.common.org.jetbrains</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>org.fusesource.jansi</pattern>
-                            <shadedPattern>me.ninjoh.common.jansi</shadedPattern>
+                            <shadedPattern>me.ninjoh.nincore.common.org.fusesource.jansi</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>org.mindrot.jbcrypt</pattern>
-                            <shadedPattern>me.ninjoh.common.jbcrypt</shadedPattern>
+                            <shadedPattern>me.ninjoh.nincore.common.org.mindrot.jbcrypt</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>net.mcapi.uuid</pattern>
-                            <shadedPattern>me.ninjoh.common.uuid</shadedPattern>
+                            <shadedPattern>me.ninjoh.nincore.common.net.mcapi.uuid</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>org.joda</pattern>
-                            <shadedPattern>me.ninjoh.common.joda</shadedPattern>
+                            <shadedPattern>me.ninjoh.nincore.common.org.joda</shadedPattern>
                         </relocation>
 
                     </relocations>
@@ -161,6 +183,28 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <resources>
+
+            <!-- include main.properties -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+            </resource>
+
+            <!-- exclude everything else from filtering -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>plugin.yml</exclude>
+                </excludes>
+            </resource>
+
+        </resources>
     </build>
 
     <distributionManagement>

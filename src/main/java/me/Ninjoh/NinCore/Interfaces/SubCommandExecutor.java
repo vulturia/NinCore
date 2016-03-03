@@ -1,7 +1,7 @@
 package me.ninjoh.nincore.interfaces;
 
 
-import me.ninjoh.nincore.command.SubCommand;
+import me.ninjoh.nincore.command.NCSubCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 public interface SubCommandExecutor
 {
     @Nullable
-    SubCommand subCommand = null;
+    NCSubCommand NC_SUB_COMMAND = null;
     @NotNull
-    SubCommandExecutor init(SubCommand subCommand);
+    SubCommandExecutor init(NCSubCommand NCSubCommand);
     void execute(@NotNull CommandSender sender, @NotNull String[] args);
 }
