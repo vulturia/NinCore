@@ -1,7 +1,7 @@
 package me.ninjoh.nincore;
 
 
-import org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 
 /**
  * WARNING: Ticks to time calculations are based on 20 ticks per second.
@@ -34,6 +34,7 @@ public class NCTick
 
 
     @NotNull
+    @Override
     public String toString()
     {
         return Long.toString(value);

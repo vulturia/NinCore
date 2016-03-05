@@ -2,7 +2,7 @@ package me.ninjoh.nincore;
 
 
 import me.ninjoh.nincore.api.NinServer;
-import me.ninjoh.nincore.api.player.NinPlayer;
+import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -58,8 +58,13 @@ public class NCNinServer implements NinServer
 
         for (NinPlayer p : ninPlayers)
         {
-            
+            if(p.getPlayer().equals(player))
+            {
+                return p;
+            }
         }
+
+        return null; // We should never reach this
     }
 
     public Server getServer()

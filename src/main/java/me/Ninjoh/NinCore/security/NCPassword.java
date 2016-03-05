@@ -1,7 +1,7 @@
 package me.ninjoh.nincore.security;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**

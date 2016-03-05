@@ -1,72 +1,66 @@
 package me.ninjoh.nincore.command.handlers;
 
 
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.exceptions.NCNotEnoughArgumentsException;
-import me.ninjoh.nincore.exceptions.NCTooManyArgumentsException;
+import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.playerexceptions.NotEnoughArgumentsException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class NCNinSubCommandHandler
 {
-    private NCSubCommand NCSubCommand;
+    private NinSubCommand subCommand;
 
 
 
-    public NCNinSubCommandHandler(NCSubCommand NCSubCommand)
+    public NCNinSubCommandHandler(NinSubCommand subCommand)
     {
-        this.NCSubCommand = NCSubCommand;
+        this.subCommand = subCommand;
     }
 
 
-    public void handle(@NotNull CommandSender sender, String[] args, Command command, NCSubCommand NCSubCommand)
+    public void handle(@NotNull CommandSender sender, String[] args, Command command)
     {
-        try
+
+        if (this.subCommand.hasArguments())
         {
-            if(this.NCSubCommand.hasArguments())
+            //noinspection ConstantConditions
+            if (args.length < this.subCommand.getRequiredArguments().size()) // Too less arguments
             {
+                new NotEnoughArgumentsException(sender);
+                return;
+            }
+            else //noinspection ConstantConditions
+                if (args.length > this.subCommand.getArguments().size()) // Too many arguments
+                {
+                    new NotEnoughArgumentsException(sender);
+                }
+            // If the right amount of arguments is supplied.
+
+            boolean success = true;
+            int count = 0;
+            for (String arg : args)
+            {
+                // If argument validation fails.
                 //noinspection ConstantConditions
-                if(args.length < this.NCSubCommand.getRequiredArguments().size()) // Too less arguments
+                if (!this.subCommand.getArgumentByIndex(count).getArgumentDataType().validate(arg))
                 {
-                    throw new NCNotEnoughArgumentsException(sender);
+                    success = false;
+                    //noinspection ConstantConditions
+                    this.subCommand.getArgumentByIndex(count).getArgumentDataType().throwException(sender, arg);
                 }
-                else //noinspection ConstantConditions
-                    if(args.length > this.NCSubCommand.getNCArguments().size()) // Too many arguments
-                {
-                    throw new NCTooManyArgumentsException(sender);
-                }
-                // If the right amount of arguments is supplied.
 
-                boolean success = true;
-                    int count = 0;
-                    for (String arg : args)
-                    {
-                        // If argument validation fails.
-                        //noinspection ConstantConditions
-                        if(!this.NCSubCommand.getArgumentByIndex(count).getArgumentDataType().validate(arg))
-                        {
-                            success = false;
-                            //noinspection ConstantConditions
-                            this.NCSubCommand.getArgumentByIndex(count).getArgumentDataType().throwException(sender, arg);
-                        }
-
-                        count++;
-                    }
-
-                if(!success)
-                {
-                    return;
-                }
+                count++;
             }
 
+            if (!success)
+            {
+                return;
+            }
+        }
 
-            // If all validation passes, execute the command.
-            this.NCSubCommand.getExecutor().execute(sender, args);
-        }
-        catch(@NotNull NCTooManyArgumentsException | NCNotEnoughArgumentsException e)
-        {
-            //
-        }
+
+        // If all validation passes, execute the command.
+        this.subCommand.getExecutor().execute(sender, args);
     }
 }

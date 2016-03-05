@@ -1,13 +1,13 @@
 package me.ninjoh.nincore.command.handlers;
 
 
+import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.playerexceptions.AccessDeniedException;
+import me.ninjoh.nincore.api.util.MessageUtil;
 import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.exceptions.NCAccessDeniedException;
-import me.ninjoh.nincore.util.NCMessageUtil;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,49 +21,36 @@ public class NCNinCommandHandler implements CommandExecutor
         this.NCCommand = NCCommand;
     }
 
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, String label, @NotNull String[] args)
     {
-        if(cmd.getName().equalsIgnoreCase(NCCommand.getName()))
+        if (cmd.getName().equalsIgnoreCase(NCCommand.getName()))
         {
             // Check if the sender has the required permission for this NCCommand.
-            if(this.NCCommand.requiresPermission() && !sender.hasPermission(this.NCCommand.getRequiredPermission()))
+            if (this.NCCommand.requiresPermission() && !sender.hasPermission(this.NCCommand.getRequiredPermission()))
             {
-                try
-                {
-                    throw new NCAccessDeniedException(sender);
-                }
-                catch(NCAccessDeniedException e)
-                {
-                    //
-                }
+                new AccessDeniedException(sender);
                 return true;
             }
 
-            if(this.NCCommand.hasSubCommands())
+            if (this.NCCommand.hasSubCommands())
             {
-                if(args.length < 1)
+                if (args.length < 1)
                 {
                     // Sub NCCommand not specified, send NCCommand help.
-                    NCMessageUtil.sendCommandHelp(sender, this.NCCommand);
+                    MessageUtil.sendCommandHelp(sender, this.NCCommand);
                     return true;
                 }
 
 
-                NCSubCommand subCmd = this.NCCommand.getSubCommandByAlias(args[0].toLowerCase());
+                NinSubCommand subCmd = this.NCCommand.getSubCommandByAlias(args[0].toLowerCase());
 
-                if(subCmd != null)
+                if (subCmd != null)
                 {
-                    if(subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
+                    if (subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
                     {
-                        try
-                        {
-                            throw new NCAccessDeniedException(sender);
-                        }
-                        catch(NCAccessDeniedException e)
-                        {
-                            //
-                        }
 
+                        new AccessDeniedException(sender);
                         return true;
                     }
 
@@ -74,7 +61,7 @@ public class NCNinCommandHandler implements CommandExecutor
 
                     for (String arg : args)
                     {
-                        if(count > 0)
+                        if (count > 0)
                         {
                             list.add(arg);
                         }
@@ -86,14 +73,13 @@ public class NCNinCommandHandler implements CommandExecutor
                     String[] newArgs = list.toArray(new String[list.size()]);
 
 
-
                     // Handle sub NCCommand.
-                    new NCNinSubCommandHandler(subCmd).handle(sender, newArgs, cmd, subCmd);
+                    new NCNinSubCommandHandler(subCmd).handle(sender, newArgs, cmd);
                     //subCmd.getExecutor().Handle(sender, newArgs, this, subCmd);
                 }
                 else
                 {
-                    NCMessageUtil.sendCommandHelp(sender, this.NCCommand);
+                    MessageUtil.sendCommandHelp(sender, this.NCCommand);
                 }
             }
             else

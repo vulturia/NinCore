@@ -17,19 +17,29 @@
     </properties>
 
     <repositories>
+
+        <!-- MCAPI Repository -->
         <repository>
             <id>mcapi</id>
             <url>http://build.mc-api.net/plugin/repository/everything/</url>
         </repository>
 
+        <!-- Spigot Repository -->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
+        <!-- Local repository -->
         <repository>
             <id>local-repo</id>
             <url>${local.maven.repository}</url>
+        </repository>
+
+        <!-- Protocollib -->
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/content/groups/public/</url>
         </repository>
 
     </repositories>
@@ -65,19 +75,19 @@
         </dependency>
 
         <!-- CraftBukkit & NMS -->
-        <!--<dependency>-->
-            <!--<groupId>org.spigotmc</groupId>-->
-            <!--<artifactId>spigot</artifactId>-->
-            <!--<version>1.9-R0.1-SNAPSHOT</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.9-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Joda Time-->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>joda-time</groupId>-->
+            <!--<artifactId>joda-time</artifactId>-->
+            <!--<version>2.9.2</version>-->
+        <!--</dependency>-->
 
         <!-- Jbcrypt -->
         <dependency>
@@ -94,11 +104,28 @@
         </dependency>
 
         <!-- Jetbrains annotations -->
+        <!--<dependency>-->
+            <!--<groupId>org.jetbrains</groupId>-->
+            <!--<artifactId>annotations-java5</artifactId>-->
+            <!--<version>15.0</version>-->
+        <!--</dependency>-->
+
+        <!-- Protocollib -->
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations-java5</artifactId>
-            <version>15.0</version>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>3.6.5</version>
+            <scope>provided</scope>
         </dependency>
+
+        <!-- Packet wrapper -->
+        <dependency>
+            <groupId>com.comphenix.packetwrapper</groupId>
+            <artifactId>PacketWrapper</artifactId>
+            <version>1.8.7-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -129,19 +156,18 @@
                     <!--<minimizeJar>true</minimizeJar>-->
                     <artifactSet>
                         <includes>
-                            <include>org.jetbrains:annotations-java5</include>
+                            <!--<include>org.jetbrains:annotations-java5</include>-->
                             <include>org.fusesource.jansi:jansi</include>
                             <include>org.mindrot:jbcrypt</include>
                             <include>net.mcapi.uuid:uuid-java</include>
-                            <include>joda-time:joda-time</include>
                         </includes>
                     </artifactSet>
                     <relocations>
 
-                        <relocation>
-                            <pattern>org.jetbrains</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.org.jetbrains</shadedPattern>
-                        </relocation>
+                        <!--<relocation>-->
+                            <!--<pattern>org.jetbrains</pattern>-->
+                            <!--<shadedPattern>me.ninjoh.nincore.common.org.jetbrains</shadedPattern>-->
+                        <!--</relocation>-->
 
                         <relocation>
                             <pattern>org.fusesource.jansi</pattern>
@@ -156,11 +182,6 @@
                         <relocation>
                             <pattern>net.mcapi.uuid</pattern>
                             <shadedPattern>me.ninjoh.nincore.common.net.mcapi.uuid</shadedPattern>
-                        </relocation>
-
-                        <relocation>
-                            <pattern>org.joda</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.org.joda</shadedPattern>
                         </relocation>
 
                     </relocations>

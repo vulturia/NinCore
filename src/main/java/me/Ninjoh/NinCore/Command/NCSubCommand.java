@@ -2,14 +2,12 @@ package me.ninjoh.nincore.command;
 
 
 import me.ninjoh.nincore.api.NinCore;
-import me.ninjoh.nincore.api.command.NinArgument;
-import me.ninjoh.nincore.api.command.NinArgumentType;
-import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.command.*;
 import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandHandler;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,8 @@ public class NCSubCommand implements NinSubCommand
     private List<NinArgument> arguments;
     private SubCommandExecutor executor; // Required
     private NCNinSubCommandHandler handler;
-    private NCCommand parentCommand;
+    private NinCommand parentCommand;
+    private boolean useArgumentValidation;
 
 
     /**
@@ -38,7 +37,7 @@ public class NCSubCommand implements NinSubCommand
      */
     public NCSubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String[] description,
                         @Nullable String permission, @Nullable List<NinArgument> arguments,
-                        @NotNull SubCommandExecutor executor, @NotNull NCCommand parentCommand)
+                        @NotNull SubCommandExecutor executor, @NotNull NinCommand parentCommand, boolean useArgumentValidation)
     {
         Name = name.toLowerCase(); // NCSubCommand names are always lower case.
         this.description = description;
@@ -47,6 +46,7 @@ public class NCSubCommand implements NinSubCommand
         this.executor = executor.init(this);
         this.parentCommand = parentCommand;
         this.handler = new NCNinSubCommandHandler(this);
+        this.useArgumentValidation = useArgumentValidation;
 
         // Make all alias entries lowercase.
         if(aliases != null)
@@ -166,13 +166,13 @@ public class NCSubCommand implements NinSubCommand
             {
                 if(arg.getArgumentType() == NinArgumentType.OPTIONAL)
                 {
-                    list.add(NCArgumentColor.OPTIONAL + "[(" +
+                    list.add(NinArgumentColor.OPTIONAL + "[(" +
                             StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ") " +
                             arg.getName() + "]");
                 }
                 else if (arg.getArgumentType() == NinArgumentType.REQUIRED)
                 {
-                    list.add(NCArgumentColor.REQUIRED + "<" +
+                    list.add(NinArgumentColor.REQUIRED + "<" +
                             StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ">");
                 }
             }
@@ -338,6 +338,7 @@ public class NCSubCommand implements NinSubCommand
      *
      * @return The executor for this sub command.
      */
+    @Override
     public SubCommandExecutor getExecutor()
     {
         return executor;
@@ -345,8 +346,20 @@ public class NCSubCommand implements NinSubCommand
 
 
     @Override
-    public NCCommand getParentCommand()
+    public NinCommand getParentCommand()
     {
         return this.parentCommand;
+    }
+
+    @Override
+    public void setUseArgumentValidation(boolean b)
+    {
+        this.useArgumentValidation = b;
+    }
+
+    @Override
+    public boolean useArgumentValidation()
+    {
+        return this.useArgumentValidation;
     }
 }

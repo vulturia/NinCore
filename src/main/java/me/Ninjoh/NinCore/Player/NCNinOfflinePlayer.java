@@ -1,9 +1,9 @@
 package me.ninjoh.nincore.player;
 
-import me.ninjoh.nincore.api.player.NinOfflinePlayer;
+import me.ninjoh.nincore.api.NinOfflinePlayer;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 

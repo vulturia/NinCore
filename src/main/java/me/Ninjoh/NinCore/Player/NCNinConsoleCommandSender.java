@@ -1,17 +1,17 @@
 package me.ninjoh.nincore.player;
 
 
-import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.interfaces.CanReceiveMessage;
-import me.ninjoh.nincore.util.NCMessageUtil;
+import me.ninjoh.nincore.api.CanReceiveChatMessage;
+import me.ninjoh.nincore.api.command.NinCommand;
+import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-public class NCNinConsoleCommandSender implements CanReceiveMessage
+public class NCNinConsoleCommandSender implements CanReceiveChatMessage
 {
 
 
@@ -30,9 +30,10 @@ public class NCNinConsoleCommandSender implements CanReceiveMessage
      * Send plugin info to the player.
      *
      */
+    @Override
     public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
-        NCMessageUtil.sendPluginInfo((CommandSender) getConsoleCommandSender(), plugin);
+        MessageUtil.sendPluginInfo((CommandSender) getConsoleCommandSender(), plugin);
     }
 
     /**
@@ -40,18 +41,21 @@ public class NCNinConsoleCommandSender implements CanReceiveMessage
      *
      * @param error error string to send.
      */
+    @Override
     public void sendError(@NotNull String error)
     {
-        NCMessageUtil.sendError((CommandSender) getConsoleCommandSender(), error);
+        MessageUtil.sendError((CommandSender) getConsoleCommandSender(), error);
     }
 
     /**
-     * Send command help to the player.
+     * Send command help to the player
      *
+     * @param cmd The command to send help for
      */
-    public void sendCommandHelp(@NotNull NCCommand cmd)
+    @Override
+    public void sendCommandHelp(@NotNull NinCommand cmd)
     {
-        NCMessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd);
+        MessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd);
     }
 
 
@@ -61,8 +65,8 @@ public class NCNinConsoleCommandSender implements CanReceiveMessage
      * @param cmd The command parent of the sub command.
      * @param subCmd The sub command to send help for.
      */
-    public void sendSubCommandHelp(@NotNull NCCommand cmd, @NotNull NCSubCommand subCmd)
+    public void sendSubCommandHelp(@NotNull NinCommand cmd, @NotNull NinSubCommand subCmd)
     {
-        NCMessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd, subCmd);
+        MessageUtil.sendCommandHelp((CommandSender) getConsoleCommandSender(), cmd, subCmd);
     }
 }

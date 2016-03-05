@@ -1,24 +1,24 @@
 package me.ninjoh.nincore.player;
 
-import me.ninjoh.nincore.NCMinecraftLocale;
-import me.ninjoh.nincore.api.player.NinPlayer;
-import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.interfaces.CanReceiveMessage;
-import me.ninjoh.nincore.util.NCLocaleUtils;
-import me.ninjoh.nincore.util.NCMessageUtil;
+import me.ninjoh.nincore.api.MinecraftLocale;
+import me.ninjoh.nincore.api.NinCore;
+import me.ninjoh.nincore.api.command.NinCommand;
+import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
+import me.ninjoh.nincore.api.entity.NinPlayer;
+import me.ninjoh.nincore.api.util.MessageUtil;
+import net.minecraft.server.v1_9_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
 import java.util.UUID;
 
-public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage, NinPlayer
+public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
 {
     private Player player;
     private boolean isFlyingUsingElytra;
@@ -77,25 +77,13 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage
      * @return The player's lang.
      */
     @NotNull
-    public NCMinecraftLocale getMinecraftLocale()
+    public MinecraftLocale getMinecraftLocale()
     {
         // Get the player's locale.
-        NCMinecraftLocale locale = NCMinecraftLocale.fromLanguageTag(getPlayer().spigot().getLocale());
-        if(locale == null) {locale = NCLocaleUtils.getDefaultMinecraftLocale();}
+        MinecraftLocale locale = MinecraftLocale.fromLanguageTag(getPlayer().spigot().getLocale());
+        if(locale == null) {locale = NinCore.getImplementation().getDefaultMinecraftLocale();}
 
         return locale;
-    }
-
-
-    @Nullable
-    private Method getMethod(String name, @NotNull Class<?> clazz)
-    {
-        for (Method m : clazz.getDeclaredMethods())
-        {
-            if (m.getName().equals(name))
-                return m;
-        }
-        return null;
     }
 
 
@@ -109,7 +97,7 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage
      */
     public void sendError(@NotNull String error)
     {
-        NCMessageUtil.sendError(this.getPlayer(), error);
+        MessageUtil.sendError(this.getPlayer(), error);
     }
 
 
@@ -117,9 +105,9 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage
      * Send command help to the player.
      *
      */
-    public void sendCommandHelp(@NotNull NCCommand cmd)
+    public void sendCommandHelp(@NotNull NinCommand cmd)
     {
-        NCMessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd);
+        MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd);
     }
 
 
@@ -129,11 +117,10 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage
      * @param cmd The command parent of the sub command.
      * @param subCmd The sub command to send help for.
      */
-    public void sendSubCommandHelp(@NotNull NCCommand cmd, @NotNull NCSubCommand subCmd)
+    public void sendSubCommandHelp(NinCommand cmd, NinSubCommand subCmd)
     {
-        NCMessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd, subCmd);
+        MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd, subCmd);
     }
-
 
     /**
      * Send plugin info to the player.
@@ -141,18 +128,14 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements CanReceiveMessage
      */
     public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
-        NCMessageUtil.sendPluginInfo((CommandSender) getPlayer(), plugin);
-    }
-
-
-    public void setIsFlyingUsingElytra(boolean value)
-    {
-        this.isFlyingUsingElytra = value;
+        MessageUtil.sendPluginInfo((CommandSender) getPlayer(), plugin);
     }
 
 
     public boolean isFlyingUsingElytra()
     {
-        return isFlyingUsingElytra;
+        EntityPlayer ep = ((CraftPlayer) getPlayer()).getHandle();
+
+        return ep.cB();
     }
 }

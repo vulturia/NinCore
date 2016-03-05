@@ -1,13 +1,14 @@
 package me.ninjoh.nincore.listeners;
 
-import me.ninjoh.nincore.NinCoreOld;
+import me.ninjoh.nincore.NCNinServer;
+import me.ninjoh.nincore.api.NinCore;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.player.NCNinPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
 
 
 public class PlayerListener implements Listener
@@ -15,13 +16,19 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(@NotNull PlayerJoinEvent e)
     {
-        NinCoreOld.getNCNinServer().addNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+        if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
+        {
+            ((NCNinServer) NinCore.getImplementation().getNinServer()).addNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+        }
     }
 
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(@NotNull PlayerQuitEvent e)
     {
-        NinCoreOld.getNCNinServer().removeNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+        if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
+        {
+            ((NCNinServer) NinCore.getImplementation().getNinServer()).removeNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+        }
     }
 }

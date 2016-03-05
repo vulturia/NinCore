@@ -1,17 +1,17 @@
 package me.ninjoh.nincore.command;
 
 
-import me.ninjoh.nincore.NinCoreOld;
 import me.ninjoh.nincore.api.command.*;
+import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.api.exceptions.SubCommandAliasAlreadyRegistered;
 import me.ninjoh.nincore.api.exceptions.SubCommandAlreadyExistsException;
-import me.ninjoh.nincore.command.builders.NCSubCommandBuilder;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHelpHandler;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +26,7 @@ public class NCCommand implements NinCommand
     private List<NinSubCommand> subCommands; // Optional
     private NinCommandExecutor executor; // Required
     private List<NinArgument> arguments;
+    private boolean useArgumentValidation;
 
 
     /**
@@ -34,13 +35,14 @@ public class NCCommand implements NinCommand
      * @param name The command's name.
      * @param subCommands The sum commands for this command.
      */
-    public NCCommand(@NotNull String name, @Nullable  List<NinSubCommand> subCommands, @Nullable List<NinArgument> arguments, @NotNull NinCommandExecutor executor)
+    public NCCommand(@NotNull String name, @Nullable  List<NinSubCommand> subCommands, @Nullable List<NinArgument> arguments, @NotNull NinCommandExecutor executor, boolean useArgumentValidation, JavaPlugin plugin)
     {
         this.name = name;
-        description = NinCoreOld.getPlugin().getCommand(name).getDescription();
-        permission = NinCoreOld.getPlugin().getCommand(name).getPermission();
-        aliases = NinCoreOld.getPlugin().getCommand(name).getAliases();
+        description = plugin.getCommand(name).getDescription();
+        permission = plugin.getCommand(name).getPermission();
+        aliases = plugin.getCommand(name).getAliases();
         this.executor = executor.init(this);
+        this.useArgumentValidation = useArgumentValidation;
 
 
         if(subCommands != null)
@@ -63,7 +65,7 @@ public class NCCommand implements NinCommand
             aliases = new ArrayList<>();
         }
 
-        NinCoreOld.getPlugin().getCommand(name).setExecutor(new NCNinCommandHandler(this));
+        plugin.getCommand(name).setExecutor(new NCNinCommandHandler(this));
     }
 
 
@@ -138,11 +140,11 @@ public class NCCommand implements NinCommand
         {
             if(arg.getArgumentType() == NinArgumentType.OPTIONAL)
             {
-                list.add(NCArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
+                list.add(NinArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
             }
             else if (arg.getArgumentType() == NinArgumentType.REQUIRED)
             {
-                list.add(NCArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
+                list.add(NinArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
             }
         }
 
@@ -400,14 +402,14 @@ public class NCCommand implements NinCommand
     public void addDefaultHelpSubCmd()
     {
         // /command help. sub command.
-        NCSubCommandBuilder subCmd_list_builder = new NCSubCommandBuilder();
+        SubCommandBuilder subCmd_list_builder = new SubCommandBuilder();
         subCmd_list_builder.setName("help");
         subCmd_list_builder.addAlias("?");
         String[] desc2 = {"subCmdDesc.help", "lang.messages"};
         subCmd_list_builder.setDescription(desc2);
         subCmd_list_builder.addArgument(new NCArgument(Arrays.asList("argName.subCommand", "lang.messages").toArray(new String[2]), NinArgumentType.OPTIONAL, NinArgumentDataType.STRING));
         subCmd_list_builder.setExecutor(new NCNinCommandHelpHandler());
-        subCmd_list_builder.setParentNCCommand(this);
+        subCmd_list_builder.setParentCommand(this);
 
         try
         {
@@ -417,5 +419,17 @@ public class NCCommand implements NinCommand
         {
 
         }
+    }
+
+    @Override
+    public void setUseArgumentValidation(boolean b)
+    {
+        this.useArgumentValidation = b;
+    }
+
+    @Override
+    public boolean useArgumentValidation()
+    {
+        return this.useArgumentValidation;
     }
 }

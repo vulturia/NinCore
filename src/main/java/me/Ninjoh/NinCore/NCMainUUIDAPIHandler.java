@@ -1,19 +1,26 @@
 package me.ninjoh.nincore;
 
 
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import net.mcapi.uuid.UUIDHandler;
 import net.mcapi.uuid.queries.APIQuery;
 import net.mcapi.uuid.queries.HistoryCallable;
 import net.mcapi.uuid.utils.UUIDUtils;
 import net.mcapi.uuid.utils.Username;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The same UUID API handler as the default one, except this one does not spam console
+ * with status messages about API requests.
+ *
+ * @deprecated Use {@link org.bukkit.Bukkit#getPlayer(String)} instead.
+ */
+@Deprecated
 public class NCMainUUIDAPIHandler extends UUIDHandler
 {
 

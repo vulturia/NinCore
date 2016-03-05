@@ -1,45 +1,43 @@
 package me.ninjoh.nincore.command.handlers;
 
 
-import me.ninjoh.nincore.NinCoreOld;
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.interfaces.SubCommandExecutor;
-import me.ninjoh.nincore.util.NCMessageUtil;
+import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.util.MessageUtil;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class NCNinCommandHelpHandler implements SubCommandExecutor
 {
-    private NCSubCommand NCSubCommand;
+    private NinSubCommand SubCommand;
 
     @NotNull
     @Override
-    public SubCommandExecutor init(NCSubCommand NCSubCommand)
+    public SubCommandExecutor init(NinSubCommand NCSubCommand)
     {
-        this.NCSubCommand = NCSubCommand;
+        this.SubCommand = NCSubCommand;
         return this;
     }
 
     @Override
     public void execute(@NotNull CommandSender sender, @NotNull String[] args)
     {
-        NinCoreOld.getPlugin().getLogger().info("inside help");
         if(args.length == 1) // Sub command supplied.
         {
-            NCSubCommand subCmd = NCSubCommand.getParentNCCommand().getSubCommandByAlias(args[0]);
+            NinSubCommand subCmd = SubCommand.getParentCommand().getSubCommandByAlias(args[0]);
 
             if(subCmd == null)
             {
-                NCMessageUtil.sendCommandHelp(sender, NCSubCommand.getParentNCCommand());
+                MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand());
             }
             else
             {
-                NCMessageUtil.sendCommandHelp(sender, NCSubCommand.getParentNCCommand(), subCmd);
+                MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand(), subCmd);
             }
         }
         else
         {
-            NCMessageUtil.sendCommandHelp(sender, NCSubCommand.getParentNCCommand());
+            MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand());
         }
     }
 }

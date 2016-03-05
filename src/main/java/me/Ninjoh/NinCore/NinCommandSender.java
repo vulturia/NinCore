@@ -1,13 +1,13 @@
 package me.ninjoh.nincore;
 
 
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.util.MessageUtil;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
 import me.ninjoh.nincore.interfaces.CanReceiveMessage;
-import me.ninjoh.nincore.util.NCMessageUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public class NinCommandSender implements CanReceiveMessage
 {
@@ -26,26 +26,30 @@ public class NinCommandSender implements CanReceiveMessage
     }
 
 
+    @Override
     public void sendError(@NotNull String error)
     {
-        NCMessageUtil.sendError(this.getCommandSender(), error);
+        MessageUtil.sendError(this.getCommandSender(), error);
     }
 
 
+    @Override
     public void sendCommandHelp(@NotNull NCCommand cmd)
     {
-        NCMessageUtil.sendCommandHelp(this.getCommandSender(), cmd);
+        MessageUtil.sendCommandHelp(this.getCommandSender(), cmd);
     }
 
 
+    @Override
     public void sendSubCommandHelp(@NotNull NCCommand cmd, @NotNull NCSubCommand subCmd)
     {
-        NCMessageUtil.sendCommandHelp(this.getCommandSender(), cmd, subCmd);
+        MessageUtil.sendCommandHelp(this.getCommandSender(), cmd, subCmd);
     }
 
 
+    @Override
     public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
-        NCMessageUtil.sendPluginInfo(this.getCommandSender(), plugin);
+        MessageUtil.sendPluginInfo(this.getCommandSender(), plugin);
     }
 }

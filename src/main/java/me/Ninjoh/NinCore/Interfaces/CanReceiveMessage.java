@@ -1,10 +1,10 @@
 package me.ninjoh.nincore.interfaces;
 
 
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public interface CanReceiveMessage
 {

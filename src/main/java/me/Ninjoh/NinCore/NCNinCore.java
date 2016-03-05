@@ -1,21 +1,28 @@
 package me.ninjoh.nincore;
 
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import me.ninjoh.nincore.api.*;
+import me.ninjoh.nincore.api.command.NinArgument;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
-import me.ninjoh.nincore.api.command.builders.NinArgument;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.api.entity.NinPlayer;
+import me.ninjoh.nincore.command.NCCommand;
+import me.ninjoh.nincore.command.NCSubCommand;
+import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinPlayer;
+import me.ninjoh.nincore.watchers.PlayerGlideStateWatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,8 @@ public class NCNinCore extends NCNinCorePlugin implements NinCoreImplementation
 
 
     private NinServer server;
+
+    private static ProtocolManager protocolManager;
 
 
     @Override
@@ -45,6 +54,19 @@ public class NCNinCore extends NCNinCorePlugin implements NinCoreImplementation
 
 
         NinCore.setImplementation(this);
+
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
+
+
+        // Register listeners
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+
+        // Register packet listeners
+        //
+
+        // Register data watchers
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerGlideStateWatcher(), 0L, 1L);
     }
 
 
@@ -54,6 +76,11 @@ public class NCNinCore extends NCNinCorePlugin implements NinCoreImplementation
 
     }
 
+
+    public static ProtocolManager getProtocolLib()
+    {
+        return NCNinCore.protocolManager;
+    }
 
 
 
@@ -81,15 +108,15 @@ public class NCNinCore extends NCNinCorePlugin implements NinCoreImplementation
     }
 
     @Override
-    public NinCommand constructCommand(@NotNull String s, @Nullable List<NinSubCommand> list, @Nullable List<NinArgument> list1, @NotNull NinCommandExecutor ninCommandExecutor)
+    public NinCommand constructCommand(@NotNull String s, @Nullable List<NinSubCommand> list, @Nullable List<NinArgument> list1, @NotNull NinCommandExecutor ninCommandExecutor, boolean useArgumentValidation, JavaPlugin plugin)
     {
-        return null;
+        return new NCCommand(s, list, list1, ninCommandExecutor, useArgumentValidation, plugin);
     }
 
     @Override
-    public NinSubCommand constructSubCommand(@NotNull String s, @Nullable List<String> list, @Nullable String[] strings, @Nullable String s1, @Nullable List<NinArgument> list1, @NotNull SubCommandExecutor subCommandExecutor, @NotNull NinCommand ninCommand)
+    public NinSubCommand constructSubCommand(@NotNull String s, @Nullable List<String> list, @Nullable String[] strings, @Nullable String s1, @Nullable List<NinArgument> list1, @NotNull SubCommandExecutor subCommandExecutor, @NotNull NinCommand ninCommand, boolean useArgumentValidation)
     {
-        return null;
+        return new NCSubCommand(s, list, strings, s1, list1, subCommandExecutor, ninCommand, useArgumentValidation);
     }
 
     @Override

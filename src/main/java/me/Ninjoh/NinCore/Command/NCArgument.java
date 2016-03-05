@@ -5,8 +5,8 @@ import me.ninjoh.nincore.api.IArgumentDataType;
 import me.ninjoh.nincore.api.command.NinArgument;
 import me.ninjoh.nincore.api.command.NinArgumentDataType;
 import me.ninjoh.nincore.api.command.NinArgumentType;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.util.TranslationUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ResourceBundle;
 

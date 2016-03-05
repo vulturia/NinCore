@@ -1,9 +1,9 @@
 package me.ninjoh.nincore.interfaces;
 
 
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.command.NCCommand;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public interface NinCommandExecutor
 {
