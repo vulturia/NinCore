@@ -125,6 +125,19 @@
             </configuration>
           </execution>
           <execution>
+            <id>deploy-latest-javadocs</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <configuration>
+              <server>github</server>
+              <message>Update latest javadocs</message>
+              <path>javadocs/latest</path>
+              <merge>true</merge>
+            </configuration>
+          </execution>
+          <execution>
             <id>deploy-maven-artifacts</id>
             <phase>deploy</phase>
             <goals>
