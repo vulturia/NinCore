@@ -203,6 +203,87 @@
                     </filters>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <show>public</show>
+                    <nohelp>true</nohelp>
+                    <header>NinCore, ${project.version}</header>
+                    <footer>NinCore, ${project.version}</footer>
+                    <doctitle>NinCore, ${project.version}</doctitle>
+                    <links>
+                        <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+                    </links>
+                </configuration>
+                
+                <executions>
+                  <execution>
+                    <id>generate-javadocs</id>
+                    <goals>
+                      <goal>javadoc</goal>
+                    </goals>
+                    <phase>package</phase>
+                  </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <!-- Deploy the javadocs -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <executions>
+                
+                    <execution>
+                        <id>deploy-javadocs</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <!-- select the Maven phase in which the plugin will be executed -->
+                        <phase>deploy</phase>
+                        <configuration>
+                            <!-- Plugin configuration goes here -->
+                            <url>https://github.com/martijn-heil/NinCore</url>
+                            <server>github</server>
+
+                            <!-- The commit message -->
+                            <message>Update javadocs for version ${project.version}</message>
+                            <!-- The location where the site is uploaded -->
+                            <path>javadocs/${project.version}</path>
+                            <!-- Use merge or override the content -->
+                            <merge>true</merge>
+                        </configuration>
+                    </execution>
+                    
+                    <!-- Deploy the maven repository -->
+                    <execution>
+                        <id>deploy-maven-artifacts</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <!-- select the Maven phase in which the plugin will be executed -->
+                        <phase>deploy</phase>
+                        <configuration>
+                            <!-- Plugin configuration goes here -->
+                            <url>https://github.com/martijn-heil/NinCore</url>
+                            <server>github</server>
+                            
+                            <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+                            <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+                            <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+                            <includes><include>**/*</include></includes>
+                            <merge>true</merge>
+                        </configuration>
+                    </execution>
+                    
+                </executions>
+            </plugin>
+            
         </plugins>
 
         <resources>
@@ -229,10 +310,18 @@
     </build>
 
     <distributionManagement>
+    
         <repository>
-            <id>local-repository</id>
-            <url>${local.maven.repository}</url>
+            <id>internal-repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
+        
+        <site>
+            <id>github</id>
+            <url>https://github.com/martijn-heil/NinCore-API</url>
+        </site>
+        
     </distributionManagement>
 
 </project>
