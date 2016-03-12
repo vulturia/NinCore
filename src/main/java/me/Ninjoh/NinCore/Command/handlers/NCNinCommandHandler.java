@@ -1,11 +1,16 @@
 package me.ninjoh.nincore.command.handlers;
 
 
+import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
-import me.ninjoh.nincore.api.playerexceptions.AccessDeniedException;
+import me.ninjoh.nincore.api.exceptions.TechnicalException;
+import me.ninjoh.nincore.api.exceptions.ValidationException;
+import me.ninjoh.nincore.api.exceptions.validationexceptions.AccessDeniedException;
 import me.ninjoh.nincore.api.util.MessageUtil;
 import me.ninjoh.nincore.command.NCCommand;
+import me.ninjoh.nincore.command.NCSubCommand;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
@@ -24,69 +29,98 @@ public class NCNinCommandHandler implements CommandExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, String label, @NotNull String[] args)
     {
-        if (cmd.getName().equalsIgnoreCase(NCCommand.getName()))
+        try
         {
-            // Check if the sender has the required permission for this NCCommand.
-            if (this.NCCommand.requiresPermission() && !sender.hasPermission(this.NCCommand.getRequiredPermission()))
+            if (cmd.getName().equalsIgnoreCase(NCCommand.getName()))
             {
-                new AccessDeniedException(sender);
-                return true;
-            }
-
-            if (this.NCCommand.hasSubCommands())
-            {
-                if (args.length < 1)
+                // Check if the sender has the required permission for this NCCommand.
+                if (this.NCCommand.requiresPermission() && !sender.hasPermission(this.NCCommand.getRequiredPermission()))
                 {
-                    // Sub NCCommand not specified, send NCCommand help.
-                    MessageUtil.sendCommandHelp(sender, this.NCCommand);
-                    return true;
+                    throw new AccessDeniedException(sender);
                 }
 
-
-                NinSubCommand subCmd = this.NCCommand.getSubCommandByAlias(args[0].toLowerCase());
-
-                if (subCmd != null)
+                if (this.NCCommand.hasSubCommands())
                 {
-                    if (subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
+                    if (args.length < 1)
                     {
-
-                        new AccessDeniedException(sender);
+                        // Sub NCCommand not specified, send NCCommand help.
+                        MessageUtil.sendCommandHelp(sender, this.NCCommand);
                         return true;
                     }
 
-                    // The first argument is the sub NCCommand, so remove that one
-                    List<String> list = new ArrayList<>();
 
-                    int count = 0;
+                    NinSubCommand subCmd = this.NCCommand.getSubCommandByAlias(args[0].toLowerCase());
 
-                    for (String arg : args)
+                    if (subCmd != null)
                     {
-                        if (count > 0)
+                        if (subCmd.requiresPermission() && !sender.hasPermission(subCmd.getRequiredPermission()))
                         {
-                            list.add(arg);
+
+                            throw new AccessDeniedException(sender);
                         }
 
-                        count++;
+                        // The first argument is the sub NCCommand, so remove that one
+                        List<String> list = new ArrayList<>();
+
+                        int count = 0;
+
+                        for (String arg : args)
+                        {
+                            if (count > 0)
+                            {
+                                list.add(arg);
+                            }
+
+                            count++;
+                        }
+
+                        // Generate new args without the first argument, wich would be the sub NCCommand.
+                        String[] newArgs = list.toArray(new String[list.size()]);
+
+
+                        // Handle sub NCCommand.
+                        ((NCSubCommand) subCmd).getHandler().handle(sender, newArgs);
                     }
-
-                    // Generate new args without the first argument, wich would be the sub NCCommand.
-                    String[] newArgs = list.toArray(new String[list.size()]);
-
-
-                    // Handle sub NCCommand.
-                    new NCNinSubCommandHandler(subCmd).handle(sender, newArgs, cmd);
-                    //subCmd.getExecutor().Handle(sender, newArgs, this, subCmd);
+                    else
+                    {
+                        MessageUtil.sendCommandHelp(sender, this.NCCommand);
+                    }
                 }
                 else
                 {
-                    MessageUtil.sendCommandHelp(sender, this.NCCommand);
+                    this.NCCommand.getExecutor().execute(sender, cmd, label, args);
                 }
+            }
+        }
+        catch (ValidationException ve)
+        {
+            MessageUtil.sendError(ve.getTarget(), ve.getPlayerMessage());
+
+            if(ve.getLogMessage() != null) // Log the log message if it isn't null, with a very fine log level.
+            {
+                NinCore.getImplementingPlugin().getLogger().finer(ve.getLogMessage());
+                NinCore.getImplementingPlugin().getLogger().finest(ExceptionUtils.getFullStackTrace(ve));
+            }
+        }
+        catch (TechnicalException te)
+        {
+            // Log the exception to console.
+            if((te.getLogLevel() == null) && (te.getMessage() != null))
+            {
+                NinCore.getImplementingPlugin().getLogger().warning(te.getMessage());
+                te.printStackTrace();
+            }
+            else if ((te.getLogLevel() != null) && (te.getMessage() != null))
+            {
+                NinCore.getImplementingPlugin().getLogger().log(te.getLogLevel(), te.getMessage());
             }
             else
             {
-                this.NCCommand.getExecutor().execute(sender, cmd, label, args);
+                NinCore.getImplementation().getImplementingPlugin().getLogger().warning("An unknown " +
+                        te.getClass().getName() + " occured; \n" + ExceptionUtils.getFullStackTrace(te));
             }
         }
-        return true;
+
+        return true; // CommandExecutor must return true to prevent bukkit just sending back command usage to the player.
     }
 }

@@ -18,9 +18,9 @@ public class NCNinServer implements NinServer
 
 
 
-    public NCNinServer(List<NCNinPlayer> NCNinPlayers)
+    public NCNinServer(List<NinPlayer> ninPlayers)
     {
-        NCNinPlayers.add(new NCNinPlayer(Bukkit.getPlayer("test")));
+        this.ninPlayers = ninPlayers;
     }
 
 

@@ -15,6 +15,7 @@ public class NCPassword
     // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
     private static int workload = 12;
 
+
     /**
      * This method can be used to generate a string representing an account password
      * suitable for storing in a database. It will be an OpenBSD-style crypt(3) formatted
@@ -35,6 +36,7 @@ public class NCPassword
 
         return (hashed_password);
     }
+
 
     /**
      * This method can be used to verify a computed hash from a plaintext (e.g. during a login

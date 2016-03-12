@@ -1,48 +1,55 @@
 package me.ninjoh.nincore.command;
 
 
-import me.ninjoh.nincore.api.command.*;
+import me.ninjoh.nincore.api.MinecraftLocale;
+import me.ninjoh.nincore.api.NinCore;
+import me.ninjoh.nincore.api.command.NinCommand;
+import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
-import me.ninjoh.nincore.api.exceptions.SubCommandAliasAlreadyRegistered;
-import me.ninjoh.nincore.api.exceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
+import me.ninjoh.nincore.api.util.TranslationUtils;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHelpHandler;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class NCCommand implements NinCommand
 {
     private String name; // Required
-    private String description; // Automatic
+    private String descriptionKey; // Required
+    private String descriptionBundleBaseName;
     private String permission; // Automatic
     private List<String> aliases; // Automatic
     private List<NinSubCommand> subCommands; // Optional
     private NinCommandExecutor executor; // Required
-    private List<NinArgument> arguments;
-    private boolean useArgumentValidation;
+    private String usage;
 
 
     /**
-     * Constructor
+     * Constructor.
+     *
+     * Description format,
      *
      * @param name The command's name.
      * @param subCommands The sum commands for this command.
      */
-    public NCCommand(@NotNull String name, @Nullable  List<NinSubCommand> subCommands, @Nullable List<NinArgument> arguments, @NotNull NinCommandExecutor executor, boolean useArgumentValidation, JavaPlugin plugin)
+    public NCCommand(@NotNull String name, @Nullable String descriptionKey, @Nullable  String descriptionBundleBaseName, @Nullable  List<NinSubCommand> subCommands, @NotNull NinCommandExecutor executor, JavaPlugin plugin)
     {
         this.name = name;
-        description = plugin.getCommand(name).getDescription();
+        this.descriptionKey = descriptionKey;
+        this.descriptionBundleBaseName = descriptionBundleBaseName;
         permission = plugin.getCommand(name).getPermission();
         aliases = plugin.getCommand(name).getAliases();
+        this.usage = plugin.getCommand(name).getUsage();
         this.executor = executor.init(this);
-        this.useArgumentValidation = useArgumentValidation;
 
 
         if(subCommands != null)
@@ -52,11 +59,6 @@ public class NCCommand implements NinCommand
         else
         {
             this.subCommands = new ArrayList<>();
-        }
-
-        if(arguments != null)
-        {
-            this.arguments = arguments;
         }
 
 
@@ -108,7 +110,14 @@ public class NCCommand implements NinCommand
     @Override
     public String getDescription()
     {
-        return description;
+        return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(this.descriptionBundleBaseName, MinecraftLocale.getDefault().toLocale()), this.descriptionKey);
+    }
+
+
+    @Override
+    public String getDescription(Locale inLocale)
+    {
+        return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(this.descriptionBundleBaseName, inLocale), this.descriptionKey);
     }
 
 
@@ -120,7 +129,7 @@ public class NCCommand implements NinCommand
     @Override
     public boolean hasDescription()
     {
-        return description != null;
+        return ((descriptionKey != null) && (descriptionBundleBaseName != null));
     }
 
 
@@ -134,21 +143,14 @@ public class NCCommand implements NinCommand
     @Override
     public String getUsage()
     {
-        List<String> list = new ArrayList<>();
+        return this.usage;
+    }
 
-        for (NinArgument arg : this.arguments)
-        {
-            if(arg.getArgumentType() == NinArgumentType.OPTIONAL)
-            {
-                list.add(NinArgumentColor.OPTIONAL + "[(" + arg.getArgumentDataType().getHumanFriendlyName() + ") " + arg.getName() + "]");
-            }
-            else if (arg.getArgumentType() == NinArgumentType.REQUIRED)
-            {
-                list.add(NinArgumentColor.REQUIRED + "<" + arg.getArgumentDataType().getHumanFriendlyName() + ">");
-            }
-        }
 
-        return StringUtils.join(list, " ");
+    @Override
+    public void setUsage(String value)
+    {
+        this.usage = value;
     }
 
 
@@ -221,10 +223,10 @@ public class NCCommand implements NinCommand
      *
      * @param subCommand The {@link NinSubCommand} to add.
      * @throws SubCommandAlreadyExistsException
-     * @throws SubCommandAliasAlreadyRegistered
+     * @throws SubCommandAliasAlreadyRegisteredException
      */
     @Override
-    public void addSubCommand(NinSubCommand subCommand) throws SubCommandAlreadyExistsException, SubCommandAliasAlreadyRegistered
+    public void addSubCommand(NinSubCommand subCommand) throws SubCommandAlreadyExistsException, SubCommandAliasAlreadyRegisteredException
     {
         if(subCommandExists(subCommand.getName()))
         {
@@ -242,7 +244,7 @@ public class NCCommand implements NinCommand
                     //noinspection ConstantConditions
                     if(subCmd.getAliases().contains(alias))
                     {
-                        throw new SubCommandAliasAlreadyRegistered(alias);
+                        throw new SubCommandAliasAlreadyRegisteredException(alias);
                     }
                 }
             }
@@ -405,9 +407,8 @@ public class NCCommand implements NinCommand
         SubCommandBuilder subCmd_list_builder = new SubCommandBuilder();
         subCmd_list_builder.setName("help");
         subCmd_list_builder.addAlias("?");
-        String[] desc2 = {"subCmdDesc.help", "lang.messages"};
-        subCmd_list_builder.setDescription(desc2);
-        subCmd_list_builder.addArgument(new NCArgument(Arrays.asList("argName.subCommand", "lang.messages").toArray(new String[2]), NinArgumentType.OPTIONAL, NinArgumentDataType.STRING));
+        subCmd_list_builder.setDescriptionKey("subCmdDesc.help");
+        subCmd_list_builder.setUsage("<sub command?>");
         subCmd_list_builder.setExecutor(new NCNinCommandHelpHandler());
         subCmd_list_builder.setParentCommand(this);
 
@@ -415,21 +416,10 @@ public class NCCommand implements NinCommand
         {
             this.addSubCommand(subCmd_list_builder.construct());
         }
-        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegistered ignored)
+        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegisteredException e)
         {
-
+            NinCore.getImplementingPlugin().getLogger().warning("Could not add default help sub command to command with name: '" +
+                    this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
         }
-    }
-
-    @Override
-    public void setUseArgumentValidation(boolean b)
-    {
-        this.useArgumentValidation = b;
-    }
-
-    @Override
-    public boolean useArgumentValidation()
-    {
-        return this.useArgumentValidation;
     }
 }

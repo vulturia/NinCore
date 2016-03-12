@@ -35,7 +35,7 @@ public class NCNinOfflinePlayer implements NinOfflinePlayer
     {
         OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(uuid);
 
-        if(offlinePlayer == null)
+        if (offlinePlayer == null)
         {
             return null;
         }
@@ -56,8 +56,9 @@ public class NCNinOfflinePlayer implements NinOfflinePlayer
     }
 
 
+    @Override
     @Nullable
-    public NCNinPlayer getNinOnlinePlayer()
+    public NCNinPlayer getNinPlayer()
     {
         return NCNinPlayer.fromUUID(getUuid());
     }

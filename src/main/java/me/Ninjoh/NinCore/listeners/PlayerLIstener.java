@@ -18,7 +18,11 @@ public class PlayerListener implements Listener
     {
         if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
         {
-            ((NCNinServer) NinCore.getImplementation().getNinServer()).addNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+            NinCore.getImplementingPlugin().getLogger().fine("Added player (" + e.getPlayer().getName() +
+                    ", " + e.getPlayer().getUniqueId() + ") to the online NinPlayer cache");
+
+            ((NCNinServer) NinCore.getImplementation().getNinServer()).
+                    addNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
         }
     }
 
@@ -28,7 +32,11 @@ public class PlayerListener implements Listener
     {
         if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
         {
-            ((NCNinServer) NinCore.getImplementation().getNinServer()).removeNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
+            NinCore.getImplementingPlugin().getLogger().fine("Removed player (" + e.getPlayer().getName() +
+                    ", " + e.getPlayer().getUniqueId() + ") from the online NinPlayer cache");
+
+            ((NCNinServer) NinCore.getImplementation().getNinServer()).
+                    removeNinOnlinePlayer(NCNinPlayer.fromPlayer(e.getPlayer()));
         }
     }
 }

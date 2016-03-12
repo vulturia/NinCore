@@ -1,20 +1,21 @@
 package me.ninjoh.nincore;
 
 
+import me.ninjoh.nincore.api.MinecraftLocale;
+import me.ninjoh.nincore.api.NinCommandSender;
+import me.ninjoh.nincore.api.command.NinCommand;
+import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.util.MessageUtil;
-import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
-import me.ninjoh.nincore.interfaces.CanReceiveMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class NinCommandSender implements CanReceiveMessage
+public class NCNinCommandSender implements NinCommandSender
 {
     private CommandSender commandSender;
 
 
-    public NinCommandSender(CommandSender commandSender)
+    public NCNinCommandSender(CommandSender commandSender)
     {
         this.commandSender = commandSender;
     }
@@ -27,6 +28,13 @@ public class NinCommandSender implements CanReceiveMessage
 
 
     @Override
+    public MinecraftLocale getMinecraftLocale()
+    {
+        return null;
+    }
+
+
+    @Override
     public void sendError(@NotNull String error)
     {
         MessageUtil.sendError(this.getCommandSender(), error);
@@ -34,16 +42,16 @@ public class NinCommandSender implements CanReceiveMessage
 
 
     @Override
-    public void sendCommandHelp(@NotNull NCCommand cmd)
+    public void sendCommandHelp(NinCommand ninCommand)
     {
-        MessageUtil.sendCommandHelp(this.getCommandSender(), cmd);
+        MessageUtil.sendCommandHelp(this.getCommandSender(), ninCommand);
     }
 
 
     @Override
-    public void sendSubCommandHelp(@NotNull NCCommand cmd, @NotNull NCSubCommand subCmd)
+    public void sendCommandHelp(NinSubCommand ninSubCommand)
     {
-        MessageUtil.sendCommandHelp(this.getCommandSender(), cmd, subCmd);
+        MessageUtil.sendCommandHelp(this.getCommandSender(), ninSubCommand);
     }
 
 

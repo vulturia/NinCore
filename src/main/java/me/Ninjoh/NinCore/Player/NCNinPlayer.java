@@ -8,11 +8,7 @@ import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.util.MessageUtil;
-import net.minecraft.server.v1_9_R1.EntityPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +17,7 @@ import java.util.UUID;
 public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
 {
     private Player player;
-    private boolean isFlyingUsingElytra;
+
 
     /**
      * Constructor
@@ -35,13 +31,12 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
     }
 
 
-
     @Nullable
     public static NCNinPlayer fromUUID(UUID uuid)
     {
         Player p = Bukkit.getServer().getPlayer(uuid);
 
-        if(p == null) return null;
+        if (p == null) return null;
 
 
         return new NCNinPlayer(p);
@@ -54,20 +49,15 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
     }
 
 
-    public static NCNinPlayer fromOfflinePlayer(OfflinePlayer p)
-    {
-        return NCNinPlayer.fromUUID(p.getUniqueId());
-    }
-
-
     /**
      * Get the bukkit player.
      *
      * @return bukkit player.
      */
+    @Override
     public Player getPlayer()
     {
-        return Bukkit.getServer().getPlayer(getUuid());
+        return this.player;
     }
 
 
@@ -76,12 +66,16 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
      *
      * @return The player's lang.
      */
+    @Override
     @NotNull
     public MinecraftLocale getMinecraftLocale()
     {
         // Get the player's locale.
         MinecraftLocale locale = MinecraftLocale.fromLanguageTag(getPlayer().spigot().getLocale());
-        if(locale == null) {locale = NinCore.getImplementation().getDefaultMinecraftLocale();}
+        if (locale == null)
+        {
+            locale = NinCore.getImplementation().getDefaultMinecraftLocale();
+        }
 
         return locale;
     }
@@ -90,11 +84,12 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
     /**
      * Send a error message to the player.
      * Error format: &cError: &4%error%.
-     *
+     * <p>
      * NOTE: Don't use this for sending permission errors
      *
      * @param error The error string to send.
      */
+    @Override
     public void sendError(@NotNull String error)
     {
         MessageUtil.sendError(this.getPlayer(), error);
@@ -103,39 +98,26 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
 
     /**
      * Send command help to the player.
-     *
      */
+    @Override
     public void sendCommandHelp(@NotNull NinCommand cmd)
     {
-        MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd);
+        MessageUtil.sendCommandHelp(this.getPlayer(), cmd);
     }
 
 
-    /**
-     * Send sub command help to the player.
-     *
-     * @param cmd The command parent of the sub command.
-     * @param subCmd The sub command to send help for.
-     */
-    public void sendSubCommandHelp(NinCommand cmd, NinSubCommand subCmd)
+    @Override
+    public void sendCommandHelp(NinSubCommand ninSubCommand)
     {
-        MessageUtil.sendCommandHelp((CommandSender) getPlayer(), cmd, subCmd);
+        MessageUtil.sendCommandHelp(this.getPlayer(), ninSubCommand);
     }
+
 
     /**
      * Send plugin info to the player.
-     *
      */
     public void sendPluginInfo(@NotNull JavaPlugin plugin)
     {
-        MessageUtil.sendPluginInfo((CommandSender) getPlayer(), plugin);
-    }
-
-
-    public boolean isFlyingUsingElytra()
-    {
-        EntityPlayer ep = ((CraftPlayer) getPlayer()).getHandle();
-
-        return ep.cB();
+        MessageUtil.sendPluginInfo(getPlayer(), plugin);
     }
 }

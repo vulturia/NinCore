@@ -11,6 +11,8 @@
     <artifactId>nincore</artifactId>
     <version>2.0.0</version>
 
+    <url>https://github.com/martijn-heil/NinCore</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <local.maven.repository>file:///Users/MartijnAdmin/.m2/repository</local.maven.repository>
@@ -160,6 +162,7 @@
                             <include>org.fusesource.jansi:jansi</include>
                             <include>org.mindrot:jbcrypt</include>
                             <include>net.mcapi.uuid:uuid-java</include>
+                            <include>me.ninjoh:nincore-api</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -184,6 +187,11 @@
                             <shadedPattern>me.ninjoh.nincore.common.net.mcapi.uuid</shadedPattern>
                         </relocation>
 
+                        <relocation>
+                            <pattern>me.ninjoh.nincore.api</pattern>
+                            <shadedPattern>me.ninjoh.nincore.common.me.ninjoh.nincore.api</shadedPattern>
+                        </relocation>
+
                     </relocations>
                     <filters>
                         <filter>
@@ -204,32 +212,32 @@
                 </configuration>
             </plugin>
             
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <configuration>
-                    <aggregate>true</aggregate>
-                    <show>public</show>
-                    <nohelp>true</nohelp>
-                    <header>NinCore, ${project.version}</header>
-                    <footer>NinCore, ${project.version}</footer>
-                    <doctitle>NinCore, ${project.version}</doctitle>
-                    <links>
-                        <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
-                    </links>
-                </configuration>
-                
-                <executions>
-                  <execution>
-                    <id>generate-javadocs</id>
-                    <goals>
-                      <goal>javadoc</goal>
-                    </goals>
-                    <phase>package</phase>
-                  </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+                <!--<version>2.9.1</version>-->
+                <!--<configuration>-->
+                    <!--<aggregate>true</aggregate>-->
+                    <!--<show>public</show>-->
+                    <!--<nohelp>true</nohelp>-->
+                    <!--<header>NinCore, ${project.version}</header>-->
+                    <!--<footer>NinCore, ${project.version}</footer>-->
+                    <!--<doctitle>NinCore, ${project.version}</doctitle>-->
+                    <!--<links>-->
+                        <!--<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>-->
+                    <!--</links>-->
+                <!--</configuration>-->
+                <!---->
+                <!--<executions>-->
+                  <!--<execution>-->
+                    <!--<id>generate-javadocs</id>-->
+                    <!--<goals>-->
+                      <!--<goal>javadoc</goal>-->
+                    <!--</goals>-->
+                    <!--<phase>package</phase>-->
+                  <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             
             <plugin>
                 <!-- Deploy the javadocs -->
@@ -245,15 +253,41 @@
                         </goals>
                         <!-- select the Maven phase in which the plugin will be executed -->
                         <phase>deploy</phase>
+
+
                         <configuration>
                             <!-- Plugin configuration goes here -->
-                            <url>https://github.com/martijn-heil/NinCore</url>
+
                             <server>github</server>
 
                             <!-- The commit message -->
                             <message>Update javadocs for version ${project.version}</message>
                             <!-- The location where the site is uploaded -->
                             <path>javadocs/${project.version}</path>
+                            <!-- Use merge or override the content -->
+                            <merge>true</merge>
+                        </configuration>
+                    </execution>
+
+                    <!-- Update the latest javadocs -->
+                    <execution>
+                        <id>deploy-latest-javadocs</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <!-- select the Maven phase in which the plugin will be executed -->
+                        <phase>deploy</phase>
+
+
+                        <configuration>
+                            <!-- Plugin configuration goes here -->
+
+                            <server>github</server>
+
+                            <!-- The commit message -->
+                            <message>Update latest javadocs</message>
+                            <!-- The location where the site is uploaded -->
+                            <path>javadocs/latest</path>
                             <!-- Use merge or override the content -->
                             <merge>true</merge>
                         </configuration>
@@ -267,9 +301,11 @@
                         </goals>
                         <!-- select the Maven phase in which the plugin will be executed -->
                         <phase>deploy</phase>
+
+
                         <configuration>
                             <!-- Plugin configuration goes here -->
-                            <url>https://github.com/martijn-heil/NinCore</url>
+
                             <server>github</server>
                             
                             <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
@@ -319,7 +355,7 @@
         
         <site>
             <id>github</id>
-            <url>https://github.com/martijn-heil/NinCore-API</url>
+            <url>https://github.com/martijn-heil/NinCore</url>
         </site>
         
     </distributionManagement>

@@ -1,12 +1,13 @@
 package cc.acquized.itembuilder;
 
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +62,7 @@ public class ItemBuilder {
     /**
      * Sets the amount of the builded ItemStack
      * @param amount (Integer)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder amount(int amount) {
@@ -71,6 +73,7 @@ public class ItemBuilder {
     /**
      * Sets the MaterialData of the builded ItemStack
      * @param data (MaterialData)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder data(MaterialData data) {
@@ -82,6 +85,7 @@ public class ItemBuilder {
      * Sets the damage (durability) of the builded ItemStack
      * @param damage (Short)
      * @deprecated Use ItemBuilder#durability
+     * @return this, for method chaining.
      */
     @NotNull
     @Deprecated
@@ -93,6 +97,7 @@ public class ItemBuilder {
     /**
      * Sets the durability (damage) of the builded ItemStack
      * @param damage (Short)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder durability(short damage) {
@@ -103,6 +108,7 @@ public class ItemBuilder {
     /**
      * Sets the Material of the builded ItemStack
      * @param material (Material)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder material(Material material) {
@@ -113,6 +119,7 @@ public class ItemBuilder {
     /**
      * Sets the ItemMeta of the builded ItemStack
      * @param meta (ItemMeta)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder meta(ItemMeta meta) {
@@ -123,6 +130,7 @@ public class ItemBuilder {
     /**
      * Adds the Enchantment of the builded ItemStack
      * @param enchant (Enchantment)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder enchant(Enchantment enchant, int level) {
@@ -133,6 +141,7 @@ public class ItemBuilder {
     /**
      * Sets the Enchantments of the builded ItemStack
      * @param enchantments (Map<Enchantment, Integer> )
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder enchant(Map<Enchantment, Integer> enchantments) {
@@ -143,6 +152,7 @@ public class ItemBuilder {
     /**
      * Sets the Displayname of the builded ItemStack
      * @param displayname (Displayname)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder displayname(String displayname) {
@@ -153,6 +163,7 @@ public class ItemBuilder {
     /**
      * Adds the line to the Lore of the builded ItemStack
      * @param line (String)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder lore(String line) {
@@ -162,7 +173,8 @@ public class ItemBuilder {
 
     /**
      * Sets the lore of the builded ItemStack
-     * @param lore (List<String>)
+     * @param lore {@link List<String>}
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder lore(List<String> lore) {
@@ -174,6 +186,7 @@ public class ItemBuilder {
      * Adds the line as the counts position as lore
      * @param line (String)
      * @param count (Integer)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder lore(String line, int count) {
@@ -184,6 +197,7 @@ public class ItemBuilder {
     /**
      * Adds the ItemFlag to the builded ItemStack
      * @param flag (ItemFlag)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder flag(ItemFlag flag) {
@@ -194,6 +208,7 @@ public class ItemBuilder {
     /**
      * Sets the ItemFlags of the builded ItemStack
      * @param flags (List<ItemFlag>)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder flag(List<ItemFlag> flags) {
@@ -204,6 +219,7 @@ public class ItemBuilder {
     /**
      * Makes the Item (un-)breakable
      * @param unbreakable (Boolean)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder unbreakable(boolean unbreakable) {
@@ -215,6 +231,7 @@ public class ItemBuilder {
      * Sets the Owner of the Skull
      * This only affects if the Item is a SKULL_ITEM or a SKULL
      * @param user (String)
+     * @return this, for method chaining.
      */
     @NotNull
     public ItemBuilder owner(String user) {

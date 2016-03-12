@@ -1,13 +1,13 @@
 package me.ninjoh.nincore.command;
 
 
-import me.ninjoh.nincore.api.NinCore;
-import me.ninjoh.nincore.api.command.*;
+import me.ninjoh.nincore.api.command.NinCommand;
+import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
+import me.ninjoh.nincore.api.util.TranslationUtils;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandHandler;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,35 +18,28 @@ public class NCSubCommand implements NinSubCommand
 {
     private String Name; // Required && Always lowercase.
     private List<String> aliases; // Optional
-    private String[] description; // Optional
+    private String descriptionKey; // Optional
+    private String descriptionBundleBaseName; // Optional
     private String requiredPermission; // Optional.
-    private List<NinArgument> arguments;
     private SubCommandExecutor executor; // Required
     private NCNinSubCommandHandler handler;
     private NinCommand parentCommand;
-    private boolean useArgumentValidation;
+    private String usage;
 
 
-    /**
-     * Constructor
-     *
-     * @param name Name of the sub command.
-     * @param aliases List of aliases, Can be null.
-     * @param description description of the sub command, Can be null.
-     * @param executor The SubCommandExecutor for this sub command.
-     */
-    public NCSubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String[] description,
-                        @Nullable String permission, @Nullable List<NinArgument> arguments,
-                        @NotNull SubCommandExecutor executor, @NotNull NinCommand parentCommand, boolean useArgumentValidation)
+
+    public NCSubCommand(@NotNull String name, @Nullable List<String> aliases, @Nullable String descriptionKey,
+                        @Nullable String descriptionBundleBaseName, @Nullable String permission, @Nullable String usage,
+                        @NotNull SubCommandExecutor executor, @NotNull NinCommand parentCommand)
     {
         Name = name.toLowerCase(); // NCSubCommand names are always lower case.
-        this.description = description;
+        this.descriptionKey = descriptionKey;
+        this.descriptionBundleBaseName = descriptionBundleBaseName;
         requiredPermission = permission;
-        this.arguments = arguments;
         this.executor = executor.init(this);
         this.parentCommand = parentCommand;
         this.handler = new NCNinSubCommandHandler(this);
-        this.useArgumentValidation = useArgumentValidation;
+        this.usage = usage;
 
         // Make all alias entries lowercase.
         if(aliases != null)
@@ -60,11 +53,6 @@ public class NCSubCommand implements NinSubCommand
         else
         {
             this.aliases = new ArrayList<>();
-        }
-
-        if(this.arguments == null)
-        {
-            this.arguments = new ArrayList<>();
         }
     }
 
@@ -157,52 +145,14 @@ public class NCSubCommand implements NinSubCommand
     @Override
     public String getUsage()
     {
-        if(this.hasArguments())
-        {
-            List<String> list = new ArrayList<>();
-
-            //noinspection ConstantConditions
-            for (NinArgument arg : this.getArguments())
-            {
-                if(arg.getArgumentType() == NinArgumentType.OPTIONAL)
-                {
-                    list.add(NinArgumentColor.OPTIONAL + "[(" +
-                            StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ") " +
-                            arg.getName() + "]");
-                }
-                else if (arg.getArgumentType() == NinArgumentType.REQUIRED)
-                {
-                    list.add(NinArgumentColor.REQUIRED + "<" +
-                            StringUtils.capitalize(arg.getArgumentDataType().getHumanFriendlyName()) + ">");
-                }
-            }
-
-            return StringUtils.join(list, " ");
-        }
-        else
-        {
-            return null;
-        }
+        return this.usage;
     }
 
 
-    /**
-     * Get this sub command's description.
-     *
-     * @param locale The locale to return the description in.
-     * @return This sub command's description.
-     */
     @Override
-    public String getDescription(@NotNull Locale locale)
+    public void setUsage(String value)
     {
-        if(hasDescription())
-        {
-            ResourceBundle messages = ResourceBundle.getBundle(description[1], locale);
-
-            return messages.getString(description[0]);
-        }
-
-        return null;
+        this.usage = value;
     }
 
 
@@ -214,15 +164,21 @@ public class NCSubCommand implements NinSubCommand
     @Override
     public String getDescription()
     {
-        if(hasDescription())
+        if(this.hasDescription())
         {
-            ResourceBundle messages = ResourceBundle.getBundle(description[1],
-                    NinCore.getImplementation().getDefaultMinecraftLocale().toLocale());
-
-            return messages.getString(description[0]);
+            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(this.descriptionBundleBaseName), descriptionKey);
         }
+        else
+        {
+            return null;
+        }
+    }
 
-        return null;
+
+    @Override
+    public String getDescription(Locale inLocale)
+    {
+        return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(this.descriptionBundleBaseName, inLocale), this.descriptionKey);
     }
 
 
@@ -234,102 +190,7 @@ public class NCSubCommand implements NinSubCommand
     @Override
     public boolean hasDescription()
     {
-        return description != null;
-    }
-
-
-    /**
-     * Check if this sub command has any arguments.
-     *
-     * @return True if it has any arguments, else false.
-     */
-    @Override
-    public boolean hasArguments()
-    {
-        return this.arguments != null;
-    }
-
-
-    /**
-     * Get this sub command's arguments.
-     *
-     * @return A list of all arguments for this sub command.
-     */
-    @Override
-    public List<NinArgument> getArguments()
-    {
-        return this.arguments;
-    }
-
-
-    /**
-     * Get an argument by index.
-     *
-     * @param i the index to query.
-     * @return The argument found, can be null.
-     */
-    @Override
-    public NinArgument getArgumentByIndex(int i)
-    {
-        if(!this.hasArguments())
-        {
-            return null;
-        }
-
-        //noinspection ConstantConditions
-        if(this.getArguments().size() > i)
-        {
-            return this.getArguments().get(i);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public List<NinArgument> getRequiredArguments()
-    {
-        if(this.hasArguments())
-        {
-            List<NinArgument> list = new ArrayList<>();
-
-            //noinspection ConstantConditions
-            for (NinArgument arg : this.getArguments())
-            {
-                if(arg.isRequired())
-                {
-                    list.add(arg);
-                }
-            }
-
-            return list;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    @Override
-    public boolean hasRequiredArguments()
-    {
-        if(this.hasArguments())
-        {
-            //noinspection ConstantConditions
-            for (NinArgument arg : this.getArguments())
-            {
-                if(arg.isRequired())
-                {
-                    return true;
-                }
-            }
-        }
-
-        // We only get here if this sub command has no arguments
-        // or does not have any required arguments
-        return false;
+        return ((descriptionKey != null) && (descriptionBundleBaseName != null));
     }
 
 
@@ -345,21 +206,15 @@ public class NCSubCommand implements NinSubCommand
     }
 
 
+    public NCNinSubCommandHandler getHandler()
+    {
+        return this.handler;
+    }
+
+
     @Override
     public NinCommand getParentCommand()
     {
         return this.parentCommand;
-    }
-
-    @Override
-    public void setUseArgumentValidation(boolean b)
-    {
-        this.useArgumentValidation = b;
-    }
-
-    @Override
-    public boolean useArgumentValidation()
-    {
-        return this.useArgumentValidation;
     }
 }

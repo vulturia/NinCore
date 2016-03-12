@@ -1,4 +1,4 @@
-name: NinCoreOld
+name: NinCore
 version: ${project.version}
-main: me.ninjoh.NinCoreOld
+main: me.ninjoh.nincore.NCNinCore
 author: Ninjoh

@@ -9,13 +9,13 @@ import org.bukkit.command.CommandSender;
 
 public class NCNinCommandHelpHandler implements SubCommandExecutor
 {
-    private NinSubCommand SubCommand;
+    private NinSubCommand subCommand;
 
     @NotNull
     @Override
     public SubCommandExecutor init(NinSubCommand NCSubCommand)
     {
-        this.SubCommand = NCSubCommand;
+        this.subCommand = NCSubCommand;
         return this;
     }
 
@@ -24,20 +24,20 @@ public class NCNinCommandHelpHandler implements SubCommandExecutor
     {
         if(args.length == 1) // Sub command supplied.
         {
-            NinSubCommand subCmd = SubCommand.getParentCommand().getSubCommandByAlias(args[0]);
+            NinSubCommand subCmd = subCommand.getParentCommand().getSubCommandByAlias(args[0]);
 
             if(subCmd == null)
             {
-                MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand());
+                MessageUtil.sendCommandHelp(sender, subCommand.getParentCommand());
             }
             else
             {
-                MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand(), subCmd);
+                MessageUtil.sendCommandHelp(sender, subCmd);
             }
         }
         else
         {
-            MessageUtil.sendCommandHelp(sender, SubCommand.getParentCommand());
+            MessageUtil.sendCommandHelp(sender, subCommand.getParentCommand());
         }
     }
 }

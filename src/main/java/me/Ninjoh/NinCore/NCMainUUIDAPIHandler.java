@@ -18,12 +18,9 @@ import java.util.concurrent.TimeUnit;
  * The same UUID API handler as the default one, except this one does not spam console
  * with status messages about API requests.
  *
- * @deprecated Use {@link org.bukkit.Bukkit#getPlayer(String)} instead.
  */
-@Deprecated
 public class NCMainUUIDAPIHandler extends UUIDHandler
 {
-
     @Nullable
     @Override
     public UUID getUUID(String username)
@@ -53,9 +50,8 @@ public class NCMainUUIDAPIHandler extends UUIDHandler
     public String getUUIDString(String username)
     {
         UUID UUID = getUUID(username);
-        String uuid = UUID == null ? null : UUID.toString().replace("-", "");
 
-        return uuid;
+        return UUID == null ? null : UUID.toString().replace("-", "");
     }
 
     @Nullable
