@@ -3,10 +3,9 @@
   <groupId>me.ninjoh</groupId>
   <artifactId>nincore</artifactId>
   <versioning>
-    <release>2.0.0</release>
     <versions>
-      <version>2.0.0</version>
+      <version>2.0.0-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20160306114401</lastUpdated>
+    <lastUpdated>20160313131531</lastUpdated>
   </versioning>
 </metadata>
