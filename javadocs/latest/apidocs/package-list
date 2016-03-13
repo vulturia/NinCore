@@ -2,9 +2,6 @@ cc.acquized.itembuilder
 me.ninjoh.nincore
 me.ninjoh.nincore.command
 me.ninjoh.nincore.command.handlers
-me.ninjoh.nincore.events
-me.ninjoh.nincore.interfaces
 me.ninjoh.nincore.listeners
 me.ninjoh.nincore.player
 me.ninjoh.nincore.security
-me.ninjoh.nincore.watchers
