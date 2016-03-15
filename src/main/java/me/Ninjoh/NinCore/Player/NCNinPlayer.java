@@ -83,8 +83,7 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
 
     /**
      * Send a error message to the player.
-     * Error format: &cError: &4%error%.
-     * <p>
+     * Error format: (LIGHT RED) Error: (RED) %error%.
      * NOTE: Don't use this for sending permission errors
      *
      * @param error The error string to send.

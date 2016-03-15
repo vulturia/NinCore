@@ -33,14 +33,7 @@ public class NCCommand implements NinCommand
     private String usage;
 
 
-    /**
-     * Constructor.
-     *
-     * Description format,
-     *
-     * @param name The command's name.
-     * @param subCommands The sum commands for this command.
-     */
+
     public NCCommand(@NotNull String name, @Nullable String descriptionKey, @Nullable  String descriptionBundleBaseName, @Nullable  List<NinSubCommand> subCommands, @NotNull NinCommandExecutor executor, JavaPlugin plugin)
     {
         this.name = name;
@@ -136,7 +129,7 @@ public class NCCommand implements NinCommand
     /**
      * Get this command's usage syntax.
      * NOTE: This excludes the command itself
-     * e.g; "<\player=you> <\world>"
+     * e.g; (player=you) (world)
      *
      * @return This command's usage syntax. Can be null.
      */
@@ -222,8 +215,8 @@ public class NCCommand implements NinCommand
      * Add a sub-command to this command.
      *
      * @param subCommand The {@link NinSubCommand} to add.
-     * @throws SubCommandAlreadyExistsException
-     * @throws SubCommandAliasAlreadyRegisteredException
+     * @throws SubCommandAlreadyExistsException If the sub command is already exists.
+     * @throws SubCommandAliasAlreadyRegisteredException If the provided sub command has an alias which is already in use.
      */
     @Override
     public void addSubCommand(NinSubCommand subCommand) throws SubCommandAlreadyExistsException, SubCommandAliasAlreadyRegisteredException

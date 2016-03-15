@@ -5,7 +5,7 @@ import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Author: Ian Gallagher <igallagher@securityinnovation.com>
+ * Author: Ian Gallagher igallagher@securityinnovation.com
  *
  * This code utilizes jBCrypt, which you need installed to use.
  * jBCrypt: http://www.mindrot.org/projects/jBCrypt/
@@ -32,9 +32,8 @@ public class NCPassword
     public static String hashPassword(String password_plaintext)
     {
         String salt = BCrypt.gensalt(workload);
-        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
 
-        return (hashed_password);
+        return (BCrypt.hashpw(password_plaintext, salt));
     }
 
 

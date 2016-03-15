@@ -130,6 +130,7 @@ public class ItemBuilder {
     /**
      * Adds the Enchantment of the builded ItemStack
      * @param enchant (Enchantment)
+     * @param level (Level)
      * @return this, for method chaining.
      */
     @NotNull
@@ -140,7 +141,7 @@ public class ItemBuilder {
 
     /**
      * Sets the Enchantments of the builded ItemStack
-     * @param enchantments (Map<Enchantment, Integer> )
+     * @param enchantments (Map (Enchantment, Integer) )
      * @return this, for method chaining.
      */
     @NotNull
@@ -173,7 +174,7 @@ public class ItemBuilder {
 
     /**
      * Sets the lore of the builded ItemStack
-     * @param lore {@link List<String>}
+     * @param lore {@link List}
      * @return this, for method chaining.
      */
     @NotNull
@@ -207,7 +208,7 @@ public class ItemBuilder {
 
     /**
      * Sets the ItemFlags of the builded ItemStack
-     * @param flags (List<ItemFlag>)
+     * @param flags {@link List}
      * @return this, for method chaining.
      */
     @NotNull

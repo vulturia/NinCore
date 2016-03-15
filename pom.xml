@@ -187,11 +187,6 @@
                             <shadedPattern>me.ninjoh.nincore.common.net.mcapi.uuid</shadedPattern>
                         </relocation>
 
-                        <relocation>
-                            <pattern>me.ninjoh.nincore.api</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.me.ninjoh.nincore.api</shadedPattern>
-                        </relocation>
-
                     </relocations>
                     <filters>
                         <filter>

@@ -138,7 +138,7 @@ public class NCSubCommand implements NinSubCommand
     /**
      * Get this sub command's syntax.
      * ( Only the last part of the syntax, e.g;
-     * "<player=you> <world>" )
+     * (player=you) (world) )
      *
      * @return The usage string.
      */

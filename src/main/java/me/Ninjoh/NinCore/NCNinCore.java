@@ -14,15 +14,16 @@ import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExi
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
+import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     private NinServer server;
+    private static NCNinCore NCNinCore;
 
     //private static ProtocolManager protocolManager;
 
@@ -42,6 +44,57 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void onEnableInner()
     {
+        NCNinCore = this;
+
+        List<String> blocked = new ArrayList<>();
+        blocked.add(Material.FURNACE.toString());
+        blocked.add(Material.CHEST.toString());
+        blocked.add(Material.BEACON.toString());
+        blocked.add(Material.DISPENSER.toString());
+        blocked.add(Material.DROPPER.toString());
+        blocked.add(Material.HOPPER.toString());
+        blocked.add(Material.WORKBENCH.toString());
+        blocked.add(Material.ENCHANTMENT_TABLE.toString());
+        blocked.add(Material.ENDER_CHEST.toString());
+        blocked.add(Material.ANVIL.toString());
+        blocked.add(Material.BED_BLOCK.toString());
+        blocked.add(Material.FENCE_GATE.toString());
+        blocked.add(Material.SPRUCE_FENCE_GATE.toString());
+        blocked.add(Material.BIRCH_FENCE_GATE.toString());
+        blocked.add(Material.ACACIA_FENCE_GATE.toString());
+        blocked.add(Material.JUNGLE_FENCE_GATE.toString());
+        blocked.add(Material.DARK_OAK_FENCE_GATE.toString());
+        blocked.add(Material.IRON_DOOR_BLOCK.toString());
+        blocked.add(Material.WOODEN_DOOR.toString());
+        blocked.add(Material.SPRUCE_DOOR.toString());
+        blocked.add(Material.BIRCH_DOOR.toString());
+        blocked.add(Material.JUNGLE_DOOR.toString());
+        blocked.add(Material.ACACIA_DOOR.toString());
+        blocked.add(Material.DARK_OAK_DOOR.toString());
+        blocked.add(Material.WOOD_BUTTON.toString());
+        blocked.add(Material.STONE_BUTTON.toString());
+        blocked.add(Material.TRAP_DOOR.toString());
+        blocked.add(Material.IRON_TRAPDOOR.toString());
+        blocked.add(Material.DIODE_BLOCK_OFF.toString());
+        blocked.add(Material.DIODE_BLOCK_ON.toString());
+        blocked.add(Material.REDSTONE_COMPARATOR_OFF.toString());
+        blocked.add(Material.REDSTONE_COMPARATOR_ON.toString());
+        blocked.add(Material.FENCE.toString());
+        blocked.add(Material.SPRUCE_FENCE.toString());
+        blocked.add(Material.BIRCH_FENCE.toString());
+        blocked.add(Material.JUNGLE_FENCE.toString());
+        blocked.add(Material.DARK_OAK_FENCE.toString());
+        blocked.add(Material.ACACIA_FENCE.toString());
+        blocked.add(Material.NETHER_FENCE.toString());
+        blocked.add(Material.BREWING_STAND.toString());
+        blocked.add(Material.CAULDRON.toString());
+        blocked.add(Material.SIGN_POST.toString());
+        blocked.add(Material.WALL_SIGN.toString());
+        blocked.add(Material.SIGN.toString());
+
+        // Listener for ArmorEquipEvent
+        getServer().getPluginManager().registerEvents(new ArmorListener(blocked), this);
+
         // Add all currently online players to the online NinPlayers list of the NinServer.
         List<NinPlayer> ninPlayers = new ArrayList<>();
 
@@ -66,6 +119,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
         // Register listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
     }
 
 
@@ -82,9 +136,9 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 //    }
 
 
-    public static Plugin getPlugin()
+    public static JavaPlugin getPlugin()
     {
-        return Bukkit.getPluginManager().getPlugin("NCNinCore");
+        return NCNinCore;
     }
 
 
