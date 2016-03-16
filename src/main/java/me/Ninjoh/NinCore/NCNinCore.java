@@ -18,6 +18,7 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
+import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,7 +33,8 @@ import java.util.List;
 public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 {
     private MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
-    private boolean useLocalization = true;
+    private boolean useLocalization;
+    private boolean useColoredLogging;
 
 
     private NinServer server;
@@ -45,7 +47,34 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public void onEnableInner()
     {
         NCNinCore = this;
+        this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
+                " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
+        NinCore.setImplementation(this);
+        this.saveDefaultConfig();
 
+
+        useColoredLogging = this.getConfig().getBoolean("logging.enableColoredLogging");
+        if(useColoredLogging)
+        {
+            this.getNinLogger().info("Colored logging is enabled.");
+        }
+        else
+        {
+            this.getNinLogger().info("Colored logging is disabled.");
+        }
+
+        useLocalization = this.getConfig().getBoolean("localization.enabled");
+        if(useLocalization)
+        {
+            this.getNinLogger().info("Localization is enabled.");
+        }
+        else
+        {
+            this.getNinLogger().info("Localization is enabled.");
+        }
+
+
+        this.getNinLogger().info("Registering blocked materials for ArmorEquipEvent..");
         List<String> blocked = new ArrayList<>();
         blocked.add(Material.FURNACE.toString());
         blocked.add(Material.CHEST.toString());
@@ -93,31 +122,33 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         blocked.add(Material.SIGN.toString());
 
         // Listener for ArmorEquipEvent
-        getServer().getPluginManager().registerEvents(new ArmorListener(blocked), this);
+
 
         // Add all currently online players to the online NinPlayers list of the NinServer.
         List<NinPlayer> ninPlayers = new ArrayList<>();
 
+
+        this.getNinLogger().info("Adding all online players to the online player cache..");
         for (Player p : getServer().getOnlinePlayers())
         {
             ninPlayers.add(new NCNinPlayer(p));
-            this.getLogger().fine("Added a NinPlayer to the list of online players (" + p.getName() + ", " + p.getUniqueId() + ")");
+            this.getNinLogger().fine("Added a NinPlayer to the list of online players (" + p.getName() + ", " + p.getUniqueId() + ")");
         }
-
-        this.getLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
-                " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
 
         this.server = new NCNinServer(ninPlayers);
 
-        NinCore.setImplementation(this);
+
+
         //protocolManager = ProtocolLibrary.getProtocolManager();
 
-        this.getLogger().info("Default MinecraftLocale set to " + defaultMinecraftLocale.name() + " (" +
+        this.getNinLogger().info("Default MinecraftLocale set to: " + ChatColor.LIGHT_PURPLE + defaultMinecraftLocale.name() + " (" +
                 defaultMinecraftLocale.getLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
 
 
         // Register listeners
+        this.getNinLogger().info("Registering event listeners..");
+        getServer().getPluginManager().registerEvents(new ArmorListener(blocked), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
     }
@@ -208,7 +239,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void setDefaultMinecraftLocale(MinecraftLocale minecraftLocale)
     {
-        this.getLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
+        this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
                 defaultMinecraftLocale.getLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
         this.defaultMinecraftLocale = minecraftLocale;
@@ -233,5 +264,19 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public JavaPlugin getImplementingPlugin()
     {
         return this;
+    }
+
+
+    @Override
+    public void reloadExternalPlugin(JavaPlugin javaPlugin)
+    {
+
+    }
+
+
+    @Override
+    public boolean useColoredLogging()
+    {
+        return this.useColoredLogging;
     }
 }
