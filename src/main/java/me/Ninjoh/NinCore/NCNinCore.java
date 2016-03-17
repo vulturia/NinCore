@@ -6,11 +6,11 @@ import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
-import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
-import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.api.logging.LogColor;
+import me.ninjoh.nincore.api.util.PluginUtil;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
@@ -18,13 +18,13 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
-import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -121,8 +121,6 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         blocked.add(Material.WALL_SIGN.toString());
         blocked.add(Material.SIGN.toString());
 
-        // Listener for ArmorEquipEvent
-
 
         // Add all currently online players to the online NinPlayers list of the NinServer.
         List<NinPlayer> ninPlayers = new ArrayList<>();
@@ -132,7 +130,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         for (Player p : getServer().getOnlinePlayers())
         {
             ninPlayers.add(new NCNinPlayer(p));
-            this.getNinLogger().fine("Added a NinPlayer to the list of online players (" + p.getName() + ", " + p.getUniqueId() + ")");
+            this.getNinLogger().fine("Added a NinPlayer to the online player cache, (" + p.getName() + ", " + p.getUniqueId() + ")");
         }
 
         this.server = new NCNinServer(ninPlayers);
@@ -141,7 +139,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
         //protocolManager = ProtocolLibrary.getProtocolManager();
 
-        this.getNinLogger().info("Default MinecraftLocale set to: " + ChatColor.LIGHT_PURPLE + defaultMinecraftLocale.name() + " (" +
+        this.getNinLogger().info("Default MinecraftLocale set to: " + LogColor.HIGHLIGHT + defaultMinecraftLocale.name() + " (" +
                 defaultMinecraftLocale.getLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
 
@@ -195,16 +193,16 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public NinCommand constructCommand(@NotNull String s, String s1, @Nullable String s2, @Nullable List<NinSubCommand> list, @NotNull NinCommandExecutor ninCommandExecutor, JavaPlugin javaPlugin)
+    public NinCommand constructCommand(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {
-        return new NCCommand(s, s1, s2, list, ninCommandExecutor, javaPlugin);
+        return NCCommand.construct(name, useStaticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, executor, subCommands, plugin);
     }
 
 
     @Override
-    public NinSubCommand constructSubCommand(@NotNull String s, @Nullable List<String> list, @Nullable String s1, @Nullable String s2, @Nullable String s3, @Nullable String s4, @NotNull SubCommandExecutor subCommandExecutor, @NotNull NinCommand ninCommand)
+    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, SubCommandExecutor executor, NinCommand parentCommand)
     {
-        return new NCSubCommand(s, list, s1, s2, s3, s4, subCommandExecutor, ninCommand);
+        return NCSubCommand.construct(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand);
     }
 
 
@@ -268,9 +266,9 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public void reloadExternalPlugin(JavaPlugin javaPlugin)
+    public void reloadExternalPlugin(Plugin plugin)
     {
-
+        PluginUtil.reload(plugin);
     }
 
 

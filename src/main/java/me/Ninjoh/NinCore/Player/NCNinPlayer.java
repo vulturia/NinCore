@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
@@ -78,6 +79,13 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
         }
 
         return locale;
+    }
+
+
+    @Override
+    public Locale getLocale()
+    {
+        return this.getMinecraftLocale().toLocale();
     }
 
 

@@ -119,4 +119,11 @@ public class NCNinServer implements NinServer
 
         return e; // Will be null if we didn't find any entity with that entity ID.
     }
+
+
+    @Override
+    public World getDefaultWorld()
+    {
+        return Bukkit.getWorlds().get(0);
+    }
 }
