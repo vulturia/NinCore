@@ -10,6 +10,7 @@ import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlrea
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHelpHandler;
+import me.ninjoh.nincore.command.handlers.NCNinSubCommandInfoHandler;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +21,7 @@ public class NCCommand extends CommandBase implements NinCommand
 {
     private List<NinSubCommand> subCommands; // Optional
     private NinCommandExecutor executor; // Required
+    private JavaPlugin plugin;
 
 
     public NCCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
@@ -28,6 +30,7 @@ public class NCCommand extends CommandBase implements NinCommand
 
         this.executor = executor;
         this.subCommands = subCommands;
+        this.plugin = plugin;
 
         plugin.getCommand(name).setExecutor(new NCNinCommandHandler(this));
     }
@@ -269,6 +272,7 @@ public class NCCommand extends CommandBase implements NinCommand
         subCmd_list_builder.setName("help");
         subCmd_list_builder.addAlias("?");
         subCmd_list_builder.setDescriptionKey("subCmdDesc.help");
+        subCmd_list_builder.setDescriptionBundleBaseName("lang.messages");
         subCmd_list_builder.setUsage("<sub command?>");
         subCmd_list_builder.setExecutor(new NCNinCommandHelpHandler());
         subCmd_list_builder.setParentCommand(this);
@@ -288,6 +292,23 @@ public class NCCommand extends CommandBase implements NinCommand
     @Override
     public void addDefaultInfoSubCmd()
     {
+        // /command help. sub command.
+        SubCommandBuilder subCommandBuilder = new SubCommandBuilder();
+        subCommandBuilder.setName("info");
+        subCommandBuilder.addAlias("i");
+        subCommandBuilder.setDescriptionKey("subCmdDesc.info");
+        subCommandBuilder.setDescriptionBundleBaseName("lang.messages");
+        subCommandBuilder.setExecutor(new NCNinSubCommandInfoHandler(this.plugin));
+        subCommandBuilder.setParentCommand(this);
 
+        try
+        {
+            this.addSubCommand(subCommandBuilder.construct());
+        }
+        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegisteredException e)
+        {
+            NinCore.getImplementingPlugin().getLogger().warning("Could not add default info command to command with name: '" +
+                    this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
+        }
     }
 }

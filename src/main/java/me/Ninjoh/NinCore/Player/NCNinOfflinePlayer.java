@@ -50,16 +50,8 @@ public class NCNinOfflinePlayer implements NinOfflinePlayer
     }
 
 
-    public OfflinePlayer getOfflinePlayer()
+    public OfflinePlayer toOfflinePlayer()
     {
         return offlinePlayer;
-    }
-
-
-    @Override
-    @Nullable
-    public NCNinPlayer getNinPlayer()
-    {
-        return NCNinPlayer.fromUUID(getUuid());
     }
 }
