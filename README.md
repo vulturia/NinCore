@@ -1,5 +1,6 @@
 # NinCore
-My library for various things which have to do with bukkit plugins.
+
+####  *Do not use yet! Still extremely unstable!*
 
 ### Links:
    - [Latest Javadocs](http://martijn-heil.github.io/NinCore/javadocs/latest/apidocs/)
