@@ -26,8 +26,8 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
     public NCNinPlayer(Player p)
     {
         super(Bukkit.getOfflinePlayer(p.getUniqueId()));
-        player = p;
-        this.ninCommandSender = NinCore.get().getNinCommandSender(player);
+        this.player = p;
+        this.ninCommandSender = NinCore.get().getNinCommandSender(p);
     }
 
 

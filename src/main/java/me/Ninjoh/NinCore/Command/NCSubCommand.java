@@ -19,7 +19,7 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
     {
         super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases);
 
-        this.executor = executor;
+        this.executor = executor.init(this);
         this.handler = new NCNinSubCommandHandler(this);
         this.parentCommand = parentCommand;
     }

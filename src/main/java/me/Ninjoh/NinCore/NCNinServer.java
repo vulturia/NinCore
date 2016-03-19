@@ -60,7 +60,7 @@ public class NCNinServer implements NinServer
 
         for (NinPlayer p : ninPlayers)
         {
-            if(p.getPlayer().equals(player))
+            if(p.toPlayer().equals(player))
             {
                 return p;
             }

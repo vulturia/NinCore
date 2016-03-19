@@ -43,6 +43,13 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     }
 
 
+    public String getName(boolean forceLowercase)
+    {
+        if(forceLowercase) return this.name.toLowerCase();
+        else return this.name;
+    }
+
+
     @Override
     public boolean hasDescription()
     {
@@ -88,6 +95,14 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     @Override
     public List<String> getAliases(boolean withMainAlias)
     {
+        if(withMainAlias)
+        {
+            List<String> copy = new ArrayList<>(this.aliases);
+            copy.add(0, this.getName(true));
+
+            return copy;
+        }
+
         return new ArrayList<>(aliases);
     }
 

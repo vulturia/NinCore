@@ -1,6 +1,7 @@
 package me.ninjoh.nincore.command;
 
 
+import me.ninjoh.nincore.NCNinCore;
 import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
@@ -28,7 +29,7 @@ public class NCCommand extends CommandBase implements NinCommand
     {
         super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases);
 
-        this.executor = executor;
+        if(executor != null) this.executor = executor.init(this);
         this.subCommands = subCommands;
         this.plugin = plugin;
 
@@ -99,13 +100,13 @@ public class NCCommand extends CommandBase implements NinCommand
         // Check if the given sub command aliases aren't already registered.
         for (NinSubCommand subCmd : this.getSubCommands())
         {
-            if (subCmd.hasAliases() && subCmd.hasAliases()) // NPE checks.
+            if (subCmd.hasAliases()) // NPE checks.
             {
                 //noinspection ConstantConditions
                 for (String alias : subCmd.getAliases(true))
                 {
                     //noinspection ConstantConditions
-                    if (subCmd.getAliases(true).contains(alias))
+                    if (subCommand.getAliases(true).contains(alias))
                     {
                         throw new SubCommandAliasAlreadyRegisteredException(alias);
                     }
@@ -281,10 +282,16 @@ public class NCCommand extends CommandBase implements NinCommand
         {
             this.addSubCommand(subCmd_list_builder.construct());
         }
-        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegisteredException e)
+        catch (SubCommandAlreadyExistsException e)
         {
-            NinCore.getImplementingPlugin().getLogger().warning("Could not add default help sub command to command with name: '" +
+            NCNinCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
                     this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
+        }
+        catch(SubCommandAliasAlreadyRegisteredException e2)
+        {
+            NCNinCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
+                    this.getName() + "' due to an exception: '" + e2.getClass().getName() + "'");
+            NCNinCore.getInstance().getNinLogger().warning("The alias which failed: " + e2.getAlias());
         }
     }
 

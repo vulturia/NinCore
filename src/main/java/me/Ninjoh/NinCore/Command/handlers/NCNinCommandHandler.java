@@ -88,7 +88,7 @@ public class NCNinCommandHandler implements CommandExecutor
                 }
                 else
                 {
-                    this.NCCommand.getExecutor().execute(sender, cmd, label, args);
+                    this.NCCommand.getExecutor().execute(sender, args);
                 }
             }
         }

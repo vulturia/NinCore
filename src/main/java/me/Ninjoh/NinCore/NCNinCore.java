@@ -165,7 +165,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 //    }
 
 
-    public static JavaPlugin getPlugin()
+    public static NCNinCore getInstance()
     {
         return NCNinCore;
     }
