@@ -10,7 +10,6 @@ import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
 import me.ninjoh.nincore.api.logging.LogColor;
-import me.ninjoh.nincore.api.util.PluginUtil;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
@@ -24,7 +23,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -66,11 +64,11 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         useLocalization = this.getConfig().getBoolean("localization.enabled");
         if(useLocalization)
         {
-            this.getNinLogger().info("Localization is enabled.");
+            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled.");
         }
         else
         {
-            this.getNinLogger().info("Localization is enabled.");
+            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled.");
         }
 
 
