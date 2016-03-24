@@ -28,6 +28,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     {
         this.name = name;
         this.staticDescription = staticDescription;
+        this.useStaticDescription = useStaticDescription;
         this.descriptionKey = descriptionKey;
         this.descriptionBundleBaseName = descriptionBundleBaseName;
         this.requiredPermission = requiredPermission;

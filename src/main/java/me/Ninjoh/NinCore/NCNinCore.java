@@ -266,13 +266,6 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public void reloadExternalPlugin(Plugin plugin)
-    {
-        PluginUtil.reload(plugin);
-    }
-
-
-    @Override
     public boolean useColoredLogging()
     {
         return this.useColoredLogging;
