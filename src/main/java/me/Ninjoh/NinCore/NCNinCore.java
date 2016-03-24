@@ -31,7 +31,7 @@ import java.util.List;
 public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 {
     private MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
-    private boolean useLocalization;
+    private boolean isLocalized;
     private boolean useColoredLogging;
 
 
@@ -52,7 +52,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
         useColoredLogging = this.getConfig().getBoolean("logging.enableColoredLogging");
-        if(useColoredLogging)
+        if (useColoredLogging)
         {
             this.getNinLogger().info("Colored logging is enabled.");
         }
@@ -61,8 +61,8 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
             this.getNinLogger().info("Colored logging is disabled.");
         }
 
-        useLocalization = this.getConfig().getBoolean("localization.enabled");
-        if(useLocalization)
+        isLocalized = this.getConfig().getBoolean("localization.enabled");
+        if (isLocalized)
         {
             this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled.");
         }
@@ -134,11 +134,10 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         this.server = new NCNinServer(ninPlayers);
 
 
-
         //protocolManager = ProtocolLibrary.getProtocolManager();
 
         this.getNinLogger().info("Default MinecraftLocale set to: " + LogColor.HIGHLIGHT + defaultMinecraftLocale.name() + " (" +
-                defaultMinecraftLocale.getLanguageTag() + ", " +
+                defaultMinecraftLocale.toLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
 
 
@@ -236,23 +235,23 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public void setDefaultMinecraftLocale(MinecraftLocale minecraftLocale)
     {
         this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
-                defaultMinecraftLocale.getLanguageTag() + ", " +
+                defaultMinecraftLocale.toLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
         this.defaultMinecraftLocale = minecraftLocale;
     }
 
 
     @Override
-    public void setUseLocalization(boolean value)
+    public void setLocalized(boolean value)
     {
-        this.useLocalization = value;
+        this.isLocalized = value;
     }
 
 
     @Override
-    public boolean useLocalization()
+    public boolean isLocalized()
     {
-        return this.useLocalization;
+        return this.isLocalized;
     }
 
 

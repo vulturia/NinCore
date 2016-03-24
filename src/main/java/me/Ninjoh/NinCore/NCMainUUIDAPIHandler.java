@@ -45,6 +45,7 @@ public class NCMainUUIDAPIHandler extends UUIDHandler
         }
     }
 
+
     @Nullable
     @Override
     public String getUUIDString(String username)
@@ -53,6 +54,7 @@ public class NCMainUUIDAPIHandler extends UUIDHandler
 
         return UUID == null ? null : UUID.toString().replace("-", "");
     }
+
 
     @Nullable
     @Override
@@ -77,11 +79,12 @@ public class NCMainUUIDAPIHandler extends UUIDHandler
         }
     }
 
+
     @Nullable
     @Override
     public List<Username> getHistory(@NotNull UUID uuid)
     {
-        List<Username> list = new LinkedList<Username>();
+        List<Username> list = new LinkedList<>();
 
         HistoryCallable callable = new HistoryCallable(uuid.toString().replace("-", ""));
         List<Username> request;
@@ -101,6 +104,7 @@ public class NCMainUUIDAPIHandler extends UUIDHandler
             return null;
         }
     }
+
 
     @Nullable
     @Override
