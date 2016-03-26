@@ -13,10 +13,12 @@ public class NCNinSubCommandInfoHandler implements SubCommandExecutor
     private NinSubCommand subCommand;
     private JavaPlugin plugin;
 
+
     public NCNinSubCommandInfoHandler(JavaPlugin plugin)
     {
         this.plugin = plugin;
     }
+
 
     @NotNull
     @Override
@@ -25,6 +27,7 @@ public class NCNinSubCommandInfoHandler implements SubCommandExecutor
         this.subCommand = NCSubCommand;
         return this;
     }
+
 
     @Override
     public void execute(@NotNull CommandSender sender, @NotNull String[] args)

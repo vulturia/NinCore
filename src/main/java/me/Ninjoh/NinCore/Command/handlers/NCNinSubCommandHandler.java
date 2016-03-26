@@ -14,7 +14,6 @@ public class NCNinSubCommandHandler
     private NinSubCommand subCommand;
 
 
-
     public NCNinSubCommandHandler(NinSubCommand subCommand)
     {
         this.subCommand = subCommand;
@@ -34,7 +33,7 @@ public class NCNinSubCommandHandler
         }
         catch (TechnicalException te)
         {
-            if(te.getLogLevel() == null)
+            if (te.getLogLevel() == null)
             {
                 NinCore.getImplementingPlugin().getLogger().warning(te.getMessage());
             }

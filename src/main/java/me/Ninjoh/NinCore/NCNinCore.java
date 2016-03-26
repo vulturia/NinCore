@@ -54,17 +54,17 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         useColoredLogging = this.getConfig().getBoolean("logging.enableColoredLogging");
         if (useColoredLogging)
         {
-            this.getNinLogger().info("Colored logging is enabled.");
+            this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
         }
         else
         {
-            this.getNinLogger().info("Colored logging is disabled.");
+            this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "disabled" + LogColor.RESET + ".");
         }
 
         isLocalized = this.getConfig().getBoolean("localization.enabled");
         if (isLocalized)
         {
-            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled.");
+            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
         }
         else
         {
@@ -207,6 +207,13 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public NinCommandSender getNinCommandSender(CommandSender commandSender)
     {
         return new NCNinCommandSender(commandSender);
+    }
+
+
+    @Override
+    public NinConsoleCommandSender getNinConsoleCommandSender()
+    {
+        return new NCNinConsoleCommandSender();
     }
 
 

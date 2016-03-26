@@ -46,7 +46,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
 
     public String getName(boolean forceLowercase)
     {
-        if(forceLowercase) return this.name.toLowerCase();
+        if (forceLowercase) return this.name.toLowerCase();
         else return this.name;
     }
 
@@ -54,7 +54,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     @Override
     public boolean hasDescription()
     {
-        if(useStaticDescription)
+        if (useStaticDescription)
         {
             return staticDescription != null;
         }
@@ -68,7 +68,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     @Override
     public String getDescription()
     {
-        if(useStaticDescription)
+        if (useStaticDescription)
         {
             return staticDescription;
         }
@@ -82,7 +82,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     @Override
     public String getDescription(Locale locale)
     {
-        if(useStaticDescription)
+        if (useStaticDescription)
         {
             return staticDescription;
         }
@@ -96,7 +96,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     @Override
     public List<String> getAliases(boolean withMainAlias)
     {
-        if(withMainAlias)
+        if (withMainAlias)
         {
             List<String> copy = new ArrayList<>(this.aliases);
             copy.add(0, this.getName(true));

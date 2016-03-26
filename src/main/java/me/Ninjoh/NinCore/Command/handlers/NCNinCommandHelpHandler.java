@@ -11,6 +11,7 @@ public class NCNinCommandHelpHandler implements SubCommandExecutor
 {
     private NinSubCommand subCommand;
 
+
     @NotNull
     @Override
     public SubCommandExecutor init(NinSubCommand NCSubCommand)
@@ -19,14 +20,15 @@ public class NCNinCommandHelpHandler implements SubCommandExecutor
         return this;
     }
 
+
     @Override
     public void execute(@NotNull CommandSender sender, @NotNull String[] args)
     {
-        if(args.length == 1) // Sub command supplied.
+        if (args.length == 1) // Sub command supplied.
         {
             NinSubCommand subCmd = subCommand.getParentCommand().getSubCommandByAlias(args[0]);
 
-            if(subCmd == null)
+            if (subCmd == null)
             {
                 MessageUtil.sendCommandHelp(sender, subCommand.getParentCommand());
             }

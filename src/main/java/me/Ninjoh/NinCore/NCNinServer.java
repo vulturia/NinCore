@@ -18,8 +18,6 @@ public class NCNinServer implements NinServer
     private List<NinPlayer> ninPlayers;
 
 
-
-
     public NCNinServer(List<NinPlayer> ninPlayers)
     {
         this.ninPlayers = ninPlayers;
@@ -55,12 +53,12 @@ public class NCNinServer implements NinServer
     public NinPlayer getNinPlayer(Player player)
     {
         // NinPlayers are always online.
-        if(!player.isOnline()) return null;
+        if (!player.isOnline()) return null;
 
 
         for (NinPlayer p : ninPlayers)
         {
-            if(p.toPlayer().equals(player))
+            if (p.toPlayer().equals(player))
             {
                 return p;
             }
@@ -68,6 +66,7 @@ public class NCNinServer implements NinServer
 
         return null; // We should never reach this
     }
+
 
     @Override
     public Server getServer()
@@ -103,7 +102,7 @@ public class NCNinServer implements NinServer
         {
             for (Entity entity : w.getEntities())
             {
-                if(entity.getEntityId() == id) // Found the entity!
+                if (entity.getEntityId() == id) // Found the entity!
                 {
                     e = entity;
                     break; // Stop searching any further
@@ -111,7 +110,7 @@ public class NCNinServer implements NinServer
             }
 
             // We found the entity!
-            if(e != null)
+            if (e != null)
             {
                 break; // Stop searching any further
             }

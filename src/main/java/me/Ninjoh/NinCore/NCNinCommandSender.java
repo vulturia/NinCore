@@ -35,7 +35,7 @@ public class NCNinCommandSender implements NinCommandSender
     @Override
     public MinecraftLocale getMinecraftLocale()
     {
-        if(this.commandSender instanceof Player)
+        if (this.commandSender instanceof Player)
         {
             MinecraftLocale locale = MinecraftLocale.fromLanguageTag(((Player) commandSender).spigot().getLocale());
             if (locale == null)

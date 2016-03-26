@@ -21,10 +21,12 @@ public class NCNinCommandHandler implements CommandExecutor
 {
     private NCCommand NCCommand;
 
+
     public NCNinCommandHandler(NCCommand NCCommand)
     {
         this.NCCommand = NCCommand;
     }
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, String label, @NotNull String[] args)
@@ -96,7 +98,7 @@ public class NCNinCommandHandler implements CommandExecutor
         {
             MessageUtil.sendError(ve.getTarget(), ve.getPlayerMessage());
 
-            if(ve.getLogMessage() != null) // Log the log message if it isn't null, with a very fine log level.
+            if (ve.getLogMessage() != null) // Log the log message if it isn't null, with a very fine log level.
             {
                 NinCore.getImplementingPlugin().getLogger().finer(ve.getLogMessage());
                 NinCore.getImplementingPlugin().getLogger().finest(ExceptionUtils.getFullStackTrace(ve));
@@ -105,7 +107,7 @@ public class NCNinCommandHandler implements CommandExecutor
         catch (TechnicalException te)
         {
             // Log the exception to console.
-            if((te.getLogLevel() == null) && (te.getMessage() != null))
+            if ((te.getLogLevel() == null) && (te.getMessage() != null))
             {
                 NinCore.getImplementingPlugin().getLogger().warning(te.getMessage());
                 te.printStackTrace();

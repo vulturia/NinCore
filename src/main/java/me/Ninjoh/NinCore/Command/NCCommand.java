@@ -29,7 +29,7 @@ public class NCCommand extends CommandBase implements NinCommand
     {
         super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases);
 
-        if(executor != null) this.executor = executor.init(this);
+        if (executor != null) this.executor = executor.init(this);
         this.subCommands = subCommands;
         this.plugin = plugin;
 
@@ -42,7 +42,7 @@ public class NCCommand extends CommandBase implements NinCommand
         Command command = plugin.getCommand(name);
 
         String staticDescription = command.getDescription();
-        if(requiredPermission == null) requiredPermission = command.getPermission();
+        if (requiredPermission == null) requiredPermission = command.getPermission();
 
         String usage = command.getUsage();
         List<String> aliases = command.getAliases();
@@ -287,7 +287,7 @@ public class NCCommand extends CommandBase implements NinCommand
             NCNinCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
                     this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
         }
-        catch(SubCommandAliasAlreadyRegisteredException e2)
+        catch (SubCommandAliasAlreadyRegisteredException e2)
         {
             NCNinCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
                     this.getName() + "' due to an exception: '" + e2.getClass().getName() + "'");

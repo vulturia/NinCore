@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * The same UUID API handler as the default one, except this one does not spam console
  * with status messages about API requests.
- *
  */
 public class NCMainUUIDAPIHandler extends UUIDHandler
 {

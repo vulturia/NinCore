@@ -16,7 +16,7 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(@NotNull PlayerJoinEvent e)
     {
-        if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
+        if (NinCore.getImplementation().getNinServer() instanceof NCNinServer)
         {
             NinCore.getImplementingPlugin().getLogger().fine("Added player (" + e.getPlayer().getName() +
                     ", " + e.getPlayer().getUniqueId() + ") to the online NinPlayer cache");
@@ -30,7 +30,7 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(@NotNull PlayerQuitEvent e)
     {
-        if(NinCore.getImplementation().getNinServer() instanceof NCNinServer)
+        if (NinCore.getImplementation().getNinServer() instanceof NCNinServer)
         {
             NinCore.getImplementingPlugin().getLogger().fine("Removed player (" + e.getPlayer().getName() +
                     ", " + e.getPlayer().getUniqueId() + ") from the online NinPlayer cache");

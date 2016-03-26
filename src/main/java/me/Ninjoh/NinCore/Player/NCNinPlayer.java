@@ -43,7 +43,6 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
     }
 
 
-
     @Nullable
     public static NCNinPlayer fromUUID(UUID uuid)
     {
