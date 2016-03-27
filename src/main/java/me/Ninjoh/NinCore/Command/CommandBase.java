@@ -1,6 +1,7 @@
 package me.ninjoh.nincore.command;
 
 
+import me.ninjoh.nincore.api.MinecraftLocale;
 import me.ninjoh.nincore.api.util.TranslationUtils;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     private String staticDescription;
     private String descriptionKey;
     private String descriptionBundleBaseName;
+    private ClassLoader classLoader;
 
     private String requiredPermission;
     private String usage;
@@ -24,7 +26,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     boolean useStaticDescription;
 
 
-    public CommandBase(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases)
+    public CommandBase(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, ClassLoader classLoader)
     {
         this.name = name;
         this.staticDescription = staticDescription;
@@ -34,6 +36,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         this.requiredPermission = requiredPermission;
         this.usage = usage;
         this.aliases = aliases;
+        this.classLoader = classLoader;
     }
 
 
@@ -74,7 +77,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         }
         else
         {
-            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName), descriptionKey);
+            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName, MinecraftLocale.BRITISH_ENGLISH.toLocale(), classLoader), descriptionKey);
         }
     }
 
@@ -88,7 +91,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         }
         else
         {
-            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName, locale), descriptionKey);
+            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName, locale, classLoader), descriptionKey);
         }
     }
 

@@ -7,6 +7,7 @@ import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.exceptions.TechnicalException;
 import me.ninjoh.nincore.api.exceptions.ValidationException;
 import me.ninjoh.nincore.api.exceptions.validationexceptions.AccessDeniedException;
+import me.ninjoh.nincore.api.exceptions.validationexceptions.NotEnoughArgumentsException;
 import me.ninjoh.nincore.api.util.MessageUtil;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
@@ -93,6 +94,10 @@ public class NCNinCommandHandler implements CommandExecutor
                     this.NCCommand.getExecutor().execute(sender, args);
                 }
             }
+        }
+        catch (NotEnoughArgumentsException na)
+        {
+            NinCore.get().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NCCommand);
         }
         catch (ValidationException ve)
         {

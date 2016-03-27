@@ -27,13 +27,19 @@ public class NCCommand extends CommandBase implements NinCommand
 
     public NCCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {
-        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases);
+        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, plugin.getClass().getClassLoader());
 
         if (executor != null) this.executor = executor.init(this);
         this.subCommands = subCommands;
         this.plugin = plugin;
 
         plugin.getCommand(name).setExecutor(new NCNinCommandHandler(this));
+    }
+
+
+    public JavaPlugin getPlugin()
+    {
+        return plugin;
     }
 
 
@@ -272,6 +278,7 @@ public class NCCommand extends CommandBase implements NinCommand
         SubCommandBuilder subCmd_list_builder = new SubCommandBuilder();
         subCmd_list_builder.setName("help");
         subCmd_list_builder.addAlias("?");
+        subCmd_list_builder.setUseStaticDescription(false);
         subCmd_list_builder.setDescriptionKey("subCmdDesc.help");
         subCmd_list_builder.setDescriptionBundleBaseName("lang.messages");
         subCmd_list_builder.setUsage("<sub command?>");
@@ -303,6 +310,7 @@ public class NCCommand extends CommandBase implements NinCommand
         SubCommandBuilder subCommandBuilder = new SubCommandBuilder();
         subCommandBuilder.setName("info");
         subCommandBuilder.addAlias("i");
+        subCommandBuilder.setUseStaticDescription(false);
         subCommandBuilder.setDescriptionKey("subCmdDesc.info");
         subCommandBuilder.setDescriptionBundleBaseName("lang.messages");
         subCommandBuilder.setExecutor(new NCNinSubCommandInfoHandler(this.plugin));
