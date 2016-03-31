@@ -1,11 +1,13 @@
 package me.ninjoh.nincore;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import me.ninjoh.nincore.api.*;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
-import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
+import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
 import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
@@ -17,37 +19,66 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.jline.console.ConsoleReader;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 {
-    private MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
-    private boolean isLocalized;
-    private boolean useColoredLogging;
+    @Getter         private MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
+    @Getter @Setter private boolean isLocalized;
+                    private boolean useColoredLogging;
 
+    @Getter         private static NCNinCore instance;
+    @Getter         private NinServer ninServer;
+                    private boolean consoleIsAnsiSupported = false;
 
-    private NinServer server;
-    private static NCNinCore NCNinCore;
 
     //private static ProtocolManager protocolManager;
 
 
     @Override
+    public void onLoad()
+    {
+        NinCore.setImplementation(this);
+
+        try
+        {
+            ConsoleReader consoleReader = (ConsoleReader) Bukkit.getServer().getClass().getMethod("getReader").invoke(Bukkit.getServer());
+
+            consoleIsAnsiSupported = consoleReader.getTerminal().isAnsiSupported();
+        }
+        catch (ClassCastException | NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
+        {
+            NinCore.getApiLogger().warning(String.format("Could not use colored logging because a %s occurred whilst" +
+                    " trying to check if the terminal is ANSI supported;", e.getClass().getName()));
+            NinCore.getApiLogger().fine(ExceptionUtils.getFullStackTrace(e));
+        }
+    }
+
+
+    @Override
     public void onEnableInner()
     {
-        NCNinCore = this;
+        instance = this;
         this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
                 " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
-        NinCore.setImplementation(this);
+
+
+
+
+
+        this.getLogger().fine("test");
         this.saveDefaultConfig();
 
 
@@ -131,7 +162,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
             this.getNinLogger().fine("Added a NinPlayer to the online player cache, (" + p.getName() + ", " + p.getUniqueId() + ")");
         }
 
-        this.server = new NCNinServer(ninPlayers);
+        this.ninServer = new NCNinServer(ninPlayers);
 
 
         //protocolManager = ProtocolLibrary.getProtocolManager();
@@ -158,21 +189,8 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 //    public static ProtocolManager getProtocolLib()
 //    {
-//        return NCNinCore.protocolManager;
+//        return instance.protocolManager;
 //    }
-
-
-    public static NCNinCore getInstance()
-    {
-        return NCNinCore;
-    }
-
-
-    @Override
-    public NinServer getNinServer()
-    {
-        return this.server;
-    }
 
 
     @Override
@@ -197,7 +215,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, SubCommandExecutor executor, NinCommand parentCommand)
+    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
     {
         return NCSubCommand.construct(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand);
     }
@@ -232,33 +250,12 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public MinecraftLocale getDefaultMinecraftLocale()
-    {
-        return this.defaultMinecraftLocale;
-    }
-
-
-    @Override
     public void setDefaultMinecraftLocale(MinecraftLocale minecraftLocale)
     {
         this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
                 defaultMinecraftLocale.toLanguageTag() + ", " +
                 defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
         this.defaultMinecraftLocale = minecraftLocale;
-    }
-
-
-    @Override
-    public void setLocalized(boolean value)
-    {
-        this.isLocalized = value;
-    }
-
-
-    @Override
-    public boolean isLocalized()
-    {
-        return this.isLocalized;
     }
 
 
@@ -273,5 +270,12 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public boolean useColoredLogging()
     {
         return this.useColoredLogging;
+    }
+
+
+    @Override
+    public boolean consoleIsAnsiSupported()
+    {
+        return consoleIsAnsiSupported;
     }
 }

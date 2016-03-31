@@ -134,6 +134,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -177,6 +184,7 @@
                             <include>net.mcapi.uuid:uuid-java</include>
                             <include>me.ninjoh:nincore-api</include>
                             <include>org.projectlombok:lombok</include>
+                            <include>com.google.guava:guava</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -204,6 +212,11 @@
                         <relocation>
                             <pattern>lombok</pattern>
                             <shadedPattern>me.ninjoh.nincore.common.lombok</shadedPattern>
+                        </relocation>
+
+                        <relocation>
+                            <pattern>com.google.guava</pattern>
+                            <shadedPattern>me.ninjoh.nincore.common.com.google.guava</shadedPattern>
                         </relocation>
 
                     </relocations>

@@ -3,19 +3,19 @@ package me.ninjoh.nincore.command;
 
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
-import me.ninjoh.nincore.api.command.executors.SubCommandExecutor;
+import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandHandler;
 
 import java.util.List;
 
 public class NCSubCommand extends CommandBase implements NinSubCommand
 {
-    private SubCommandExecutor executor; // Required
+    private NinSubCommandExecutor executor; // Required
     private NCNinSubCommandHandler handler;
     private NinCommand parentCommand;
 
 
-    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, SubCommandExecutor executor, NinCommand parentCommand)
+    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
     {
         super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, ((NCCommand) parentCommand).getPlugin().getClass().getClassLoader());
 
@@ -25,7 +25,7 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
     }
 
 
-    public static NCSubCommand construct(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, SubCommandExecutor executor, NinCommand parentCommand)
+    public static NCSubCommand construct(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
     {
         return new NCSubCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand);
     }
@@ -37,7 +37,7 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
      * @return The executor for this sub command.
      */
     @Override
-    public SubCommandExecutor getExecutor()
+    public NinSubCommandExecutor getExecutor()
     {
         return executor;
     }
