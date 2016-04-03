@@ -284,6 +284,7 @@ public class NCCommand extends CommandBase implements NinCommand
         subCmd_list_builder.setDescriptionBundleBaseName("lang.messages");
         subCmd_list_builder.setUsage("<sub command?>");
         subCmd_list_builder.setExecutor(new NCNinCommandHelpHandler());
+        subCmd_list_builder.setClassLoader(NCNinCore.class.getClassLoader());
         subCmd_list_builder.setParentCommand(this);
 
         try
@@ -315,6 +316,7 @@ public class NCCommand extends CommandBase implements NinCommand
         subCommandBuilder.setDescriptionKey("subCmdDesc.info");
         subCommandBuilder.setDescriptionBundleBaseName("lang.messages");
         subCommandBuilder.setExecutor(new NCNinSubCommandInfoHandler(this.plugin));
+        subCommandBuilder.setClassLoader(NCNinCore.class.getClassLoader());
         subCommandBuilder.setParentCommand(this);
 
         try
