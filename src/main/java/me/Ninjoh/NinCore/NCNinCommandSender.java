@@ -82,6 +82,10 @@ public class NCNinCommandSender implements NinCommandSender
     @Override
     public void sendMessage(MessageColor messageColor, String message, Plugin plugin)
     {
+        Preconditions.checkNotNull(messageColor);
+        Preconditions.checkNotNull(message);
+        Preconditions.checkNotNull(plugin);
+
         String result = ChatColor.GOLD + "[" + ChatColor.DARK_AQUA + plugin.getName() + ChatColor.GOLD + "] " + ChatColor.RESET +
                 messageColor + TextUtils.appendChatColorsToChatColorReset(message, messageColor.toChatColor());
         commandSender.sendMessage(result);

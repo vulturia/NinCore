@@ -15,9 +15,9 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
     private NinCommand parentCommand;
 
 
-    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
+    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand, ClassLoader loader)
     {
-        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, ((NCCommand) parentCommand).getPlugin().getClass().getClassLoader());
+        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, loader);
 
         this.executor = executor.init(this);
         this.handler = new NCNinSubCommandHandler(this);
@@ -25,9 +25,11 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
     }
 
 
-    public static NCSubCommand construct(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
+    public static NCSubCommand construct(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand, ClassLoader loader)
     {
-        return new NCSubCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand);
+        if(loader == null) loader = ((NCCommand) parentCommand).getPlugin().getClass().getClassLoader();
+
+        return new NCSubCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand, loader);
     }
 
 

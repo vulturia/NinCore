@@ -48,9 +48,10 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public void onLoad()
+    public void onLoadInner()
     {
         NinCore.setImplementation(this);
+        instance = this;
 
         try
         {
@@ -60,9 +61,9 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         }
         catch (ClassCastException | NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
         {
-            NinCore.getApiLogger().warning(String.format("Could not use colored logging because a %s occurred whilst" +
+            this.getNinLogger().warning(String.format("Could not use colored logging because a %s occurred whilst" +
                     " trying to check if the terminal is ANSI supported;", e.getClass().getName()));
-            NinCore.getApiLogger().fine(ExceptionUtils.getFullStackTrace(e));
+            this.getNinLogger().fine(ExceptionUtils.getFullStackTrace(e));
         }
     }
 
@@ -70,15 +71,10 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void onEnableInner()
     {
-        instance = this;
         this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
                 " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
 
 
-
-
-
-        this.getLogger().fine("test");
         this.saveDefaultConfig();
 
 
@@ -208,16 +204,16 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public NinCommand constructCommand(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
+    public NinCommand constructCommand(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
     {
-        return NCCommand.construct(name, useStaticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, executor, subCommands, plugin);
+        return NCCommand.construct(name, useStaticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, executor, subCommands, plugin, loader);
     }
 
 
     @Override
-    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
+    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand, ClassLoader loader)
     {
-        return NCSubCommand.construct(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand);
+        return NCSubCommand.construct(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand, loader);
     }
 
 

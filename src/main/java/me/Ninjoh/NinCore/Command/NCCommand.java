@@ -25,9 +25,9 @@ public class NCCommand extends CommandBase implements NinCommand
     private JavaPlugin plugin;
 
 
-    public NCCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
+    public NCCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
     {
-        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, plugin.getClass().getClassLoader());
+        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, loader);
 
         if (executor != null) this.executor = executor.init(this);
         this.subCommands = subCommands;
@@ -43,17 +43,18 @@ public class NCCommand extends CommandBase implements NinCommand
     }
 
 
-    public static NCCommand construct(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
+    public static NCCommand construct(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
     {
         Command command = plugin.getCommand(name);
 
         String staticDescription = command.getDescription();
         if (requiredPermission == null) requiredPermission = command.getPermission();
+        if(loader == null) loader = plugin.getClass().getClassLoader();
 
         String usage = command.getUsage();
         List<String> aliases = command.getAliases();
 
-        return new NCCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, subCommands, plugin);
+        return new NCCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, subCommands, plugin, loader);
     }
 
 
