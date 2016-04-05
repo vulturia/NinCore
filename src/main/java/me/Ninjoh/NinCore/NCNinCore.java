@@ -6,6 +6,8 @@ import lombok.Setter;
 import me.ninjoh.nincore.api.*;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
+import me.ninjoh.nincore.api.command.builders.CommandBuilder;
+import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
 import me.ninjoh.nincore.api.entity.NinPlayer;
@@ -19,6 +21,7 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
+import me.ninjoh.nincore.subcommands.nincoreGetJavaVersion;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -173,6 +176,26 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         getServer().getPluginManager().registerEvents(new ArmorListener(blocked), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
+
+        this.getNinLogger().info("Registering NinCore command..");
+
+        CommandBuilder ncB = new CommandBuilder(this);
+        ncB.setName("nincore");
+        ncB.setUseStaticDescription(true);
+        NinCommand nc = ncB.construct();
+
+        nc.addDefaultInfoSubCmd();
+        nc.addDefaultHelpSubCmd();
+
+        SubCommandBuilder nc_getjavaversionB = new SubCommandBuilder();
+        nc_getjavaversionB.setParentCommand(nc);
+        nc_getjavaversionB.setName("getJavaVersion");
+        nc_getjavaversionB.setRequiredPermission("nincore.getjavaversion");
+        nc_getjavaversionB.addAlias("gjv");
+        nc_getjavaversionB.setUseStaticDescription(true);
+        nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
+        nc_getjavaversionB.setExecutor(new nincoreGetJavaVersion());
+        this.registerNinSubCommand(nc_getjavaversionB.construct(), this);
     }
 
 
