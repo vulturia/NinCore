@@ -21,7 +21,8 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
-import me.ninjoh.nincore.subcommands.NincoreGetJavaVersion;
+import me.ninjoh.nincore.subcommands.GetJavaVersion;
+import me.ninjoh.nincore.subcommands.IsAnsiConsole;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -201,8 +202,18 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_getjavaversionB.addAlias("gjv");
         nc_getjavaversionB.setUseStaticDescription(true);
         nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
-        nc_getjavaversionB.setExecutor(new NincoreGetJavaVersion());
+        nc_getjavaversionB.setExecutor(new GetJavaVersion());
         this.registerNinSubCommand(nc_getjavaversionB.construct(), this);
+
+        SubCommandBuilder nc_isAnsiConsole = new SubCommandBuilder();
+        nc_isAnsiConsole.setParentCommand(nc);
+        nc_isAnsiConsole.setName("isAnsiConsole");
+        nc_isAnsiConsole.setRequiredPermission("nincore.isansiconsole");
+        nc_isAnsiConsole.addAlias("iac");
+        nc_isAnsiConsole.setUseStaticDescription(true);
+        nc_isAnsiConsole.setStaticDescription("Check if the current console is ANSI supported.");
+        nc_isAnsiConsole.setExecutor(new IsAnsiConsole());
+        this.registerNinSubCommand(nc_isAnsiConsole.construct(), this);
     }
 
 

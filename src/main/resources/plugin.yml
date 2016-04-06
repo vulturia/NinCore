@@ -5,3 +5,13 @@ author: Ninjoh
 commands:
    nincore:
      aliases: [nc]
+permissions:
+    nincore.*:
+        description: Gives access to all nincore permissions & commands.
+        children:
+            nincore.getjavaversion: true
+            nincore.isansiconsole: true
+    nincore.getjavaversion:
+        default: op
+    nincore.isansiconsole:
+        default: op
