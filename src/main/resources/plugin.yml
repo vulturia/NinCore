@@ -11,7 +11,10 @@ permissions:
         children:
             nincore.getjavaversion: true
             nincore.isansiconsole: true
+            nincore.listoperators: true
     nincore.getjavaversion:
         default: op
     nincore.isansiconsole:
+        default: op
+    nincore.listoperators:
         default: op

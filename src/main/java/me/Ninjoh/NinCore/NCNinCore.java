@@ -23,6 +23,7 @@ import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
 import me.ninjoh.nincore.subcommands.GetJavaVersion;
 import me.ninjoh.nincore.subcommands.IsAnsiConsole;
+import me.ninjoh.nincore.subcommands.ListOperators;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -214,6 +215,16 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_isAnsiConsole.setStaticDescription("Check if the current console is ANSI supported.");
         nc_isAnsiConsole.setExecutor(new IsAnsiConsole());
         this.registerNinSubCommand(nc_isAnsiConsole.construct(), this);
+
+        SubCommandBuilder nc_listOperators = new SubCommandBuilder();
+        nc_listOperators.setParentCommand(nc);
+        nc_listOperators.setName("listOperators");
+        nc_listOperators.setRequiredPermission("nincore.listoperators");
+        nc_listOperators.addAlias("lo");
+        nc_listOperators.setUseStaticDescription(true);
+        nc_listOperators.setStaticDescription("List all server operators.");
+        nc_listOperators.setExecutor(new ListOperators());
+        this.registerNinSubCommand(nc_listOperators.construct(), this);
     }
 
 
