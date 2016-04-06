@@ -21,7 +21,7 @@ import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.player.NCNinOfflinePlayer;
 import me.ninjoh.nincore.player.NCNinPlayer;
-import me.ninjoh.nincore.subcommands.nincoreGetJavaVersion;
+import me.ninjoh.nincore.subcommands.NincoreGetJavaVersion;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -38,13 +38,14 @@ import java.util.List;
 
 public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 {
-    @Getter         private MinecraftLocale defaultMinecraftLocale = MinecraftLocale.BRITISH_ENGLISH;
+    @Getter         private MinecraftLocale defaultMinecraftLocale;
     @Getter @Setter private boolean isLocalized;
-                    private boolean useColoredLogging;
+                    private boolean consoleIsAnsiSupported = false;
+
+    @Getter         private NinServer ninServer;
+                    private NinCoreConfig config;
 
     @Getter         private static NCNinCore instance;
-    @Getter         private NinServer ninServer;
-                    private boolean consoleIsAnsiSupported = false;
 
 
     //private static ProtocolManager protocolManager;
@@ -79,10 +80,12 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
         this.saveDefaultConfig();
+        this.config = new NinCoreConfig(this.getConfig());
+
+        this.defaultMinecraftLocale = NinCoreConfig.getDefaultMinecraftLocale();
 
 
-        useColoredLogging = this.getConfig().getBoolean("logging.enableColoredLogging");
-        if (useColoredLogging)
+        if (NinCoreConfig.isColoredLoggingEnabled())
         {
             this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
         }
@@ -177,12 +180,16 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
 
+
+        // Register NinCore command it's sub commands.
         this.getNinLogger().info("Registering NinCore command..");
 
         CommandBuilder ncB = new CommandBuilder(this);
         ncB.setName("nincore");
         ncB.setUseStaticDescription(true);
         NinCommand nc = ncB.construct();
+
+        this.getNinLogger().info("Registering subcommands..");
 
         nc.addDefaultInfoSubCmd();
         nc.addDefaultHelpSubCmd();
@@ -194,7 +201,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_getjavaversionB.addAlias("gjv");
         nc_getjavaversionB.setUseStaticDescription(true);
         nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
-        nc_getjavaversionB.setExecutor(new nincoreGetJavaVersion());
+        nc_getjavaversionB.setExecutor(new NincoreGetJavaVersion());
         this.registerNinSubCommand(nc_getjavaversionB.construct(), this);
     }
 
@@ -271,10 +278,18 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void setDefaultMinecraftLocale(MinecraftLocale minecraftLocale)
     {
-        this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
-                defaultMinecraftLocale.toLanguageTag() + ", " +
-                defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
-        this.defaultMinecraftLocale = minecraftLocale;
+        if(!NinCoreConfig.isDefaultMinecraftLocaleUpdatable())
+        {
+            this.getNinLogger().warning("Could not update the default MinecraftLocale due to updating the default" +
+                    " MinecraftLocale being disabled in the configuration file.");
+        }
+        else
+        {
+            this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
+                    defaultMinecraftLocale.toLanguageTag() + ", " +
+                    defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
+            this.defaultMinecraftLocale = minecraftLocale;
+        }
     }
 
 
@@ -288,7 +303,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public boolean useColoredLogging()
     {
-        return this.useColoredLogging;
+        return NinCoreConfig.isColoredLoggingEnabled();
     }
 
 
@@ -296,5 +311,11 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     public boolean consoleIsAnsiSupported()
     {
         return consoleIsAnsiSupported;
+    }
+
+
+    public NinCoreConfig getNinCoreConfig()
+    {
+        return config;
     }
 }

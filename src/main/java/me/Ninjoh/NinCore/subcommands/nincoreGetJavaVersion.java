@@ -7,7 +7,7 @@ import me.ninjoh.nincore.api.exceptions.ValidationException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class nincoreGetJavaVersion extends NinSubCommandExecutor
+public class NincoreGetJavaVersion extends NinSubCommandExecutor
 {
 
     @Override

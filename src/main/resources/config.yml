@@ -3,3 +3,7 @@ logging:
 
 localization:
   enabled: true
+
+  minecraftLocales:
+    defaultMinecraftLocale: 'BRITISH_ENGLISH'
+    canBeProgrammaticlyUpdated: true
