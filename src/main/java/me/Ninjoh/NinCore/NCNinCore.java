@@ -13,6 +13,7 @@ import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
 import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.api.localization.LocalizedString;
 import me.ninjoh.nincore.api.logging.LogColor;
 import me.ninjoh.nincore.command.NCCommand;
 import me.ninjoh.nincore.command.NCSubCommand;
@@ -83,6 +84,14 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
         this.saveDefaultConfig();
         this.config = new NinCoreConfig(this.getConfig());
+
+//        if(!this.getDataManager().dataFileExists())
+//        {
+//            this.getDataManager().createDataFile();
+//        }
+//
+//        this.getDataManager().loadDataFile();
+//        this.getDataManager().getData()
 
         this.defaultMinecraftLocale = NinCoreConfig.getDefaultMinecraftLocale();
 
@@ -231,7 +240,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void onDisableInner()
     {
-
+        //this.getDataManager().saveDataFile();
     }
 
 
@@ -256,16 +265,16 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public NinCommand constructCommand(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
+    public NinCommand constructCommand(String name, boolean useStaticDescription, LocalizedString localizedDescription, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {
-        return NCCommand.construct(name, useStaticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, executor, subCommands, plugin, loader);
+        return NCCommand.construct(name, useStaticDescription, localizedDescription, requiredPermission, executor, subCommands, plugin);
     }
 
 
     @Override
-    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand, ClassLoader loader)
+    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
     {
-        return NCSubCommand.construct(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, parentCommand, loader);
+        return NCSubCommand.construct(name, useStaticDescription, staticDescription, localizedDescription, requiredPermission, usage, aliases, executor, parentCommand);
     }
 
 

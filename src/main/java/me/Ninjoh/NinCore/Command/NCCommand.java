@@ -1,6 +1,7 @@
 package me.ninjoh.nincore.command;
 
 
+import com.google.common.base.Preconditions;
 import me.ninjoh.nincore.NCNinCore;
 import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.NinCommand;
@@ -9,6 +10,7 @@ import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
+import me.ninjoh.nincore.api.localization.LocalizedString;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHelpHandler;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandInfoHandler;
@@ -16,6 +18,7 @@ import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class NCCommand extends CommandBase implements NinCommand
@@ -25,9 +28,9 @@ public class NCCommand extends CommandBase implements NinCommand
     private JavaPlugin plugin;
 
 
-    public NCCommand(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
+    public NCCommand(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {
-        super(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, loader);
+        super(name, useStaticDescription, staticDescription, localizedDescription, requiredPermission, usage, aliases);
 
         if (executor != null) this.executor = executor.init(this);
         this.subCommands = subCommands;
@@ -43,18 +46,20 @@ public class NCCommand extends CommandBase implements NinCommand
     }
 
 
-    public static NCCommand construct(String name, boolean useStaticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin, ClassLoader loader)
+    public static NCCommand construct(String name, boolean useStaticDescription, LocalizedString localizedDescription, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(plugin);
+
         Command command = plugin.getCommand(name);
 
         String staticDescription = command.getDescription();
         if (requiredPermission == null) requiredPermission = command.getPermission();
-        if(loader == null) loader = plugin.getClass().getClassLoader();
 
         String usage = command.getUsage();
         List<String> aliases = command.getAliases();
 
-        return new NCCommand(name, useStaticDescription, staticDescription, descriptionKey, descriptionBundleBaseName, requiredPermission, usage, aliases, executor, subCommands, plugin, loader);
+        return new NCCommand(name, useStaticDescription, staticDescription, localizedDescription, requiredPermission, usage, aliases, executor, subCommands, plugin);
     }
 
 
@@ -149,13 +154,15 @@ public class NCCommand extends CommandBase implements NinCommand
         // If any sub commands exist for this command
         if (!subCommands.isEmpty())
         {
-            // Loop over all sub commands
-            for (NinSubCommand subCommand : subCommands)
+            Iterator<NinSubCommand> iter = subCommands.iterator();
+
+            while(iter.hasNext())
             {
-                // If this is the sub command queried for, return true.
-                if (subCommand.getName().equals(name.toLowerCase()))
+                NinSubCommand cmd =  iter.next();
+
+                if(cmd.getName().equalsIgnoreCase(name))
                 {
-                    subCommands.remove(subCommand);
+                    iter.remove();
                 }
             }
         }
@@ -276,16 +283,14 @@ public class NCCommand extends CommandBase implements NinCommand
     public void addDefaultHelpSubCmd()
     {
         // /command help. sub command.
-        SubCommandBuilder subCmd_list_builder = new SubCommandBuilder();
-        subCmd_list_builder.setName("help");
-        subCmd_list_builder.addAlias("?");
-        subCmd_list_builder.setUseStaticDescription(false);
-        subCmd_list_builder.setDescriptionKey("subCmdDesc.help");
-        subCmd_list_builder.setDescriptionBundleBaseName("lang.messages");
-        subCmd_list_builder.setUsage("<sub command?>");
-        subCmd_list_builder.setExecutor(new NCNinCommandHelpHandler());
-        subCmd_list_builder.setClassLoader(NCNinCore.class.getClassLoader());
-        subCmd_list_builder.setParentCommand(this);
+        SubCommandBuilder subCmd_list_builder = new SubCommandBuilder()
+                .setName("help")
+                .addAlias("?")
+                .setUseStaticDescription(false)
+                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "lang.messages", "subCmdDesc.help"))
+                .setUsage("<sub command?>")
+                .setExecutor(new NCNinCommandHelpHandler())
+                .setParentCommand(this);
 
         try
         {
@@ -309,15 +314,13 @@ public class NCCommand extends CommandBase implements NinCommand
     public void addDefaultInfoSubCmd()
     {
         // /command help. sub command.
-        SubCommandBuilder subCommandBuilder = new SubCommandBuilder();
-        subCommandBuilder.setName("info");
-        subCommandBuilder.addAlias("i");
-        subCommandBuilder.setUseStaticDescription(false);
-        subCommandBuilder.setDescriptionKey("subCmdDesc.info");
-        subCommandBuilder.setDescriptionBundleBaseName("lang.messages");
-        subCommandBuilder.setExecutor(new NCNinSubCommandInfoHandler(this.plugin));
-        subCommandBuilder.setClassLoader(NCNinCore.class.getClassLoader());
-        subCommandBuilder.setParentCommand(this);
+        SubCommandBuilder subCommandBuilder = new SubCommandBuilder()
+                .setName("info")
+                .addAlias("i")
+                .setUseStaticDescription(false)
+                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "lang.messages", "subCmdDesc.info"))
+                .setExecutor(new NCNinSubCommandInfoHandler(this.plugin))
+                .setParentCommand(this);
 
         try
         {

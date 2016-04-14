@@ -2,21 +2,18 @@ package me.ninjoh.nincore.command;
 
 
 import me.ninjoh.nincore.api.MinecraftLocale;
-import me.ninjoh.nincore.api.util.TranslationUtils;
+import me.ninjoh.nincore.api.localization.LocalizedString;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
 {
     private final String name;
 
     private String staticDescription;
-    private String descriptionKey;
-    private String descriptionBundleBaseName;
-    private ClassLoader classLoader;
+    private LocalizedString localizedDescription;
 
     private String requiredPermission;
     private String usage;
@@ -26,17 +23,15 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
     boolean useStaticDescription;
 
 
-    public CommandBase(String name, boolean useStaticDescription, String staticDescription, String descriptionKey, String descriptionBundleBaseName, String requiredPermission, String usage, List<String> aliases, ClassLoader classLoader)
+    public CommandBase(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases)
     {
         this.name = name;
         this.staticDescription = staticDescription;
         this.useStaticDescription = useStaticDescription;
-        this.descriptionKey = descriptionKey;
-        this.descriptionBundleBaseName = descriptionBundleBaseName;
+        this.localizedDescription = localizedDescription;
         this.requiredPermission = requiredPermission;
         this.usage = usage;
         this.aliases = aliases;
-        this.classLoader = classLoader;
     }
 
 
@@ -63,7 +58,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         }
         else
         {
-            return ((descriptionKey != null) && (descriptionBundleBaseName != null));
+            return this.localizedDescription != null;
         }
     }
 
@@ -77,7 +72,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         }
         else
         {
-            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName, MinecraftLocale.BRITISH_ENGLISH.toLocale(), classLoader), descriptionKey);
+            return this.localizedDescription.get(MinecraftLocale.getDefault().toLocale());
         }
     }
 
@@ -91,7 +86,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
         }
         else
         {
-            return TranslationUtils.getStaticMsg(ResourceBundle.getBundle(descriptionBundleBaseName, locale, classLoader), descriptionKey);
+            return this.localizedDescription.get(locale);
         }
     }
 

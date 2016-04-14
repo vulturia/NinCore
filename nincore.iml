@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/delombok" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target/apidocs" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources" />
       <excludeFolder url="file://$MODULE_DIR$/target/javadoc-bundle-options" />
@@ -15,6 +17,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/mvn-repo" />
       <excludeFolder url="file://$MODULE_DIR$/target/site" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -41,7 +44,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.9-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.3m" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.jansi:jansi:1.11" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:3.6.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:3.7.0-BETA" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.packetwrapper:PacketWrapper:1.8.7-R0.1-SNAPSHOT" level="project" />
