@@ -8,9 +8,11 @@ import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.entity.NinPlayer;
 import me.ninjoh.nincore.api.messaging.MessageColor;
 import me.ninjoh.nincore.api.util.MessageUtil;
 import me.ninjoh.nincore.api.util.TextUtils;
+import me.ninjoh.nincore.api.util.TranslationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,6 +20,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class NCNinCommandSender implements NinCommandSender
 {
@@ -58,13 +61,6 @@ public class NCNinCommandSender implements NinCommandSender
 
 
     @Override
-    public Locale getLocale()
-    {
-        return this.getMinecraftLocale().toLocale();
-    }
-
-
-    @Override
     public void sendError(@NotNull String error)
     {
         MessageUtil.sendError(this.toCommandSender(), error);
@@ -74,8 +70,23 @@ public class NCNinCommandSender implements NinCommandSender
     @Override
     public void sendError(String error, Plugin plugin)
     {
-        String result = "[" + plugin.getName() + "] " + error; // TODO
-        commandSender.sendMessage(result);
+        //String result = "[" + plugin.getName() + "] " + error; // TODO
+        String prefix = ChatColor.GOLD + "[" + ChatColor.DARK_AQUA + plugin.getName() + ChatColor.GOLD + "] " + ChatColor.RESET;
+
+
+        // Get target's locale.
+        Locale locale;
+        if (commandSender instanceof Player)
+        {
+            locale = NinPlayer.fromPlayer((Player) commandSender).getLocale();
+        }
+        else
+        {
+            locale = NinCore.get().getDefaultMinecraftLocale().toLocale();
+        }
+
+        String msg = TranslationUtils.transWithArgs(ResourceBundle.getBundle("me.ninjoh.nincore.res.messages", locale), new Object[]{error}, "sendError");
+        this.commandSender.sendMessage(prefix + msg);
     }
 
 
