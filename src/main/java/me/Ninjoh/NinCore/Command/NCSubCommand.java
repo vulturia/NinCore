@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
+import me.ninjoh.nincore.api.exceptions.TechnicalException;
 import me.ninjoh.nincore.api.localization.LocalizedString;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandHandler;
 
@@ -17,13 +18,15 @@ public class NCSubCommand extends CommandBase implements NinSubCommand
     private NinCommand parentCommand;
 
 
-    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
+    public NCSubCommand(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand) throws TechnicalException
     {
         super(name, useStaticDescription, staticDescription, localizedDescription, requiredPermission, usage, aliases);
 
         this.executor = executor.init(this);
         this.handler = new NCNinSubCommandHandler(this);
         this.parentCommand = parentCommand;
+
+        parentCommand.addSubCommand(this);
     }
 
 

@@ -213,7 +213,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_getjavaversionB.setUseStaticDescription(true);
         nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
         nc_getjavaversionB.setExecutor(new GetJavaVersion());
-        this.registerNinSubCommand(nc_getjavaversionB.construct(), this);
+        nc_getjavaversionB.construct();
 
         SubCommandBuilder nc_isAnsiConsole = new SubCommandBuilder();
         nc_isAnsiConsole.setParentCommand(nc);
@@ -223,7 +223,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_isAnsiConsole.setUseStaticDescription(true);
         nc_isAnsiConsole.setStaticDescription("Check if the current console is ANSI supported.");
         nc_isAnsiConsole.setExecutor(new IsAnsiConsole());
-        this.registerNinSubCommand(nc_isAnsiConsole.construct(), this);
+        nc_isAnsiConsole.construct();
 
         SubCommandBuilder nc_listOperators = new SubCommandBuilder();
         nc_listOperators.setParentCommand(nc);
@@ -233,7 +233,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
         nc_listOperators.setUseStaticDescription(true);
         nc_listOperators.setStaticDescription("List all server operators.");
         nc_listOperators.setExecutor(new ListOperators());
-        this.registerNinSubCommand(nc_listOperators.construct(), this);
+        nc_listOperators.construct();
     }
 
 
@@ -248,20 +248,6 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 //    {
 //        return instance.protocolManager;
 //    }
-
-
-    @Override
-    public void registerNinCommand(NinCommand ninCommand, JavaPlugin javaPlugin)
-    {
-        javaPlugin.getCommand(ninCommand.getName()).setExecutor(new NCNinCommandHandler((NCCommand) ninCommand));
-    }
-
-
-    @Override
-    public void registerNinSubCommand(NinSubCommand ninSubCommand, JavaPlugin javaPlugin) throws SubCommandAliasAlreadyRegisteredException, SubCommandAlreadyExistsException
-    {
-        ninSubCommand.getParentCommand().addSubCommand(ninSubCommand);
-    }
 
 
     @Override

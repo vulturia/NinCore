@@ -287,7 +287,7 @@ public class NCCommand extends CommandBase implements NinCommand
                 .setName("help")
                 .addAlias("?")
                 .setUseStaticDescription(false)
-                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "lang.messages", "subCmdDesc.help"))
+                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.help"))
                 .setUsage("<sub command?>")
                 .setExecutor(new NCNinCommandHelpHandler())
                 .setParentCommand(this);
@@ -318,7 +318,7 @@ public class NCCommand extends CommandBase implements NinCommand
                 .setName("info")
                 .addAlias("i")
                 .setUseStaticDescription(false)
-                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "lang.messages", "subCmdDesc.info"))
+                .setLocalizedDescription(new LocalizedString(NCNinCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.info"))
                 .setExecutor(new NCNinSubCommandInfoHandler(this.plugin))
                 .setParentCommand(this);
 
