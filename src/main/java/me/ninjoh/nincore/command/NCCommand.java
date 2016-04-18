@@ -11,6 +11,7 @@ import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
 import me.ninjoh.nincore.api.localization.LocalizedString;
+import me.ninjoh.nincore.api.util.PluginUtil;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHandler;
 import me.ninjoh.nincore.command.handlers.NCNinCommandHelpHandler;
 import me.ninjoh.nincore.command.handlers.NCNinSubCommandInfoHandler;
@@ -331,5 +332,11 @@ public class NCCommand extends CommandBase implements NinCommand
             NinCore.getImplementingPlugin().getLogger().warning("Could not add default info command to command with name: '" +
                     this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
         }
+    }
+
+    @Override
+    public void addDefaultReloadSubCmd()
+    {
+        PluginUtil.reload(this.plugin);
     }
 }
