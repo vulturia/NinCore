@@ -1,7 +1,6 @@
 name: NinCore
 version: ${project.version}
-main: me.ninjoh.nincore.NCNinCore
-author: Ninjoh
+main: me.ninjoh.nincore.NcCore: Ninjoh
 commands:
    nincore:
      aliases: [nc]

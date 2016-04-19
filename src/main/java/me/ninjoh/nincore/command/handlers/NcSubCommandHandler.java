@@ -10,12 +10,12 @@ import me.ninjoh.nincore.api.exceptions.validationexceptions.NotEnoughArgumentsE
 import me.ninjoh.nincore.api.util.MessageUtil;
 import org.bukkit.command.CommandSender;
 
-public class NCNinSubCommandHandler
+public class NcSubCommandHandler
 {
     private NinSubCommand subCommand;
 
 
-    public NCNinSubCommandHandler(NinSubCommand subCommand)
+    public NcSubCommandHandler(NinSubCommand subCommand)
     {
         this.subCommand = subCommand;
     }

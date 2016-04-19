@@ -1,16 +1,16 @@
-package me.ninjoh.nincore.player;
+package me.ninjoh.nincore.entity;
 
-import me.ninjoh.nincore.api.NinOfflinePlayer;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
+import me.ninjoh.nincore.api.entity.NinOfflinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
 
-public class NCNinOfflinePlayer implements NinOfflinePlayer
+public class NcOfflinePlayer implements NinOfflinePlayer
 {
-    protected OfflinePlayer offlinePlayer;
+    private OfflinePlayer offlinePlayer;
 
 
     /**
@@ -24,14 +24,14 @@ public class NCNinOfflinePlayer implements NinOfflinePlayer
     }
 
 
-    public NCNinOfflinePlayer(OfflinePlayer offlinePlayer)
+    public NcOfflinePlayer(OfflinePlayer offlinePlayer)
     {
         this.offlinePlayer = offlinePlayer;
     }
 
 
     @Nullable
-    public static NCNinOfflinePlayer fromUUID(UUID uuid)
+    public static NcOfflinePlayer fromUUID(UUID uuid)
     {
         OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(uuid);
 
@@ -40,13 +40,13 @@ public class NCNinOfflinePlayer implements NinOfflinePlayer
             return null;
         }
 
-        return new NCNinOfflinePlayer(offlinePlayer);
+        return new NcOfflinePlayer(offlinePlayer);
     }
 
 
-    public static NCNinOfflinePlayer fromOfflinePlayer(OfflinePlayer offlinePlayer)
+    public static NcOfflinePlayer fromOfflinePlayer(OfflinePlayer offlinePlayer)
     {
-        return new NCNinOfflinePlayer(offlinePlayer);
+        return new NcOfflinePlayer(offlinePlayer);
     }
 
 

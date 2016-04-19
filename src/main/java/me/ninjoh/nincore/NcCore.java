@@ -2,23 +2,20 @@ package me.ninjoh.nincore;
 
 
 import lombok.Getter;
-import lombok.Setter;
-import me.ninjoh.nincore.api.*;
+import me.ninjoh.nincore.api.LocalizationManager;
+import me.ninjoh.nincore.api.NinCore;
+import me.ninjoh.nincore.api.NinCoreImplementation;
+import me.ninjoh.nincore.api.NinCorePlugin;
+import me.ninjoh.nincore.api.command.CommandImplementation;
 import me.ninjoh.nincore.api.command.NinCommand;
-import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.builders.CommandBuilder;
 import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
-import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
-import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
-import me.ninjoh.nincore.api.entity.NinPlayer;
-import me.ninjoh.nincore.api.localization.LocalizedString;
 import me.ninjoh.nincore.api.logging.LogColor;
-import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
+import me.ninjoh.nincore.entity.NcEntityManager;
+import me.ninjoh.nincore.entity.NcOnlinePlayer;
 import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.listeners.PlayerListener;
-import me.ninjoh.nincore.player.NCNinOfflinePlayer;
-import me.ninjoh.nincore.player.NCNinPlayer;
+import me.ninjoh.nincore.localization.NcLocalizationManager;
 import me.ninjoh.nincore.subcommands.GetJavaVersion;
 import me.ninjoh.nincore.subcommands.IsAnsiConsole;
 import me.ninjoh.nincore.subcommands.ListOperators;
@@ -26,9 +23,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.libs.jline.console.ConsoleReader;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,26 +33,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
+public class NcCore extends NinCorePlugin implements NinCoreImplementation
 {
-    @Getter         private MinecraftLocale defaultMinecraftLocale;
-    @Getter @Setter private boolean isLocalized;
+
                     private boolean consoleIsAnsiSupported = false;
 
-    @Getter         private NinServer ninServer;
-                    private NinCoreConfig config;
+    @Getter         private NinCoreConfig ninCoreConfig;
 
-    @Getter         private static NCNinCore instance;
+    @Getter         private static NcCore instance;
+    @Getter         private NcEntityManager entityManager;
+    @Getter         private LocalizationManager localizationManager;
+    @Getter         private CommandImplementation commandImplementation;
 
 
     //private static ProtocolManager protocolManager;
 
 
+    // The order in which things are set up is very important in onLoadInner and onEnableInner!!
     @Override
     public void onLoadInner()
     {
+        this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
+                " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
+
         NinCore.setImplementation(this);
         instance = this;
+        entityManager = new NcEntityManager();
+        localizationManager = new NcLocalizationManager();
+
+        this.saveDefaultConfig();
+        this.ninCoreConfig = new NinCoreConfig(this.getConfig());
 
         try
         {
@@ -72,44 +79,17 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     }
 
 
+    // The order in which things are set up is very important in onLoadInner and onEnableInner!!
     @Override
     public void onEnableInner()
     {
-        this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
-                " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
-
-
-        this.saveDefaultConfig();
-        this.config = new NinCoreConfig(this.getConfig());
-
-//        if(!this.getDataManager().dataFileExists())
-//        {
-//            this.getDataManager().createDataFile();
-//        }
-//
-//        this.getDataManager().loadDataFile();
-//        this.getDataManager().getData()
-
-        this.defaultMinecraftLocale = NinCoreConfig.getDefaultMinecraftLocale();
-
-
-        if (NinCoreConfig.isColoredLoggingEnabled())
+        if (this.getNinCoreConfig().isColoredLoggingEnabled())
         {
             this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
         }
         else
         {
             this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "disabled" + LogColor.RESET + ".");
-        }
-
-        isLocalized = this.getConfig().getBoolean("localization.enabled");
-        if (isLocalized)
-        {
-            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
-        }
-        else
-        {
-            this.getNinLogger().info("Localization is " + LogColor.HIGHLIGHT + "enabled.");
         }
 
 
@@ -162,24 +142,18 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
         // Add all currently online players to the online NinPlayers list of the NinServer.
-        List<NinPlayer> ninPlayers = new ArrayList<>();
-
 
         this.getNinLogger().info("Adding all online players to the online player cache..");
         for (Player p : getServer().getOnlinePlayers())
         {
-            ninPlayers.add(new NCNinPlayer(p));
+            this.entityManager.addNinOnlinePlayer(new NcOnlinePlayer(p));
             this.getNinLogger().fine("Added a NinPlayer to the online player cache, (" + p.getName() + ", " + p.getUniqueId() + ")");
         }
-
-        this.ninServer = new NCNinServer(ninPlayers);
 
 
         //protocolManager = ProtocolLibrary.getProtocolManager();
 
-        this.getNinLogger().info("Default MinecraftLocale set to: " + LogColor.HIGHLIGHT + defaultMinecraftLocale.name() + " (" +
-                defaultMinecraftLocale.toLanguageTag() + ", " +
-                defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
+
 
 
         // Register listeners
@@ -248,66 +222,6 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
 
 
     @Override
-    public NinCommand constructCommand(String name, boolean useStaticDescription, LocalizedString localizedDescription, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
-    {
-        return NCCommand.construct(name, useStaticDescription, localizedDescription, requiredPermission, executor, subCommands, plugin);
-    }
-
-
-    @Override
-    public NinSubCommand constructSubCommand(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases, NinSubCommandExecutor executor, NinCommand parentCommand)
-    {
-        return NCSubCommand.construct(name, useStaticDescription, staticDescription, localizedDescription, requiredPermission, usage, aliases, executor, parentCommand);
-    }
-
-
-    @Override
-    public NinCommandSender getNinCommandSender(CommandSender commandSender)
-    {
-        return new NCNinCommandSender(commandSender);
-    }
-
-
-    @Override
-    public NinConsoleCommandSender getNinConsoleCommandSender()
-    {
-        return new NCNinConsoleCommandSender();
-    }
-
-
-    @Override
-    public NinPlayer getNinPlayer(Player player)
-    {
-        return this.getNinServer().getNinPlayer(player);
-    }
-
-
-    @Override
-    public NinOfflinePlayer getNinOfflinePlayer(OfflinePlayer offlinePlayer)
-    {
-        return NCNinOfflinePlayer.fromOfflinePlayer(offlinePlayer);
-    }
-
-
-    @Override
-    public void setDefaultMinecraftLocale(MinecraftLocale minecraftLocale)
-    {
-        if(!NinCoreConfig.isDefaultMinecraftLocaleUpdatable())
-        {
-            this.getNinLogger().warning("Could not update the default MinecraftLocale due to updating the default" +
-                    " MinecraftLocale being disabled in the configuration file.");
-        }
-        else
-        {
-            this.getNinLogger().info("Default MinecraftLocale changed to " + defaultMinecraftLocale.name() + " (" +
-                    defaultMinecraftLocale.toLanguageTag() + ", " +
-                    defaultMinecraftLocale.getDisplayName(MinecraftLocale.BRITISH_ENGLISH) + ")");
-            this.defaultMinecraftLocale = minecraftLocale;
-        }
-    }
-
-
-    @Override
     public JavaPlugin getImplementingPlugin()
     {
         return this;
@@ -317,7 +231,7 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public boolean useColoredLogging()
     {
-        return NinCoreConfig.isColoredLoggingEnabled();
+        return this.getNinCoreConfig().isColoredLoggingEnabled();
     }
 
 
@@ -328,8 +242,55 @@ public class NCNinCore extends NinCorePlugin implements NinCoreImplementation
     }
 
 
-    public NinCoreConfig getNinCoreConfig()
+
+    /**
+     * Dispatch a command from console.
+     *
+     * @param command The command string to send.
+     */
+    @Override
+    public void dispatchCommand(String command)
     {
-        return config;
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+
+    /**
+     * Get an entity by it's entity ID.
+     *
+     * @param id The entity ID to search the related entity for.
+     * @return The entity, if no entity was found, null will be returned.
+     */
+    @Override
+    public Entity getEntityById(int id)
+    {
+        Entity e = null;
+
+        for (World w : Bukkit.getWorlds())
+        {
+            for (Entity entity : w.getEntities())
+            {
+                if (entity.getEntityId() == id) // Found the entity!
+                {
+                    e = entity;
+                    break; // Stop searching any further
+                }
+            }
+
+            // We found the entity!
+            if (e != null)
+            {
+                break; // Stop searching any further
+            }
+        }
+
+        return e; // Will be null if we didn't find any entity with that entity ID.
+    }
+
+
+    @Override
+    public World getDefaultWorld()
+    {
+        return Bukkit.getWorlds().get(0);
     }
 }

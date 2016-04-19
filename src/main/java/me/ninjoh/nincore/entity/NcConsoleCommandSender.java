@@ -1,14 +1,14 @@
-package me.ninjoh.nincore;
+package me.ninjoh.nincore.entity;
 
 
-import me.ninjoh.nincore.api.NinConsoleCommandSender;
+import me.ninjoh.nincore.api.entity.NinConsoleCommandSender;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 
-public class NCNinConsoleCommandSender extends NCNinCommandSender implements NinConsoleCommandSender
+public class NcConsoleCommandSender extends NcCommandSender implements NinConsoleCommandSender
 {
 
-    public NCNinConsoleCommandSender()
+    public NcConsoleCommandSender()
     {
         super(Bukkit.getConsoleSender());
     }

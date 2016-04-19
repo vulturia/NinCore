@@ -1,18 +1,18 @@
-package me.ninjoh.nincore.command.handlers;
+package me.ninjoh.nincore.command.executors;
 
 
-import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.executors.NinSubCommandExecutor;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.entity.NcCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class NCNinSubCommandInfoHandler extends NinSubCommandExecutor
+public class InfoSubCmdExecutor extends NinSubCommandExecutor
 {
     private JavaPlugin plugin;
 
 
-    public NCNinSubCommandInfoHandler(JavaPlugin plugin)
+    public InfoSubCmdExecutor(JavaPlugin plugin)
     {
         this.plugin = plugin;
     }
@@ -21,6 +21,6 @@ public class NCNinSubCommandInfoHandler extends NinSubCommandExecutor
     @Override
     public void execute(@NotNull CommandSender sender, @NotNull String[] args)
     {
-        NinCore.get().getNinCommandSender(sender).sendPluginInfo(plugin);
+        NcCommandSender.fromCommandSender(sender).sendPluginInfo(plugin);
     }
 }

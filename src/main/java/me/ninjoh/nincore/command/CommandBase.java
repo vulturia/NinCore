@@ -20,7 +20,7 @@ public class CommandBase implements me.ninjoh.nincore.api.command.CommandBase
 
     private List<String> aliases = new ArrayList<>();
 
-    boolean useStaticDescription;
+    private boolean useStaticDescription;
 
 
     public CommandBase(String name, boolean useStaticDescription, String staticDescription, LocalizedString localizedDescription, String requiredPermission, String usage, List<String> aliases)

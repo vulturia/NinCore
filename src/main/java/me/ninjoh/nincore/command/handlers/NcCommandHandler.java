@@ -9,8 +9,8 @@ import me.ninjoh.nincore.api.exceptions.ValidationException;
 import me.ninjoh.nincore.api.exceptions.validationexceptions.AccessDeniedException;
 import me.ninjoh.nincore.api.exceptions.validationexceptions.NotEnoughArgumentsException;
 import me.ninjoh.nincore.api.util.MessageUtil;
-import me.ninjoh.nincore.command.NCCommand;
-import me.ninjoh.nincore.command.NCSubCommand;
+import me.ninjoh.nincore.command.NcCommand;
+import me.ninjoh.nincore.command.NcSubCommand;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,14 +18,14 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NCNinCommandHandler implements CommandExecutor
+public class NcCommandHandler implements CommandExecutor
 {
-    private NCCommand NCCommand;
+    private NcCommand NcCommand;
 
 
-    public NCNinCommandHandler(NCCommand NCCommand)
+    public NcCommandHandler(NcCommand NcCommand)
     {
-        this.NCCommand = NCCommand;
+        this.NcCommand = NcCommand;
     }
 
 
@@ -34,25 +34,25 @@ public class NCNinCommandHandler implements CommandExecutor
     {
         try
         {
-            if (cmd.getName().equalsIgnoreCase(NCCommand.getName()))
+            if (cmd.getName().equalsIgnoreCase(NcCommand.getName()))
             {
-                // Check if the sender has the required permission for this NCCommand.
-                if (this.NCCommand.requiresPermission() && !sender.hasPermission(this.NCCommand.getRequiredPermission()))
+                // Check if the sender has the required permission for this NcCommand.
+                if (this.NcCommand.requiresPermission() && !sender.hasPermission(this.NcCommand.getRequiredPermission()))
                 {
                     throw new AccessDeniedException(sender);
                 }
 
-                if (this.NCCommand.hasSubCommands())
+                if (this.NcCommand.hasSubCommands())
                 {
                     if (args.length < 1)
                     {
-                        // Sub NCCommand not specified, send NCCommand help.
-                        MessageUtil.sendCommandHelp(sender, this.NCCommand);
+                        // Sub NcCommand not specified, send NcCommand help.
+                        MessageUtil.sendCommandHelp(sender, this.NcCommand);
                         return true;
                     }
 
 
-                    NinSubCommand subCmd = this.NCCommand.getSubCommandByAlias(args[0].toLowerCase());
+                    NinSubCommand subCmd = this.NcCommand.getSubCommandByAlias(args[0].toLowerCase());
 
                     if (subCmd != null)
                     {
@@ -62,7 +62,7 @@ public class NCNinCommandHandler implements CommandExecutor
                             throw new AccessDeniedException(sender);
                         }
 
-                        // The first argument is the sub NCCommand, so remove that one
+                        // The first argument is the sub NcCommand, so remove that one
                         List<String> list = new ArrayList<>();
 
                         int count = 0;
@@ -77,27 +77,27 @@ public class NCNinCommandHandler implements CommandExecutor
                             count++;
                         }
 
-                        // Generate new args without the first argument, wich would be the sub NCCommand.
+                        // Generate new args without the first argument, wich would be the sub NcCommand.
                         String[] newArgs = list.toArray(new String[list.size()]);
 
 
-                        // Handle sub NCCommand.
-                        ((NCSubCommand) subCmd).getHandler().handle(sender, newArgs);
+                        // Handle sub NcCommand.
+                        ((NcSubCommand) subCmd).getHandler().handle(sender, newArgs);
                     }
                     else
                     {
-                        MessageUtil.sendCommandHelp(sender, this.NCCommand);
+                        MessageUtil.sendCommandHelp(sender, this.NcCommand);
                     }
                 }
                 else
                 {
-                    this.NCCommand.getExecutor().execute(sender, args);
+                    this.NcCommand.getExecutor().execute(sender, args);
                 }
             }
         }
         catch (NotEnoughArgumentsException na)
         {
-            NinCore.get().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NCCommand);
+            NinCore.get().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NcCommand);
         }
         catch (ValidationException ve)
         {

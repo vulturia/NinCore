@@ -1,18 +1,18 @@
-package me.ninjoh.nincore.player;
+package me.ninjoh.nincore.entity;
 
 import com.google.common.base.Preconditions;
 import lombok.experimental.Delegate;
-import me.ninjoh.nincore.api.NinCommandSender;
-import me.ninjoh.nincore.api.NinCore;
+import me.ninjoh.nincore.NcCore;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
-import me.ninjoh.nincore.api.entity.NinPlayer;
+import me.ninjoh.nincore.api.entity.NinCommandSender;
+import me.ninjoh.nincore.api.entity.NinOnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
+public class NcOnlinePlayer extends NcOfflinePlayer implements NinOnlinePlayer
 {
     private Player player;
 
@@ -25,11 +25,11 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
      *
      * @param p The player
      */
-    public NCNinPlayer(@NotNull Player p)
+    public NcOnlinePlayer(@NotNull Player p)
     {
         super(Bukkit.getOfflinePlayer(p.getUniqueId()));
         this.player = p;
-        this.ninCommandSender = NinCore.get().getNinCommandSender(p);
+        this.ninCommandSender = NinCommandSender.fromCommandSender(p);
     }
 
 
@@ -46,7 +46,7 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
 
 
     @Nullable
-    public static NCNinPlayer fromUUID(@NotNull UUID uuid)
+    public static NcOnlinePlayer fromUUID(@NotNull UUID uuid)
     {
         Preconditions.checkNotNull(uuid);
 
@@ -55,12 +55,12 @@ public class NCNinPlayer extends NCNinOfflinePlayer implements NinPlayer
         if (p == null) return null;
 
 
-        return new NCNinPlayer(p);
+        return new NcOnlinePlayer(p);
     }
 
 
-    public static NCNinPlayer fromPlayer(@NotNull Player p)
+    public static NcOnlinePlayer fromPlayer(@NotNull Player p)
     {
-        return new NCNinPlayer(p);
+        return NcCore.getInstance().getEntityManager().getNinOnlinePlayer(p);
     }
 }
