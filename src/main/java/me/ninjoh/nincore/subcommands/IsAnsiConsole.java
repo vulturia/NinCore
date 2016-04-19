@@ -14,7 +14,7 @@ public class IsAnsiConsole extends NinSubCommandExecutor
     @Override
     public void execute(CommandSender sender, String[] args) throws ValidationException, TechnicalException
     {
-        if(NcCore.getInstance().consoleIsAnsiSupported())
+        if(NcCore.getInstance().isConsoleAnsiSupported())
         {
             sender.sendMessage(ChatColor.GREEN + "The current console is ANSI supported.");
         }
