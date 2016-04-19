@@ -3,7 +3,6 @@ package me.ninjoh.nincore.command;
 
 import com.google.common.base.Preconditions;
 import me.ninjoh.nincore.NcCore;
-import me.ninjoh.nincore.api.NinCore;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
 import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
@@ -11,10 +10,10 @@ import me.ninjoh.nincore.api.command.executors.NinCommandExecutor;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAliasAlreadyRegisteredException;
 import me.ninjoh.nincore.api.exceptions.technicalexceptions.SubCommandAlreadyExistsException;
 import me.ninjoh.nincore.api.localization.LocalizedString;
-import me.ninjoh.nincore.command.handlers.NcCommandHandler;
 import me.ninjoh.nincore.command.executors.HelpSubCmdExecutor;
 import me.ninjoh.nincore.command.executors.InfoSubCmdExecutor;
 import me.ninjoh.nincore.command.executors.ReloadSubCmdExecutor;
+import me.ninjoh.nincore.command.handlers.NcCommandHandler;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -284,30 +283,15 @@ public class NcCommand extends CommandBase implements NinCommand
     public void addDefaultHelpSubCmd()
     {
         // /command help. sub command.
-        SubCommandBuilder subCmd_list_builder = new SubCommandBuilder()
+        new SubCommandBuilder()
                 .setName("help")
                 .addAlias("?")
                 .setUseStaticDescription(false)
                 .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.help"))
                 .setUsage("<sub command?>")
                 .setExecutor(new HelpSubCmdExecutor())
-                .setParentCommand(this);
-
-        try
-        {
-            this.addSubCommand(subCmd_list_builder.construct());
-        }
-        catch (SubCommandAlreadyExistsException e)
-        {
-            NcCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
-                    this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
-        }
-        catch (SubCommandAliasAlreadyRegisteredException e2)
-        {
-            NcCore.getInstance().getNinLogger().warning("Could not add default help sub command to command with name: '" +
-                    this.getName() + "' due to an exception: '" + e2.getClass().getName() + "'");
-            NcCore.getInstance().getNinLogger().warning("The alias which failed: " + e2.getAlias());
-        }
+                .setParentCommand(this)
+                .construct();
     }
 
 
@@ -315,23 +299,14 @@ public class NcCommand extends CommandBase implements NinCommand
     public void addDefaultInfoSubCmd()
     {
         // /command help. sub command.
-        SubCommandBuilder subCommandBuilder = new SubCommandBuilder()
+        new SubCommandBuilder()
                 .setName("info")
                 .addAlias("i")
                 .setUseStaticDescription(false)
                 .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.info"))
                 .setExecutor(new InfoSubCmdExecutor(this.plugin))
-                .setParentCommand(this);
-
-        try
-        {
-            this.addSubCommand(subCommandBuilder.construct());
-        }
-        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegisteredException e)
-        {
-            NinCore.getImplementingPlugin().getLogger().warning("Could not add default info command to command with name: '" +
-                    this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
-        }
+                .setParentCommand(this)
+                .construct();
     }
 
 
@@ -341,21 +316,12 @@ public class NcCommand extends CommandBase implements NinCommand
     @Override
     public void addDefaultReloadSubCmd()
     {
-        SubCommandBuilder subCommandBuilder = new SubCommandBuilder()
+        new SubCommandBuilder()
                 .setName("reload")
                 .setUseStaticDescription(false)
                 .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.reload"))
                 .setExecutor(new ReloadSubCmdExecutor())
-                .setParentCommand(this);
-
-        try
-        {
-            this.addSubCommand(subCommandBuilder.construct());
-        }
-        catch (SubCommandAlreadyExistsException | SubCommandAliasAlreadyRegisteredException e)
-        {
-            NinCore.getImplementingPlugin().getLogger().warning("Could not add default info command to command with name: '" +
-                    this.getName() + "' due to an exception: '" + e.getClass().getName() + "'");
-        }
+                .setParentCommand(this)
+                .construct();
     }
 }

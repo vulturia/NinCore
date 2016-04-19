@@ -30,7 +30,7 @@ public class NcSubCommandHandler
         }
         catch (NotEnoughArgumentsException na)
         {
-            NinCore.get().getNinCommandSender(na.getTarget()).sendCommandHelp(this.subCommand);
+            NinCore.get().getEntityManager().getNinCommandSender(na.getTarget()).sendCommandHelp(this.subCommand);
         }
         catch (ValidationException ve)
         {

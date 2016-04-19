@@ -97,7 +97,7 @@ public class NcCommandHandler implements CommandExecutor
         }
         catch (NotEnoughArgumentsException na)
         {
-            NinCore.get().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NcCommand);
+            NinCore.get().getEntityManager().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NcCommand);
         }
         catch (ValidationException ve)
         {

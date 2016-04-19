@@ -11,6 +11,7 @@ import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.builders.CommandBuilder;
 import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.logging.LogColor;
+import me.ninjoh.nincore.command.NcCommandImplementation;
 import me.ninjoh.nincore.entity.NcEntityManager;
 import me.ninjoh.nincore.entity.NcOnlinePlayer;
 import me.ninjoh.nincore.listeners.ArmorListener;
@@ -35,12 +36,11 @@ import java.util.List;
 
 public class NcCore extends NinCorePlugin implements NinCoreImplementation
 {
+    @Getter         private static NcCore instance;
 
-                    private boolean consoleIsAnsiSupported = false;
+    @Getter         private boolean isConsoleAnsiSupported = false;
 
     @Getter         private NinCoreConfig ninCoreConfig;
-
-    @Getter         private static NcCore instance;
     @Getter         private NcEntityManager entityManager;
     @Getter         private LocalizationManager localizationManager;
     @Getter         private CommandImplementation commandImplementation;
@@ -53,22 +53,26 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public void onLoadInner()
     {
+        NinCore.setImplementation(this); // NinPluginLogger is dependant on the NinCore implementation.
         this.getNinLogger().info(this.getDescription().getName() + " v" + this.getDescription().getVersion() +
                 " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
 
-        NinCore.setImplementation(this);
         instance = this;
         entityManager = new NcEntityManager();
-        localizationManager = new NcLocalizationManager();
 
         this.saveDefaultConfig();
         this.ninCoreConfig = new NinCoreConfig(this.getConfig());
+
+        localizationManager = new NcLocalizationManager(); // Localization manager is dependant on the nincore configuration.
+        commandImplementation = new NcCommandImplementation();
+
+
 
         try
         {
             ConsoleReader consoleReader = (ConsoleReader) Bukkit.getServer().getClass().getMethod("getReader").invoke(Bukkit.getServer());
 
-            consoleIsAnsiSupported = consoleReader.getTerminal().isAnsiSupported();
+            isConsoleAnsiSupported = consoleReader.getTerminal().isAnsiSupported();
         }
         catch (ClassCastException | NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
         {
@@ -238,7 +242,7 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
     @Override
     public boolean consoleIsAnsiSupported()
     {
-        return consoleIsAnsiSupported;
+        return isConsoleAnsiSupported;
     }
 
 

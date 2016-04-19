@@ -48,7 +48,7 @@ public class NcCommandSender implements NinCommandSender
             MinecraftLocale locale = MinecraftLocale.fromLanguageTag(((Player) commandSender).spigot().getLocale());
             if (locale == null)
             {
-                locale = NinCore.get().getDefaultMinecraftLocale();
+                locale = NinCore.get().getLocalizationManager().getDefaultMinecraftLocale();
             }
 
             return locale;
@@ -82,7 +82,7 @@ public class NcCommandSender implements NinCommandSender
         }
         else
         {
-            locale = NinCore.get().getDefaultMinecraftLocale().toLocale();
+            locale = NinCore.get().getLocalizationManager().getDefaultMinecraftLocale().toLocale();
         }
 
         String msg = TranslationUtils.transWithArgs(ResourceBundle.getBundle("me.ninjoh.nincore.res.messages", locale), new Object[]{error}, "sendError");
