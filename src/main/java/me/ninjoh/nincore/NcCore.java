@@ -239,14 +239,6 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
     }
 
 
-    @Override
-    public boolean consoleIsAnsiSupported()
-    {
-        return isConsoleAnsiSupported;
-    }
-
-
-
     /**
      * Dispatch a command from console.
      *
