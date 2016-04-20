@@ -15,7 +15,6 @@ import me.ninjoh.nincore.command.NcCommandImplementation;
 import me.ninjoh.nincore.entity.NcEntityManager;
 import me.ninjoh.nincore.entity.NcOnlinePlayer;
 import me.ninjoh.nincore.listeners.ArmorListener;
-import me.ninjoh.nincore.listeners.PlayerListener;
 import me.ninjoh.nincore.localization.NcLocalizationManager;
 import me.ninjoh.nincore.subcommands.GetJavaVersion;
 import me.ninjoh.nincore.subcommands.IsAnsiConsole;
@@ -162,8 +161,6 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
 
         // Register listeners
         this.getNinLogger().info("Registering event listeners..");
-        getServer().getPluginManager().registerEvents(new ArmorListener(blocked), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
 
 
@@ -280,7 +277,7 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
             }
         }
 
-        return e; // Will be null if we didn't find any entity with that entity ID.
+        return e; // Will be null if we didn't find any entity with thgit coat entity ID.
     }
 
 
