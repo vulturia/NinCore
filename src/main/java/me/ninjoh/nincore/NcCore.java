@@ -2,38 +2,25 @@ package me.ninjoh.nincore;
 
 
 import lombok.Getter;
-import me.ninjoh.nincore.api.LocalizationManager;
-import me.ninjoh.nincore.api.NinCore;
-import me.ninjoh.nincore.api.NinCoreImplementation;
-import me.ninjoh.nincore.api.NinCorePlugin;
+import me.ninjoh.nincore.api.*;
 import me.ninjoh.nincore.api.command.CommandImplementation;
-import me.ninjoh.nincore.api.command.NinCommand;
-import me.ninjoh.nincore.api.command.builders.CommandBuilder;
-import me.ninjoh.nincore.api.command.builders.SubCommandBuilder;
 import me.ninjoh.nincore.api.logging.LogColor;
 import me.ninjoh.nincore.command.NcCommandImplementation;
 import me.ninjoh.nincore.entity.NcEntityManager;
-import me.ninjoh.nincore.entity.NcOnlinePlayer;
-import me.ninjoh.nincore.listeners.ArmorListener;
 import me.ninjoh.nincore.localization.NcLocalizationManager;
-import me.ninjoh.nincore.subcommands.GetJavaVersion;
-import me.ninjoh.nincore.subcommands.IsAnsiConsole;
-import me.ninjoh.nincore.subcommands.ListOperators;
+import me.ninjoh.nincore.modules.ArmorEquipEventModule;
+import me.ninjoh.nincore.modules.NinCoreCmdModule;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.libs.jline.console.ConsoleReader;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class NcCore extends NinCorePlugin implements NinCoreImplementation
+public class NcCore extends Core implements NinCoreImplementation
 {
     @Getter         private static NcCore instance;
 
@@ -57,13 +44,12 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
                 " by " + StringUtils.join(this.getDescription().getAuthors(), ", "));
 
         instance = this;
-        entityManager = new NcEntityManager();
+
 
         this.saveDefaultConfig();
         this.ninCoreConfig = new NinCoreConfig(this.getConfig());
 
         localizationManager = new NcLocalizationManager(); // Localization manager is dependant on the nincore configuration.
-        commandImplementation = new NcCommandImplementation();
 
 
 
@@ -95,117 +81,14 @@ public class NcCore extends NinCorePlugin implements NinCoreImplementation
             this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "disabled" + LogColor.RESET + ".");
         }
 
+        this.getNinLogger().info("Registering modules..");
+        NcCommandImplementation ncCommandImplementation = new NcCommandImplementation(this);
+        this.commandImplementation = ncCommandImplementation;
 
-        this.getNinLogger().info("Registering blocked materials for ArmorEquipEvent..");
-        List<String> blocked = new ArrayList<>();
-        blocked.add(Material.FURNACE.toString());
-        blocked.add(Material.CHEST.toString());
-        blocked.add(Material.BEACON.toString());
-        blocked.add(Material.DISPENSER.toString());
-        blocked.add(Material.DROPPER.toString());
-        blocked.add(Material.HOPPER.toString());
-        blocked.add(Material.WORKBENCH.toString());
-        blocked.add(Material.ENCHANTMENT_TABLE.toString());
-        blocked.add(Material.ENDER_CHEST.toString());
-        blocked.add(Material.ANVIL.toString());
-        blocked.add(Material.BED_BLOCK.toString());
-        blocked.add(Material.FENCE_GATE.toString());
-        blocked.add(Material.SPRUCE_FENCE_GATE.toString());
-        blocked.add(Material.BIRCH_FENCE_GATE.toString());
-        blocked.add(Material.ACACIA_FENCE_GATE.toString());
-        blocked.add(Material.JUNGLE_FENCE_GATE.toString());
-        blocked.add(Material.DARK_OAK_FENCE_GATE.toString());
-        blocked.add(Material.IRON_DOOR_BLOCK.toString());
-        blocked.add(Material.WOODEN_DOOR.toString());
-        blocked.add(Material.SPRUCE_DOOR.toString());
-        blocked.add(Material.BIRCH_DOOR.toString());
-        blocked.add(Material.JUNGLE_DOOR.toString());
-        blocked.add(Material.ACACIA_DOOR.toString());
-        blocked.add(Material.DARK_OAK_DOOR.toString());
-        blocked.add(Material.WOOD_BUTTON.toString());
-        blocked.add(Material.STONE_BUTTON.toString());
-        blocked.add(Material.TRAP_DOOR.toString());
-        blocked.add(Material.IRON_TRAPDOOR.toString());
-        blocked.add(Material.DIODE_BLOCK_OFF.toString());
-        blocked.add(Material.DIODE_BLOCK_ON.toString());
-        blocked.add(Material.REDSTONE_COMPARATOR_OFF.toString());
-        blocked.add(Material.REDSTONE_COMPARATOR_ON.toString());
-        blocked.add(Material.FENCE.toString());
-        blocked.add(Material.SPRUCE_FENCE.toString());
-        blocked.add(Material.BIRCH_FENCE.toString());
-        blocked.add(Material.JUNGLE_FENCE.toString());
-        blocked.add(Material.DARK_OAK_FENCE.toString());
-        blocked.add(Material.ACACIA_FENCE.toString());
-        blocked.add(Material.NETHER_FENCE.toString());
-        blocked.add(Material.BREWING_STAND.toString());
-        blocked.add(Material.CAULDRON.toString());
-        blocked.add(Material.SIGN_POST.toString());
-        blocked.add(Material.WALL_SIGN.toString());
-        blocked.add(Material.SIGN.toString());
-
-
-        // Add all currently online players to the online NinPlayers list of the NinServer.
-
-        this.getNinLogger().info("Adding all online players to the online player cache..");
-        for (Player p : getServer().getOnlinePlayers())
-        {
-            this.entityManager.addNinOnlinePlayer(new NcOnlinePlayer(p));
-            this.getNinLogger().fine("Added a NinPlayer to the online player cache, (" + p.getName() + ", " + p.getUniqueId() + ")");
-        }
-
-
-        //protocolManager = ProtocolLibrary.getProtocolManager();
-
-
-
-
-        // Register listeners
-        this.getNinLogger().info("Registering event listeners..");
-        Bukkit.getPluginManager().registerEvents(new ArmorListener(blocked), this);
-
-
-        // Register NinCore command it's sub commands.
-        this.getNinLogger().info("Registering NinCore command..");
-
-        CommandBuilder ncB = new CommandBuilder(this);
-        ncB.setName("nincore");
-        ncB.setUseStaticDescription(true);
-        NinCommand nc = ncB.construct();
-
-        this.getNinLogger().info("Registering subcommands..");
-
-        nc.addDefaultInfoSubCmd();
-        nc.addDefaultHelpSubCmd();
-
-        SubCommandBuilder nc_getjavaversionB = new SubCommandBuilder();
-        nc_getjavaversionB.setParentCommand(nc);
-        nc_getjavaversionB.setName("getJavaVersion");
-        nc_getjavaversionB.setRequiredPermission("nincore.getjavaversion");
-        nc_getjavaversionB.addAlias("gjv");
-        nc_getjavaversionB.setUseStaticDescription(true);
-        nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
-        nc_getjavaversionB.setExecutor(new GetJavaVersion());
-        nc_getjavaversionB.construct();
-
-        SubCommandBuilder nc_isAnsiConsole = new SubCommandBuilder();
-        nc_isAnsiConsole.setParentCommand(nc);
-        nc_isAnsiConsole.setName("isAnsiConsole");
-        nc_isAnsiConsole.setRequiredPermission("nincore.isansiconsole");
-        nc_isAnsiConsole.addAlias("iac");
-        nc_isAnsiConsole.setUseStaticDescription(true);
-        nc_isAnsiConsole.setStaticDescription("Check if the current console is ANSI supported.");
-        nc_isAnsiConsole.setExecutor(new IsAnsiConsole());
-        nc_isAnsiConsole.construct();
-
-        SubCommandBuilder nc_listOperators = new SubCommandBuilder();
-        nc_listOperators.setParentCommand(nc);
-        nc_listOperators.setName("listOperators");
-        nc_listOperators.setRequiredPermission("nincore.listoperators");
-        nc_listOperators.addAlias("lo");
-        nc_listOperators.setUseStaticDescription(true);
-        nc_listOperators.setStaticDescription("List all server operators.");
-        nc_listOperators.setExecutor(new ListOperators());
-        nc_listOperators.construct();
+        this.getModuleManager().addModule(ncCommandImplementation);
+        this.getModuleManager().addModule(new NcEntityManager(this));
+        this.getModuleManager().addModule(new NinCoreCmdModule(this)); // Cmd module is dependant on the command implementation.
+        this.getModuleManager().addModule(new ArmorEquipEventModule(this));
     }
 
 

@@ -1,6 +1,8 @@
 package me.ninjoh.nincore.command;
 
 
+import me.ninjoh.nincore.api.Core;
+import me.ninjoh.nincore.api.CoreModule;
 import me.ninjoh.nincore.api.command.CommandImplementation;
 import me.ninjoh.nincore.api.command.NinCommand;
 import me.ninjoh.nincore.api.command.NinSubCommand;
@@ -11,8 +13,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-public class NcCommandImplementation implements CommandImplementation
+public class NcCommandImplementation extends CoreModule implements CommandImplementation
 {
+    public NcCommandImplementation(Core core)
+    {
+        super(core);
+    }
+
+
     @Override
     public NinCommand constructCommand(String name, boolean useStaticDescription, LocalizedString localizedDescription, String requiredPermission, NinCommandExecutor executor, List<NinSubCommand> subCommands, JavaPlugin plugin)
     {

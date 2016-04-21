@@ -2,9 +2,13 @@ package me.ninjoh.nincore.entity;
 
 
 import me.ninjoh.nincore.NcCore;
+import me.ninjoh.nincore.api.Core;
+import me.ninjoh.nincore.api.CoreModule;
 import me.ninjoh.nincore.api.EntityManager;
 import me.ninjoh.nincore.api.common.org.jetbrains.annotations.NotNull;
+import me.ninjoh.nincore.api.common.org.jetbrains.annotations.Nullable;
 import me.ninjoh.nincore.api.entity.NinOnlinePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,11 +21,25 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NcEntityManager implements EntityManager, Listener
+public class NcEntityManager extends CoreModule implements EntityManager, Listener
 {
-    private List<NinOnlinePlayer> ninOnlinePlayers;
+    private List<NinOnlinePlayer> ninOnlinePlayers = new ArrayList<>();
 
 
+    public NcEntityManager(Core core)
+    {
+        super(core);
+
+        this.getLogger().fine("Adding all currently online players to the NinOnlinePlayers cache..");
+        Bukkit.getOnlinePlayers().forEach((player) -> ninOnlinePlayers.add(new NcOnlinePlayer(player)));
+    }
+
+
+    /**
+     * Returns a copy of the NinOnlinePlayers cache.
+     *
+     * @return A copy of the NinOnlinePlayers cache.
+     */
     @Override
     public List<NinOnlinePlayer> getNinOnlinePlayers()
     {
@@ -29,6 +47,13 @@ public class NcEntityManager implements EntityManager, Listener
     }
 
 
+    /**
+     * Get a player from the NinOnlinePlayers cache.
+     *
+     * @param player The related player.
+     * @return The NinOnlinePlayer if one is found, else it will return null.
+     */
+    @Nullable
     @Override
     public NcOnlinePlayer getNinOnlinePlayer(Player player)
     {
