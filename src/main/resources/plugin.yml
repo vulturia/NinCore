@@ -1,6 +1,6 @@
 name: NinCore
 version: ${project.version}
-main: me.ninjoh.nincore.NcCore
+main: tk.martijn_heil.nincore.NcCore
 author: Ninjoh
 commands:
    nincore:
