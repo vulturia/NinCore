@@ -35,34 +35,34 @@ public class NinCoreCmdModule extends CoreModule
         nc.addDefaultInfoSubCmd();
         nc.addDefaultHelpSubCmd();
 
-        SubCommandBuilder nc_getjavaversionB = new SubCommandBuilder();
-        nc_getjavaversionB.setParentCommand(nc);
-        nc_getjavaversionB.setName("getJavaVersion");
-        nc_getjavaversionB.setRequiredPermission("nincore.getjavaversion");
-        nc_getjavaversionB.addAlias("gjv");
-        nc_getjavaversionB.setUseStaticDescription(true);
-        nc_getjavaversionB.setStaticDescription("Get the current Java runtime version.");
-        nc_getjavaversionB.setExecutor(new GetJavaVersion());
-        nc_getjavaversionB.construct();
+        new SubCommandBuilder()
+                .setParentCommand(nc)
+                .setName("getJavaVersion")
+                .setRequiredPermission("nincore.getjavaversion")
+                .addAlias("gjv")
+                .setUseStaticDescription(true)
+                .setStaticDescription("Get the current Java runtime version.")
+                .setExecutor(new GetJavaVersion())
+                .construct();
 
-        SubCommandBuilder nc_isAnsiConsole = new SubCommandBuilder();
-        nc_isAnsiConsole.setParentCommand(nc);
-        nc_isAnsiConsole.setName("isAnsiConsole");
-        nc_isAnsiConsole.setRequiredPermission("nincore.isansiconsole");
-        nc_isAnsiConsole.addAlias("iac");
-        nc_isAnsiConsole.setUseStaticDescription(true);
-        nc_isAnsiConsole.setStaticDescription("Check if the current console is ANSI supported.");
-        nc_isAnsiConsole.setExecutor(new IsAnsiConsole());
-        nc_isAnsiConsole.construct();
+        new SubCommandBuilder()
+                .setParentCommand(nc)
+                .setName("isAnsiConsole")
+                .setRequiredPermission("nincore.isansiconsole")
+                .addAlias("iac")
+                .setUseStaticDescription(true)
+                .setStaticDescription("Check if the current console is ANSI supported.")
+                .setExecutor(new IsAnsiConsole())
+                .construct();
 
-        SubCommandBuilder nc_listOperators = new SubCommandBuilder();
-        nc_listOperators.setParentCommand(nc);
-        nc_listOperators.setName("listOperators");
-        nc_listOperators.setRequiredPermission("nincore.listoperators");
-        nc_listOperators.addAlias("lo");
-        nc_listOperators.setUseStaticDescription(true);
-        nc_listOperators.setStaticDescription("List all server operators.");
-        nc_listOperators.setExecutor(new ListOperators());
-        nc_listOperators.construct();
+        new SubCommandBuilder()
+                .setParentCommand(nc)
+                .setName("listOperators")
+                .setRequiredPermission("nincore.listoperators")
+                .addAlias("lo")
+                .setUseStaticDescription(true)
+                .setStaticDescription("List all server operators.")
+                .setExecutor(new ListOperators())
+                .construct();
     }
 }
