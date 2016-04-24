@@ -26,14 +26,14 @@ import java.lang.reflect.InvocationTargetException;
 
 public class NcCore extends Core implements NinCoreImplementation
 {
-    @Getter         private static NcCore instance;
+    @Getter private static NcCore instance;
 
-    @Getter         private boolean isConsoleAnsiSupported = false;
+    @Getter private boolean isConsoleAnsiSupported = false;
 
-    @Getter         private NinCoreConfig ninCoreConfig;
-    @Getter         private NcEntityManager entityManager;
-    @Getter         private LocalizationManager localizationManager;
-    @Getter         private CommandImplementation commandImplementation;
+    @Getter private NinCoreConfig ninCoreConfig;
+    @Getter private NcEntityManager entityManager;
+    @Getter private LocalizationManager localizationManager;
+    @Getter private CommandImplementation commandImplementation;
 
 
     //private static ProtocolManager protocolManager;
@@ -54,7 +54,6 @@ public class NcCore extends Core implements NinCoreImplementation
         this.ninCoreConfig = new NinCoreConfig(this.getConfig());
 
         localizationManager = new NcLocalizationManager(); // Localization manager is dependant on the nincore configuration.
-
 
 
         try
@@ -78,12 +77,22 @@ public class NcCore extends Core implements NinCoreImplementation
     {
         if (this.getNinCoreConfig().isColoredLoggingEnabled())
         {
-            this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + ".");
+            this.getNinLogger().info("Coloured logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + " in configuration.");
         }
         else
         {
-            this.getNinLogger().info("Colored logging is " + LogColor.HIGHLIGHT + "disabled" + LogColor.RESET + ".");
+            this.getNinLogger().info("Coloured logging is " + LogColor.HIGHLIGHT + "disabled" + LogColor.RESET + " in configuration.");
         }
+
+        if(this.isConsoleAnsiSupported)
+        {
+            this.getNinLogger().info("Console is ANSI supported.");
+        }
+        else
+        {
+            this.getNinLogger().warning("Console is not ANSI supported, can not use coloured logging.");
+        }
+
 
         this.getNinLogger().info("Registering modules..");
         NcCommandImplementation ncCommandImplementation = new NcCommandImplementation(this);
