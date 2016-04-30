@@ -2,12 +2,15 @@ package tk.martijn_heil.nincore.entity;
 
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.NinCore;
 import tk.martijn_heil.nincore.api.command.NinCommand;
 import tk.martijn_heil.nincore.api.command.NinSubCommand;
@@ -44,19 +47,38 @@ public class NcCommandSender implements NinCommandSender
     @Override
     public MinecraftLocale getMinecraftLocale()
     {
-        if (this.commandSender instanceof Player)
+        try
         {
-            MinecraftLocale locale = MinecraftLocale.fromLanguageTag(((Player) commandSender).spigot().getLocale());
-            if (locale == null)
-            {
-                locale = NinCore.get().getLocalizationManager().getDefaultMinecraftLocale();
-            }
 
-            return locale;
+            MinecraftLocale locale;
+            if (this.commandSender instanceof Player)
+            {
+                try
+                {
+                    locale = MinecraftLocale.fromLanguageTag(((Player) commandSender).spigot().getLocale());
+                    if (locale == null)
+                    {
+                        locale = NinCore.get().getLocalizationManager().getDefaultMinecraftLocale();
+                    }
+                }
+                catch (Exception e)
+                {
+                    return MinecraftLocale.fromLanguageTag(((CraftPlayer) commandSender).getHandle().locale);
+                }
+
+
+                return locale;
+            }
+            else
+            {
+                return MinecraftLocale.getDefault();
+            }
         }
-        else
+        catch (Exception e)
         {
-            return MinecraftLocale.getDefault();
+            NcCore.getInstance().getNinLogger().warning("Could not get player's locale, returning default MinecraftLocale.");
+            NcCore.getInstance().getNinLogger().fine(ExceptionUtils.getFullStackTrace(e));
+            return NcCore.getInstance().getLocalizationManager().getDefaultMinecraftLocale();
         }
     }
 
