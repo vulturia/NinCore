@@ -2,11 +2,6 @@ package tk.martijn_heil.nincore;
 
 
 import lombok.Getter;
-import tk.martijn_heil.nincore.command.NcCommandImplementation;
-import tk.martijn_heil.nincore.entity.NcEntityManager;
-import tk.martijn_heil.nincore.localization.NcLocalizationManager;
-import tk.martijn_heil.nincore.modules.ArmorEquipEventModule;
-import tk.martijn_heil.nincore.modules.NinCoreCmdModule;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -21,6 +16,11 @@ import tk.martijn_heil.nincore.api.NinCoreImplementation;
 import tk.martijn_heil.nincore.api.command.CommandImplementation;
 import tk.martijn_heil.nincore.api.localization.LocalizationManager;
 import tk.martijn_heil.nincore.api.logging.LogColor;
+import tk.martijn_heil.nincore.command.NcCommandImplementation;
+import tk.martijn_heil.nincore.entity.NcEntityManager;
+import tk.martijn_heil.nincore.localization.NcLocalizationManager;
+import tk.martijn_heil.nincore.modules.ArmorEquipEventModule;
+import tk.martijn_heil.nincore.modules.NinCoreCmdModule;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -53,8 +53,6 @@ public class NcCore extends Core implements NinCoreImplementation
         this.saveDefaultConfig();
         this.ninCoreConfig = new NinCoreConfig(this.getConfig());
 
-        localizationManager = new NcLocalizationManager(); // Localization manager is dependant on the nincore configuration.
-
 
         try
         {
@@ -65,16 +63,10 @@ public class NcCore extends Core implements NinCoreImplementation
         catch (ClassCastException | NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
         {
             this.getNinLogger().warning(String.format("Could not use colored logging because a %s occurred whilst" +
-                    " trying to check if the terminal is ANSI supported;", e.getClass().getName()));
-            this.getNinLogger().fine(ExceptionUtils.getFullStackTrace(e));
+                    " trying to check if the terminal is ANSI supported; ", e.getClass().getName()));
+            this.getNinLogger().info(ExceptionUtils.getFullStackTrace(e));
         }
-    }
 
-
-    // The order in which things are set up is very important in onLoadInner and onEnableInner!!
-    @Override
-    public void onEnableInner()
-    {
         if (this.getNinCoreConfig().isColoredLoggingEnabled())
         {
             this.getNinLogger().info("Coloured logging is " + LogColor.HIGHLIGHT + "enabled" + LogColor.RESET + " in configuration.");
@@ -86,14 +78,21 @@ public class NcCore extends Core implements NinCoreImplementation
 
         if(this.isConsoleAnsiSupported)
         {
-            this.getNinLogger().info("Console is ANSI supported.");
+            this.getNinLogger().info("Console is ANSI supported, using coloured logging.");
         }
         else
         {
             this.getNinLogger().warning("Console is not ANSI supported, can not use coloured logging.");
         }
 
+        localizationManager = new NcLocalizationManager(); // Localization manager is dependant on the nincore configuration.
+    }
 
+
+    // The order in which things are set up is very important in onLoadInner and onEnableInner!!
+    @Override
+    public void onEnableInner()
+    {
         this.getNinLogger().info("Registering modules..");
         NcCommandImplementation ncCommandImplementation = new NcCommandImplementation(this);
         NcEntityManager ncEntityManager = new NcEntityManager(this);
@@ -131,7 +130,7 @@ public class NcCore extends Core implements NinCoreImplementation
     @Override
     public boolean useColoredLogging()
     {
-        return this.getNinCoreConfig().isColoredLoggingEnabled();
+        return this.getNinCoreConfig().isColoredLoggingEnabled() && this.isConsoleAnsiSupported;
     }
 
 

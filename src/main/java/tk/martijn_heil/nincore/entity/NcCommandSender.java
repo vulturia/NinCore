@@ -34,6 +34,7 @@ public class NcCommandSender implements NinCommandSender
 
 
     @Override
+    @NotNull
     public CommandSender toCommandSender()
     {
         return this.commandSender;
