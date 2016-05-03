@@ -23,12 +23,13 @@ import java.util.List;
 
 public class NcEntityManager extends CoreModule implements EntityManager, Listener
 {
-    private List<NinOnlinePlayer> ninOnlinePlayers = new ArrayList<>();
+    private List<NinOnlinePlayer> ninOnlinePlayers;
 
 
     public NcEntityManager(Core core)
     {
         super(core);
+        this.ninOnlinePlayers = new ArrayList<>();
 
         this.getLogger().fine("Adding all currently online players to the NinOnlinePlayers cache..");
         Bukkit.getOnlinePlayers().forEach((player) -> ninOnlinePlayers.add(new NcOnlinePlayer(player)));

@@ -303,7 +303,7 @@ public class NcCommand extends CommandBase implements NinCommand
                 .setName("info")
                 .addAlias("i")
                 .setUseStaticDescription(false)
-                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.info"))
+                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "tk.martijn_heil.nincore.res.messages", "subCmdDesc.info"))
                 .setExecutor(new InfoSubCmdExecutor(this.plugin))
                 .setParentCommand(this)
                 .construct();
@@ -319,7 +319,7 @@ public class NcCommand extends CommandBase implements NinCommand
         new SubCommandBuilder()
                 .setName("reload")
                 .setUseStaticDescription(false)
-                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.reload"))
+                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "tk.martijn_heil.nincore.res.messages", "subCmdDesc.reload"))
                 .setExecutor(new ReloadSubCmdExecutor())
                 .setParentCommand(this)
                 .construct();
