@@ -287,7 +287,7 @@ public class NcCommand extends CommandBase implements NinCommand
                 .setName("help")
                 .addAlias("?")
                 .setUseStaticDescription(false)
-                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "me.ninjoh.nincore.res.messages", "subCmdDesc.help"))
+                .setLocalizedDescription(new LocalizedString(NcCore.class.getClassLoader(), "tk.martijn_heil.nincore.res.messages", "subCmdDesc.help"))
                 .setUsage("<sub command?>")
                 .setExecutor(new HelpSubCmdExecutor())
                 .setParentCommand(this)
