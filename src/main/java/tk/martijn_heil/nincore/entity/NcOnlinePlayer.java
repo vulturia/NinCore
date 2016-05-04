@@ -61,6 +61,7 @@ public class NcOnlinePlayer extends NcOfflinePlayer implements NinOnlinePlayer
 
     public static NcOnlinePlayer fromPlayer(@NotNull Player p)
     {
+        Preconditions.checkNotNull(p);
         return NcCore.getInstance().getEntityManager().getNinOnlinePlayer(p);
     }
 }
