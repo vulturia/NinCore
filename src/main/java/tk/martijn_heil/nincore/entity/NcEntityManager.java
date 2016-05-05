@@ -33,6 +33,8 @@ public class NcEntityManager extends CoreModule implements EntityManager, Listen
 
         this.getLogger().fine("Adding all currently online players to the NinOnlinePlayers cache..");
         Bukkit.getOnlinePlayers().forEach((player) -> ninOnlinePlayers.add(new NcOnlinePlayer(player)));
+
+        Bukkit.getPluginManager().registerEvents(this, this.getCore());
     }
 
 
