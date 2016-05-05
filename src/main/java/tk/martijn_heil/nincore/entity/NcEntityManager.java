@@ -1,7 +1,6 @@
 package tk.martijn_heil.nincore.entity;
 
 
-import tk.martijn_heil.nincore.NcCore;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -13,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.Core;
 import tk.martijn_heil.nincore.api.CoreModule;
 import tk.martijn_heil.nincore.api.EntityManager;
@@ -23,14 +23,18 @@ import java.util.List;
 
 public class NcEntityManager extends CoreModule implements EntityManager, Listener
 {
-    private List<NinOnlinePlayer> ninOnlinePlayers;
+    private List<NinOnlinePlayer> ninOnlinePlayers = new ArrayList<>();
 
 
     public NcEntityManager(Core core)
     {
         super(core);
-        this.ninOnlinePlayers = new ArrayList<>();
+    }
 
+
+    @Override
+    public void onEnable()
+    {
         this.getLogger().fine("Adding all currently online players to the NinOnlinePlayers cache..");
         Bukkit.getOnlinePlayers().forEach((player) -> ninOnlinePlayers.add(new NcOnlinePlayer(player)));
 
