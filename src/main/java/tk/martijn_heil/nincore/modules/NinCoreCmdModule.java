@@ -9,6 +9,7 @@ import tk.martijn_heil.nincore.api.CoreModule;
 import tk.martijn_heil.nincore.api.command.NinCommand;
 import tk.martijn_heil.nincore.api.command.builders.CommandBuilder;
 import tk.martijn_heil.nincore.api.command.builders.SubCommandBuilder;
+import tk.martijn_heil.nincore.subcommands.PlayerInfo;
 
 public class NinCoreCmdModule extends CoreModule
 {
@@ -63,6 +64,18 @@ public class NinCoreCmdModule extends CoreModule
                 .setUseStaticDescription(true)
                 .setStaticDescription("List all server operators.")
                 .setExecutor(new ListOperators())
+                .construct();
+
+        new SubCommandBuilder()
+                .setParentCommand(nc)
+                .setName("playerInfo")
+                .setRequiredPermission("nincore.playerinfo")
+                .addAlias("pi")
+                .addAlias("pinfo")
+                .setUsage("<player=you>")
+                .setUseStaticDescription(true)
+                .setStaticDescription("List all server operators.")
+                .setExecutor(new PlayerInfo())
                 .construct();
     }
 }

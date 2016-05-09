@@ -18,3 +18,5 @@ permissions:
         default: op
     nincore.listoperators:
         default: op
+    nincore.playerinfo:
+        default: op
