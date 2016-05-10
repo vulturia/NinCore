@@ -97,11 +97,11 @@ public class NcCommandHandler implements CommandExecutor
         }
         catch (NotEnoughArgumentsException na)
         {
-            NinCore.get().getEntityManager().getNinCommandSender(na.getTarget()).sendCommandHelp(this.NcCommand);
+            na.getTarget().sendCommandHelp(this.NcCommand);
         }
         catch (ValidationException ve)
         {
-            MessageUtil.sendError(ve.getTarget(), ve.getPlayerMessage());
+            ve.getTarget().sendError(ve.getPlayerMessage());
 
             if (ve.getLogMessage() != null) // Log the log message if it isn't null, with a very fine log level.
             {

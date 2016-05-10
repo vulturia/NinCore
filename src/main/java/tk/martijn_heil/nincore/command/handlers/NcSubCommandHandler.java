@@ -8,7 +8,6 @@ import tk.martijn_heil.nincore.api.command.NinSubCommand;
 import tk.martijn_heil.nincore.api.exceptions.TechnicalException;
 import tk.martijn_heil.nincore.api.exceptions.ValidationException;
 import tk.martijn_heil.nincore.api.exceptions.validationexceptions.NotEnoughArgumentsException;
-import tk.martijn_heil.nincore.api.util.MessageUtil;
 
 public class NcSubCommandHandler
 {
@@ -30,11 +29,11 @@ public class NcSubCommandHandler
         }
         catch (NotEnoughArgumentsException na)
         {
-            NinCore.get().getEntityManager().getNinCommandSender(na.getTarget()).sendCommandHelp(this.subCommand);
+            na.getTarget().sendCommandHelp(this.subCommand);
         }
         catch (ValidationException ve)
         {
-            MessageUtil.sendError(ve.getTarget(), ve.getPlayerMessage());
+            ve.getTarget().sendError(ve.getPlayerMessage());
         }
         catch (TechnicalException te)
         {

@@ -3,6 +3,7 @@ package tk.martijn_heil.nincore.entity;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tk.martijn_heil.nincore.api.entity.NinOfflinePlayer;
@@ -47,12 +48,14 @@ public class NcOfflinePlayer implements NinOfflinePlayer
     }
 
 
+    @Contract("_ -> !null")
     public static NcOfflinePlayer fromOfflinePlayer(OfflinePlayer offlinePlayer)
     {
         return new NcOfflinePlayer(offlinePlayer);
     }
 
 
+    @NotNull
     public OfflinePlayer toOfflinePlayer()
     {
         return offlinePlayer;
