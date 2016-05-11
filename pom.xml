@@ -187,12 +187,7 @@
                     <!--<minimizeJar>true</minimizeJar>-->
                     <artifactSet>
                         <includes>
-                            <include>org.fusesource.jansi:jansi</include>
-                            <include>org.mindrot:jbcrypt</include>
-                            <include>net.mcapi.uuid:uuid-java</include>
-                            <include>tk.martijn-heil:NinCore-API</include>
-                            <include>org.projectlombok:lombok</include>
-                            <include>com.google.guava:guava</include>
+                            <include>*:*</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -204,27 +199,27 @@
 
                         <relocation>
                             <pattern>org.fusesource.jansi</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.org.fusesource.jansi</shadedPattern>
+                            <shadedPattern>tk.martijn_heil.nincore.common.org.fusesource.jansi</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>org.mindrot.jbcrypt</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.org.mindrot.jbcrypt</shadedPattern>
+                            <shadedPattern>tk.martijn_heil.nincore.common.org.mindrot.jbcrypt</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>net.mcapi.uuid</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.net.mcapi.uuid</shadedPattern>
+                            <shadedPattern>tk.martijn_heil.nincore.common.net.mcapi.uuid</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>lombok</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.lombok</shadedPattern>
+                            <shadedPattern>tk.martijn_heil.nincore.common.lombok</shadedPattern>
                         </relocation>
 
                         <relocation>
                             <pattern>com.google.guava</pattern>
-                            <shadedPattern>me.ninjoh.nincore.common.com.google.guava</shadedPattern>
+                            <shadedPattern>tk.martijn_heil.nincore.common.com.google.guava</shadedPattern>
                         </relocation>
 
                     </relocations>
