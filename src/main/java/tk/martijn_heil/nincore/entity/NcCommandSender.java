@@ -140,6 +140,13 @@ public class NcCommandSender implements NinCommandSender
 
 
     @Override
+    public void sendMessage(@NotNull String s)
+    {
+        this.commandSender.sendMessage(s);
+    }
+
+
+    @Override
     public void sendCommandHelp(@NotNull NinCommand ninCommand)
     {
         MessageUtil.sendCommandHelp(this.toCommandSender(), ninCommand);
