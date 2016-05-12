@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tk.martijn_heil.nincore.NcCore;
-import tk.martijn_heil.nincore.api.NinCore;
 import tk.martijn_heil.nincore.api.command.NinCommand;
 import tk.martijn_heil.nincore.api.command.NinSubCommand;
 import tk.martijn_heil.nincore.api.entity.NinOnlinePlayer;
@@ -167,27 +166,27 @@ public class NcOnlinePlayer extends NcOfflinePlayer implements NinOnlinePlayer
         try
         {
             MinecraftLocale locale;
+
             try
             {
                 locale = MinecraftLocale.fromLanguageTag(player.spigot().getLocale());
-                if (locale == null)
-                {
-                    locale = NinCore.get().getLocalizationManager().getDefaultMinecraftLocale();
-                }
             }
             catch (Exception e)
             {
-                return MinecraftLocale.fromLanguageTag(((CraftPlayer) player).getHandle().locale);
+                locale = MinecraftLocale.fromLanguageTag(((CraftPlayer) player).getHandle().locale);
             }
+
+            if(locale == null) locale = MinecraftLocale.getDefault();
 
 
             return locale;
         }
         catch (Exception e)
         {
-            NcCore.getInstance().getNinLogger().warning("Could not get player's locale, returning default MinecraftLocale.");
+            NcCore.getInstance().getNinLogger().warning("Could not get player's locale due to a " +
+                    e.getClass().getSimpleName() + "," + " returning default MinecraftLocale.");
             NcCore.getInstance().getNinLogger().fine(ExceptionUtils.getFullStackTrace(e));
-            return NcCore.getInstance().getLocalizationManager().getDefaultMinecraftLocale();
+            return MinecraftLocale.getDefault();
         }
     }
 }
