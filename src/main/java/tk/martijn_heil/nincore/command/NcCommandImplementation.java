@@ -2,7 +2,7 @@ package tk.martijn_heil.nincore.command;
 
 
 import org.bukkit.plugin.java.JavaPlugin;
-import tk.martijn_heil.nincore.api.Core;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.CoreModule;
 import tk.martijn_heil.nincore.api.command.CommandImplementation;
 import tk.martijn_heil.nincore.api.command.NinCommand;
@@ -13,11 +13,18 @@ import tk.martijn_heil.nincore.api.localization.LocalizedString;
 
 import java.util.List;
 
-public class NcCommandImplementation extends CoreModule implements CommandImplementation
+public class NcCommandImplementation extends CoreModule<NcCore> implements CommandImplementation
 {
-    public NcCommandImplementation(Core core)
+    public NcCommandImplementation(NcCore core)
     {
         super(core);
+    }
+
+
+    @Override
+    public String getName()
+    {
+        return "NcCommandImplementation";
     }
 
 

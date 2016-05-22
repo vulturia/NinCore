@@ -27,6 +27,13 @@ public class ReloadSubCmdExecutor extends NinSubCommandExecutor
         ncCommandSender.sendMessage(MessageColor.BAD, "Please only use this command in development environments.", plugin);
 
 
-        PluginUtil.reload(plugin);
+        try
+        {
+            PluginUtil.reload(plugin);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
