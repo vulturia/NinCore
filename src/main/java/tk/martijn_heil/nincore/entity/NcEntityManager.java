@@ -7,18 +7,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import tk.martijn_heil.nincore.api.Core;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.CoreModule;
 import tk.martijn_heil.nincore.api.EntityManager;
 import tk.martijn_heil.nincore.api.entity.NinOnlinePlayer;
 
 import java.util.List;
 
-public class NcEntityManager extends CoreModule implements EntityManager, Listener
+public class NcEntityManager extends CoreModule<NcCore> implements EntityManager, Listener
 {
-    public NcEntityManager(Core core)
+    public NcEntityManager(NcCore core)
     {
         super(core);
+    }
+
+
+    @Override
+    public String getName()
+    {
+        return "NcEntityManager";
     }
 
 

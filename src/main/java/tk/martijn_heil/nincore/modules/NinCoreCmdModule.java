@@ -1,20 +1,20 @@
 package tk.martijn_heil.nincore.modules;
 
 
-import tk.martijn_heil.nincore.subcommands.GetJavaVersion;
-import tk.martijn_heil.nincore.subcommands.IsAnsiConsole;
-import tk.martijn_heil.nincore.subcommands.ListOperators;
-import tk.martijn_heil.nincore.api.Core;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.CoreModule;
 import tk.martijn_heil.nincore.api.command.NinCommand;
 import tk.martijn_heil.nincore.api.command.builders.CommandBuilder;
 import tk.martijn_heil.nincore.api.command.builders.SubCommandBuilder;
+import tk.martijn_heil.nincore.subcommands.GetJavaVersion;
+import tk.martijn_heil.nincore.subcommands.IsAnsiConsole;
+import tk.martijn_heil.nincore.subcommands.ListOperators;
 import tk.martijn_heil.nincore.subcommands.PlayerInfo;
 
-public class NinCoreCmdModule extends CoreModule
+public class NinCoreCmdModule extends CoreModule<NcCore>
 {
 
-    public NinCoreCmdModule(Core core)
+    public NinCoreCmdModule(NcCore core)
     {
         super(core);
     }
@@ -74,8 +74,15 @@ public class NinCoreCmdModule extends CoreModule
                 .addAlias("pinfo")
                 .setUsage("<player=you>")
                 .setUseStaticDescription(true)
-                .setStaticDescription("List all server operators.")
+                .setStaticDescription("Show debug information about a player.")
                 .setExecutor(new PlayerInfo())
                 .construct();
+    }
+
+
+    @Override
+    public String getName()
+    {
+        return "NinCoreCmdModule";
     }
 }

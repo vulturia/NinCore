@@ -1,17 +1,17 @@
 package tk.martijn_heil.nincore.modules;
 
 
-import tk.martijn_heil.nincore.listeners.ArmorListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import tk.martijn_heil.nincore.api.Core;
+import tk.martijn_heil.nincore.NcCore;
 import tk.martijn_heil.nincore.api.CoreModule;
+import tk.martijn_heil.nincore.listeners.ArmorListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArmorEquipEventModule extends CoreModule
+public class ArmorEquipEventModule extends CoreModule<NcCore>
 {
     private static List<String> blockedMaterials = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class ArmorEquipEventModule extends CoreModule
         blockedMaterials.add(Material.SIGN.toString());
     }
 
-    public ArmorEquipEventModule(Core core)
+    public ArmorEquipEventModule(NcCore core)
     {
         super(core);
     }
@@ -77,5 +77,12 @@ public class ArmorEquipEventModule extends CoreModule
 
         this.getLogger().info("Registering event listener for ArmorEquipEvent..");
         Bukkit.getPluginManager().registerEvents(new ArmorListener(blockedMaterials), this.getCore());
+    }
+
+
+    @Override
+    public String getName()
+    {
+        return "ArmorEquipEventModule";
     }
 }
