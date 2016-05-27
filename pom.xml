@@ -41,12 +41,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
-        <!-- Local repository -->
-        <repository>
-            <id>local-repo</id>
-            <url>${local.maven.repository}</url>
-        </repository>
-
         <!-- Protocollib -->
         <repository>
             <id>dmulloy2-repo</id>
