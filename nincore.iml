@@ -21,7 +21,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: tk.martijn-heil:NinCore-API:-05e617fd4f-1" level="project" />
+    <orderEntry type="library" name="Maven: tk.martijn-heil:NinCore-API:-189d32d322-1" level="project" />
     <orderEntry type="library" name="Maven: net.mcapi.uuid:uuid-java:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.mashape.unirest:unirest-java:1.3.27" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.3.6" level="project" />
